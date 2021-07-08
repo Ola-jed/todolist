@@ -1,10 +1,11 @@
 import 'package:todolist/models/serializable.dart';
 
-class User extends Serializable{
+/// Users of todolist
+class User extends Serializable {
   String name;
   String email;
 
-  User(this.name,this.email);
+  User(this.name, this.email);
 
   @override
   User.fromJson(Map<String, dynamic> json)
