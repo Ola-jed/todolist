@@ -6,7 +6,7 @@ class Step extends Serializable {
   int priority;
   bool isFinished = false;
 
-  Step(this.title, this.priority);
+  Step(this.title, this.priority,[this.isFinished = false]);
 
   @override
   Step.fromJson(Map<String, dynamic> json)
@@ -15,5 +15,6 @@ class Step extends Serializable {
         isFinished = json['is_finished'] as bool;
 
   @override
-  Map<String, dynamic> toJson() => {'title': title, 'priority': priority};
+  Map<String, dynamic> toJson() =>
+      {'title': title, 'priority': priority, 'is_finished': isFinished};
 }
