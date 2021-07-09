@@ -8,7 +8,7 @@ enum HTTP_METHOD { GET, PUT, POST, DELETE }
 
 /// Abstract class that allows us to make our api calls
 abstract class ApiBase {
-  static String apiUrl = 'http://localhost:8000/api/';
+  static final String apiUrl = 'http://localhost:8000/api/';
   static String token = '';
 
   /// Our base function for api calls
@@ -35,7 +35,7 @@ abstract class ApiBase {
       request.headers.contentType =
           new ContentType("application", "json", charset: "utf-8");
       request.headers.add("Authorization", token);
-      request.write(data);
+      if (data.trim().isNotEmpty) request.write(data);
       HttpClientResponse response = await request.close();
       var responseContent = await response.transform(utf8.decoder).join("");
       return responseContent;
