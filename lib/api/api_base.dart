@@ -1,6 +1,5 @@
 import 'dart:io';
-import 'dart:convert' show jsonDecode, utf8;
-
+import 'dart:convert' show utf8;
 import 'package:todolist/api/exceptions/api_connection_exception.dart';
 
 /// HTTP verbs
@@ -21,7 +20,7 @@ abstract class ApiBase {
   ///
   /// - token : The token for api authentication
   /// - data :  The json data to pass to the api
-  Future<String> contactUrl(Uri uri, HTTP_METHOD httpMethod,
+  Future<String> callUrl(Uri uri, HTTP_METHOD httpMethod,
       [String data = '', String token = '']) async {
     var httpClient = HttpClient();
     try {
@@ -46,22 +45,22 @@ abstract class ApiBase {
 
   /// Base function for http get requests
   Future<String> getUrl(Uri uri, [String data = '', String token = '']) async {
-    return contactUrl(uri, HTTP_METHOD.GET, data, token);
+    return callUrl(uri, HTTP_METHOD.GET, data, token);
   }
 
   /// Base function for http post requests
   Future<String> postUrl(Uri uri, [String data = '', String token = '']) async {
-    return contactUrl(uri, HTTP_METHOD.POST, data, token);
+    return callUrl(uri, HTTP_METHOD.POST, data, token);
   }
 
   /// Base function for http put requests
   Future<String> putUrl(Uri uri, [String data = '', String token = '']) async {
-    return contactUrl(uri, HTTP_METHOD.PUT, data, token);
+    return callUrl(uri, HTTP_METHOD.PUT, data, token);
   }
 
   /// Base function for http delete requests
   Future<String> deleteUrl(Uri uri,
       [String data = '', String token = '']) async {
-    return contactUrl(uri, HTTP_METHOD.DELETE, data, token);
+    return callUrl(uri, HTTP_METHOD.DELETE, data, token);
   }
 }

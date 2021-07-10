@@ -6,12 +6,12 @@ class Task extends Serializable {
   String slug;
   bool hasSteps;
   String description;
-  DateTime endDate;
+  DateTime dateLimit;
   int priority;
   bool isFinished;
 
-  Task(this.title, this.slug, this.hasSteps, this.description, this.endDate,
-      this.priority, this.isFinished);
+  Task(this.title, this.slug, this.hasSteps, this.description, this.dateLimit,
+      this.priority, [this.isFinished = false]);
 
   @override
   Task.fromJson(Map<String, dynamic> json)
@@ -19,16 +19,17 @@ class Task extends Serializable {
         slug = json['slug'] as String,
         hasSteps = json['has_steps'] as bool,
         description = json['description'] as String,
-        endDate = DateTime.parse(json['end_date']),
+        dateLimit = DateTime.parse(json['date_limit']),
         priority = json['priority'] as int,
         isFinished = json['is_finished'] as bool;
 
+  /// Custom formatting because i want to limit dependencies
   @override
   Map<String, dynamic> toJson() => {
         'title': title,
         'description': description,
         'has_steps': hasSteps,
-        'end_date': endDate.toString(),
+        'date_limit': '${dateLimit.year}-${dateLimit.month}-${dateLimit.day}',
         'priority': priority
       };
 }

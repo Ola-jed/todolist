@@ -28,6 +28,7 @@ void main() {
     });
     test('Deserialization', () {
       var map = <String, dynamic>{
+        'id' : 0,
         'title': 'A step',
         'priority': 4,
         'is_finished': true

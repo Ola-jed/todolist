@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:todolist/api/api_base.dart';
 import 'package:todolist/api/exceptions/response_retrieving_exception.dart';
 
