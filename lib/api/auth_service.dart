@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:todolist/api/api_base.dart';
 import 'package:todolist/api/exceptions/response_retrieving_exception.dart';
 
+/// Service that calls backend for auth management
 class AuthService extends ApiBase {
   static final String signupUrl = ApiBase.apiUrl + 'signup';
   static final String signinUrl = ApiBase.apiUrl + 'signin';
+  static final String logoutUrl = ApiBase.apiUrl + 'logout';
 
   /// Handle the signup
   /// Call api with data and return token if the process completed successfully
@@ -35,6 +37,19 @@ class AuthService extends ApiBase {
       return jsonResult['token']!;
     } catch (e) {
       throw ResponseRetrievingException(e.toString());
+    }
+  }
+
+  /// Logout the user
+  ///
+  /// ### Params
+  /// - token : The token granted to the user who wants to logout himself
+  Future<bool> makeLogout(String token) async {
+    try {
+      postUrl(Uri.parse(logoutUrl), '', token);
+      return true;
+    } on Exception {
+      return false;
     }
   }
 }

@@ -36,6 +36,9 @@ abstract class ApiBase {
       request.headers.add("Authorization", token);
       if (data.trim().isNotEmpty) request.write(data);
       HttpClientResponse response = await request.close();
+      if (response.statusCode >= 300) {
+        throw Exception('Error when transferring data');
+      }
       var responseContent = await response.transform(utf8.decoder).join("");
       return responseContent;
     } catch (e) {
