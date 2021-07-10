@@ -9,13 +9,13 @@ This mobile is mean to be used with the api available [here](https://github.com/
 ## Todo
 
 - Finish api services
-	- [ ] Auth service
-	- [ ] Tasks service
-	- [ ] Steps service
+	- [x] Auth service
+	- [x] Tasks service
+	- [x] Steps service
 
 - Testing all services
-	- [ ] Auth service
-	- [ ] Tasks service
+	- [x] Auth service
+	- [x] Tasks service
 	- [ ] Steps service
 
 - Forms logic and view
@@ -24,5 +24,6 @@ This mobile is mean to be used with the api available [here](https://github.com/
 	- [ ] Task form
 	- [ ] Step form
 - Others
+    - [x] App icon and launch screen
 	- [ ] Token storage
 	- [ ] Export all tasks to csv
