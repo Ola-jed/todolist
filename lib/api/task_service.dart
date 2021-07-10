@@ -1,4 +1,4 @@
-import 'dart:convert' show jsonEncode,jsonDecode;
+import 'dart:convert' show jsonEncode, jsonDecode;
 import 'package:todolist/api/api_base.dart';
 import 'package:todolist/models/task.dart';
 
@@ -32,11 +32,11 @@ class TaskService extends ApiBase {
   /// - taskToCreate : The new task to create
   Future<bool> createTask(Task taskToCreate) async {
     try {
-      var result = await postUrl(Uri.parse(tasksUrl),jsonEncode(taskToCreate.toJson()),token);
+      var result = await postUrl(
+          Uri.parse(tasksUrl), jsonEncode(taskToCreate.toJson()), token);
       var resultAsMap = jsonDecode(result);
       return resultAsMap['message'] as String == 'Task created';
-    }
-    on Exception {
+    } on Exception {
       return false;
     }
   }
@@ -72,12 +72,12 @@ class TaskService extends ApiBase {
   /// ### Params
   /// - slug : The slug of the task to update
   /// - taskNewValue : The new task value
-  Future<bool> updateTask(String slug,Task taskNewValue) async {
-    try{
-      var resultOfUpdate = await putUrl(Uri.parse(tasksUrl + slug),jsonEncode(taskNewValue.toJson()),token);
+  Future<bool> updateTask(String slug, Task taskNewValue) async {
+    try {
+      var resultOfUpdate = await putUrl(
+          Uri.parse(tasksUrl + slug), jsonEncode(taskNewValue.toJson()), token);
       return jsonDecode(resultOfUpdate)['message'] as String == 'Task updated';
-    }
-    on Exception{
+    } on Exception {
       return false;
     }
   }
@@ -87,15 +87,14 @@ class TaskService extends ApiBase {
   /// ### Params
   /// - slug : The slug of the task which status is going to be updated
   /// - finishOrNot : The status to set
-  Future<bool> finishTask(String slug,bool finishOrNot) async {
-    try{
-      var data = <String,int>{
-        'status' : (finishOrNot ? 1 : 0)
-      };
-      var resultOfMarkingFinished = await putUrl(Uri.parse(tasksUrl + slug),jsonEncode(data),token);
-      return resultOfMarkingFinished == 'Task status updated';
-    }
-    on Exception{
+  Future<bool> finishTask(String slug, bool finishOrNot) async {
+    try {
+      var data = <String, int>{'status': (finishOrNot ? 1 : 0)};
+      var resultOfMarkingFinished =
+          await putUrl(Uri.parse(tasksUrl + slug), jsonEncode(data), token);
+      return jsonDecode(resultOfMarkingFinished)['message'] ==
+          'Task status updated';
+    } on Exception {
       return false;
     }
   }
@@ -105,13 +104,12 @@ class TaskService extends ApiBase {
   /// ### Params
   /// - slug : The slug of the task to delete
   Future<bool> deleteTask(String slug) async {
-    try{
-      var resultOfDelete = await deleteUrl((Uri.parse(tasksUrl + slug)),' ',token);
+    try {
+      var resultOfDelete =
+          await deleteUrl((Uri.parse(tasksUrl + slug)), ' ', token);
       return jsonDecode(resultOfDelete)['message'] as String == 'Task deleted';
-    }
-    on Exception {
+    } on Exception {
       return false;
     }
   }
-
 }

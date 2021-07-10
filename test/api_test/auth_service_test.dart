@@ -6,7 +6,7 @@ void main() {
     test('Signup', () {
       var signupData = <String, String>{
         'name': 'Test user',
-        'email': 'test@hotmail.com',
+        'email': 'test@yahoo.com',
         'password1': '0000',
         'password2': '0000',
         'device_name': 'Test user'
