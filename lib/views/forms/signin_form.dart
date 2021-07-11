@@ -24,16 +24,17 @@ class _SigninFormState extends State<SigninForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: Image(
+              child: const Image(
                 image: AssetImage('assets/icon.png')
               )
             ),
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  onSaved: (value) => data['email'] = value,
-                  decoration: const InputDecoration(
+                autofocus: true,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onSaved: (value) => data['email'] = value,
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
                   hintText: 'Enter your email',
@@ -88,26 +89,26 @@ class _SigninFormState extends State<SigninForm> {
                     _formKey.currentState!.save();
                     // TODO: handle data
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(data['email']+' '+data['password'])));
+                      .showSnackBar(SnackBar(content: Text(data['email']+' '+data['password'])));
                   }
                 },
                 child: const Text('Sign in'),
               )
             ),
             Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                    primary: Colors.transparent,
-                  ),
-                  onPressed: () {
-                    // TODO : make route
-                  },
-                  child: const Text('Not yet registered ? Sign up'),
-                )
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white,
+                  primary: Colors.transparent,
+                ),
+                onPressed: () {
+                  // TODO : make route
+                },
+                child: const Text('Not yet registered ? Sign up'),
+              )
             )
           ]
-        ),
+        )
       )
     );
   }

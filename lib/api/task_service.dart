@@ -16,7 +16,7 @@ class TaskService extends ApiBase {
   /// - offset : offset for pagination
   /// - limit : limit for query
   Future<List> getTasks([int offset = 0, int limit = 0]) async {
-    var data = '{"offset":$offset,"limit":$limit}';
+    final data = '{"offset":$offset,"limit":$limit}';
     var results = await getUrl(Uri.parse(tasksUrl), data, token);
     var jsonContent = jsonDecode(results);
     var listTasks = <Task>[];

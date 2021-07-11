@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/views/forms/task_form.dart';
+import 'package:todolist/views/forms/signup_form.dart';
+import 'package:todolist/views/forms/step_form.dart';
 
 class App extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: TaskForm(),
+        body: SignupForm(),
       ),
     );
   }

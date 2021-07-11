@@ -29,7 +29,7 @@ class _TaskFormState extends State<TaskForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: Text(
+              child: const Text(
                 'Task',
                 style: TextStyle(
                   fontSize: 16,
@@ -120,7 +120,7 @@ class _TaskFormState extends State<TaskForm> {
                 onChanged: (value) => priority = value.toInt(),
                 min: 1,
                 max: 10,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Priority',
                   border: OutlineInputBorder(),
                   filled: true
@@ -129,32 +129,45 @@ class _TaskFormState extends State<TaskForm> {
             ),
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
-              child: Checkbox(
-                onChanged: (bool? value) => hasSteps = value!,
-                value: false,
+              child: Row(
+                children: <Widget>[
+                  Checkbox(
+                    onChanged: (bool? value) {
+                      setState(() {
+                        hasSteps = value!;
+                      });
+                    },
+                    value: hasSteps,
+                    checkColor: Colors.teal,
+                    fillColor: MaterialStateProperty.resolveWith((states) => Colors.white),
+                  ),
+                  Expanded(
+                    child: const Text('Has steps ?')
+                  )
+                ],
               )
             ),
             Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      onPrimary: Colors.white,
-                      primary: Colors.teal,
-                      side: BorderSide(color: Colors.black, width: 1)
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      data['slug'] = slugify(data['title']);
-                      data['priority'] = priority;
-                      data['has_steps'] = hasSteps;
-                      data['is_finished'] = false;
-                      var task = Task.fromJson(data);
-                      print(task.toJson());
-                      // TODO : handle data
-                    }
-                  },
-                  child: const Text('Create task'),
-                )
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    onPrimary: Colors.white,
+                    primary: Colors.teal,
+                    side: BorderSide(color: Colors.black, width: 1)
+                ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    data['slug'] = slugify(data['title']);
+                    data['priority'] = priority;
+                    data['has_steps'] = hasSteps;
+                    data['is_finished'] = false;
+                    var task = Task.fromJson(data);
+                    print(task.toJson());
+                    // TODO : handle data
+                  }
+                },
+                child: const Text('Create task'),
+              )
             )
           ]
         ),

@@ -24,13 +24,14 @@ class _SignupFormState extends State<SignupForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: Image(
+              child: const Image(
                 image: AssetImage('assets/icon.png')
               )
             ),
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: TextFormField(
+                autofocus: true,
                 onSaved: (value) => data['name'] = value,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -56,8 +57,8 @@ class _SignupFormState extends State<SignupForm> {
                   hintText: 'Enter your email',
                   prefixIcon: Icon(Icons.email)
                 ),
-                  onSaved: (value) => data['email'] = value,
-                  validator: (value) {
+                onSaved: (value) => data['email'] = value,
+                validator: (value) {
                   if(value == null || value.trim().isEmpty){
                     return 'The email field is required';
                   }
@@ -71,7 +72,10 @@ class _SignupFormState extends State<SignupForm> {
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: TextFormField(
-                onSaved: (value) => data['password1'] = value,
+                onSaved: (value) {
+                  data['password1'] = value;
+                  data['password2'] = value;
+                },
                 obscureText: _isObscure,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
@@ -106,7 +110,7 @@ class _SignupFormState extends State<SignupForm> {
                     _formKey.currentState!.save();
                     // TODO : handle data
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(data['email']+' '+data['password'])));
+                      .showSnackBar(SnackBar(content: Text(data['email']+' '+data['password'])));
                   }
                 },
                 child: const Text('Sign up'),
