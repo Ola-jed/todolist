@@ -15,6 +15,7 @@ class AuthService extends ApiBase {
   /// - signupData : The serialized data with email name and password
   Future<String> makeSignup(Map signupData) async {
     try {
+      signupData['device_name'] = signupData['email'];
       var result = await postUrl(Uri.parse(signupUrl), json.encode(signupData));
       var jsonResult = json.decode(result) as Map<String, String>;
       if (jsonResult['token'] == null) throw Exception('Signup failed');
@@ -31,6 +32,7 @@ class AuthService extends ApiBase {
   /// - signinData : The serialized data with email and password
   Future<String> makeSignin(Map signinData) async {
     try {
+      signinData['device_name'] = signinData['email'];
       var result = await postUrl(Uri.parse(signinUrl), json.encode(signinData));
       var jsonResult = json.decode(result) as Map<String, String>;
       if (jsonResult['token'] == null) throw Exception('Signin failed');
@@ -46,8 +48,8 @@ class AuthService extends ApiBase {
   /// - token : The token granted to the user who wants to logout himself
   Future<bool> makeLogout(String token) async {
     try {
-      postUrl(Uri.parse(logoutUrl), '', token);
-      return true;
+      var result = await postUrl(Uri.parse(logoutUrl), '', token);
+      return (jsonDecode(result)['message'] as String) == 'Logout successful';
     } on Exception {
       return false;
     }
