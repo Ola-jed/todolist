@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:slugify/slugify.dart';
+import 'package:todolist/models/task.dart';
 
-/// Our signup form
+/// Our task creation and update form
 class TaskForm extends StatefulWidget {
   const TaskForm({Key? key}) : super(key: key);
 
@@ -11,7 +14,9 @@ class TaskForm extends StatefulWidget {
 class _TaskFormState extends State<TaskForm> {
   final _formKey = GlobalKey<FormState>();
   final dateController = TextEditingController();
-  var data = Map();
+  int priority = 1;
+  bool hasSteps = false;
+  var data = Map<String,dynamic>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,11 @@ class _TaskFormState extends State<TaskForm> {
           children: <Widget>[
             Center(
               child: Text(
-                'New task'
+                'Task',
+                style: TextStyle(
+                  fontSize: 16,
+                  decoration: TextDecoration.underline
+                )
               )
             ),
             Container(
@@ -53,7 +62,7 @@ class _TaskFormState extends State<TaskForm> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Enter the description',
+                  hintText: 'Description',
                   prefixIcon: Icon(Icons.description)
                 ),
                 onSaved: (value) => data['description'] = value,
@@ -101,33 +110,28 @@ class _TaskFormState extends State<TaskForm> {
             ),
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
-              child: TextFormField(
-                controller: dateController,
-                readOnly: true,
-                onSaved: (value) => data['date_limit'] = value,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  hintText: 'Date limit',
-                  prefixIcon: Icon(Icons.date_range),
-                ),
+              child: SpinBox(
+                value: 1,
                 validator: (value) {
                   if(value == null || value.trim().isEmpty){
-                    return 'The date limit field is required';
+                    return 'The priority field is required';
                   }
-                  return null;
                 },
-                onTap: () async {
-                  var date =  await showDatePicker(
-                    context: context,
-                    initialDate:DateTime.now(),
-                    firstDate:DateTime(2021),
-                    lastDate: DateTime(2030)
-                  );
-                  dateController.text = date.toString().substring(0,10);
-                  data['date_limit'] = date.toString().substring(0,10);
-                }
+                onChanged: (value) => priority = value.toInt(),
+                min: 1,
+                max: 10,
+                decoration: InputDecoration(
+                  labelText: 'Priority',
+                  border: OutlineInputBorder(),
+                  filled: true
+                ),
+              )
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 10,bottom: 10),
+              child: Checkbox(
+                onChanged: (bool? value) => hasSteps = value!,
+                value: false,
               )
             ),
             Center(
@@ -140,6 +144,12 @@ class _TaskFormState extends State<TaskForm> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
+                      data['slug'] = slugify(data['title']);
+                      data['priority'] = priority;
+                      data['has_steps'] = hasSteps;
+                      data['is_finished'] = false;
+                      var task = Task.fromJson(data);
+                      print(task.toJson());
                       // TODO : handle data
                     }
                   },

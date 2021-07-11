@@ -32,8 +32,10 @@ class TaskService extends ApiBase {
   /// - taskToCreate : The new task to create
   Future<bool> createTask(Task taskToCreate) async {
     try {
-      var result = await postUrl(
-          Uri.parse(tasksUrl), jsonEncode(taskToCreate.toJson()), token);
+      var taskAsJson = taskToCreate.toJson();
+      taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
+      var result =
+          await postUrl(Uri.parse(tasksUrl), jsonEncode(taskAsJson), token);
       var resultAsMap = jsonDecode(result);
       return resultAsMap['message'] as String == 'Task created';
     } on Exception {
@@ -74,8 +76,10 @@ class TaskService extends ApiBase {
   /// - taskNewValue : The new task value
   Future<bool> updateTask(String slug, Task taskNewValue) async {
     try {
+      var taskAsJson = taskNewValue.toJson();
+      taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
       var resultOfUpdate = await putUrl(
-          Uri.parse(tasksUrl + slug), jsonEncode(taskNewValue.toJson()), token);
+          Uri.parse(tasksUrl + slug), jsonEncode(taskAsJson), token);
       return jsonDecode(resultOfUpdate)['message'] as String == 'Task updated';
     } on Exception {
       return false;
