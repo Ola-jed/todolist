@@ -33,6 +33,7 @@ abstract class ApiBase {
                   : await httpClient.deleteUrl(uri);
       request.headers.contentType =
           new ContentType("application", "json", charset: "utf-8");
+      request.headers.add("Accept", "application/json");
       request.headers.add("Authorization", token);
       if (data.trim().isNotEmpty) request.write(data);
       HttpClientResponse response = await request.close();

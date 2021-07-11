@@ -150,9 +150,9 @@ class _TaskFormState extends State<TaskForm> {
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                    primary: Colors.teal,
-                    side: BorderSide(color: Colors.black, width: 1)
+                  onPrimary: Colors.white,
+                  primary: Colors.teal,
+                  side: BorderSide(color: Colors.black, width: 1)
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

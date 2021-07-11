@@ -37,7 +37,6 @@ class _StepFormState extends State<StepForm> {
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: TextFormField(
-                autofocus: true,
                 onSaved: (value) => title = value!,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),

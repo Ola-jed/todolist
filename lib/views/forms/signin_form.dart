@@ -31,7 +31,6 @@ class _SigninFormState extends State<SigninForm> {
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: TextFormField(
-                autofocus: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onSaved: (value) => data['email'] = value,
                 decoration: const InputDecoration(
@@ -88,8 +87,6 @@ class _SigninFormState extends State<SigninForm> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     // TODO: handle data
-                    ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(data['email']+' '+data['password'])));
                   }
                 },
                 child: const Text('Sign in'),
@@ -102,9 +99,9 @@ class _SigninFormState extends State<SigninForm> {
                   primary: Colors.transparent,
                 ),
                 onPressed: () {
-                  // TODO : make route
+                  Navigator.pushNamed(context, '/signup');
                 },
-                child: const Text('Not yet registered ? Sign up'),
+                child: const Text('Not yet registered ? Sign up')
               )
             )
           ]
