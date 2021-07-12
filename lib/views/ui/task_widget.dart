@@ -57,13 +57,17 @@ class _TaskWidgetState extends State<TaskWidget> {
           Row(
             children: <Widget>[
               IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  // TODO : show the form to update the task
+                },
                 icon: const Icon(Icons.update),
                 color: Colors.teal,
               ),
               Spacer(),
               IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  // TODO : implement task deletion
+                },
                 icon: const Icon(Icons.delete),
                 color: Colors.red,
               )

@@ -75,19 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
         var hasLogout = preferences.containsKey('token')
           ? await AuthService().makeLogout(preferences.getString('token')!)
           : false;
-        showDialog(
-          context: context,
-          builder:(context) {
-            return AlertDialog(
-              title: const Text('Logout'),
-              content: Text(hasLogout
-                ? 'Logout successful'
-                : 'Could not logout'
-              )
-            );
-          }
-        );
-        if(hasLogout){
+        if(!hasLogout){
+          showDialog(
+            context: context,
+            builder:(context) {
+              return const AlertDialog(
+                title: const Text('Logout'),
+                content: const Text('Could not logout')
+              );
+            }
+          );
+        }
+        else{
           Navigator.pushNamed(context, '/signin');
         }
         break;
