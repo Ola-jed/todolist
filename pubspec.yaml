@@ -21,10 +21,12 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  device_info_plus: ^2.1.0
   flutter:
     sdk: flutter
 
   flutter_spinbox: ^0.5.2
+  shared_preferences: ^2.0.6
   slugify: ^2.0.0
 
 dev_dependencies:
