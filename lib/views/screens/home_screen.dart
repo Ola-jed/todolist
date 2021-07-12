@@ -32,8 +32,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var searchContent = '';
   var taskFillType = TasksFillType.All;
 
+  /// Handle the action triggered on the menu
+  ///
+  /// ### Params
+  /// - choice : The menu item chosen
+  /// - context : The handler to locate the widget
   Future<void> choiceAction(String choice,BuildContext context) async {
     switch (choice){
       case 'All tasks' : {
@@ -101,7 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: TextField(
                   onChanged: (value) {
-                    // TODO : make search
+                    setState(() {
+                      searchContent = value;
+                      taskFillType = TasksFillType.Search;
+                      print(searchContent);
+                    });
                   }
                 )
               ),
@@ -128,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ]
       ),
-      body: TasksList(tasksFillType: taskFillType),
+      body: TasksList(tasksFillType: taskFillType,searchContent: searchContent),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // TODO : show task form

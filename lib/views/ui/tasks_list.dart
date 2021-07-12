@@ -11,8 +11,9 @@ enum TasksFillType{All,Search,Finished,Unfinished,Expired}
 /// List of tasks
 /// Built depending on the type of filling
 class TasksList extends StatefulWidget {
+  var searchContent = '';
   final TasksFillType tasksFillType;
-  TasksList({required this.tasksFillType,Key? key}) : super(key: key);
+  TasksList({required this.tasksFillType,this.searchContent = '',Key? key}) : super(key: key);
 
   @override
   _TasksListState createState() => _TasksListState();
@@ -20,6 +21,12 @@ class TasksList extends StatefulWidget {
 
 class _TasksListState extends State<TasksList> {
 
+  /// Load correctly the tasks depending on the fill type
+  /// All : all tasks of the user
+  /// Finished : All the finished tasks of the user
+  /// Unfinished : All the tasks not yet finished by the user
+  /// Expired : Get the expired tasks (limit date passed)
+  /// Search : Search the tasks corresponding to searchContent
   Future<List> _getCorrespondingTasks() async {
     var preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
@@ -34,9 +41,12 @@ class _TasksListState extends State<TasksList> {
       case TasksFillType.Expired:
         return taskService.getExpiredTasks();
       case TasksFillType.Search:
-        // TODO: Handle this case.
-        return taskService.getTasks();
-        break;
+        if(widget.searchContent.isNotEmpty){
+          return taskService.searchTasks(widget.searchContent);
+        }
+        else{
+          return taskService.getTasks();
+        }
     }
   }
 
@@ -46,6 +56,15 @@ class _TasksListState extends State<TasksList> {
       future: _getCorrespondingTasks(),
       builder: (context, snapshot) {
         if(snapshot.hasData) {
+          if((snapshot.data as List).isEmpty) {
+            return Center(
+              child: Text(
+                'No task',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white,fontSize: 16)
+              )
+            );
+          }
           return ListView.builder(
             itemCount: (snapshot.data as List<Task>).length,
             itemBuilder: (context,index) {

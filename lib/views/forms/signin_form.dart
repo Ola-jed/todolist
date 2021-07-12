@@ -97,7 +97,7 @@ class _SigninFormState extends State<SigninForm> {
                     on Exception catch(e) {
                       ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(
-                          content: Text('Auth failed $e')
+                          content: Text('Signin failed')
                       ));
                     }
                   }
