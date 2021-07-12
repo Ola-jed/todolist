@@ -9,21 +9,24 @@ This mobile app is meant to be used with the api available [here](https://github
 ## Todo
 
 - Finish api services
-	- [x] Auth service
-	- [x] Tasks service
-	- [x] Steps service
+  - [x] Auth service
+  - [x] Tasks service
+  - [x] Steps service
 
 - Testing all services
-	- [x] Auth service
-	- [x] Tasks service
-	- [ ] Steps service
+  - [x] Auth service
+  - [x] Tasks service
+  - [x] Steps service
 
 - Forms logic and view
-	- [ ] Signup form
-	- [ ] Signin form
-	- [ ] Task form
-	- [ ] Step form
+  - [x] Signup form
+  - [x] Signin form
+  - [x] Task form
+  - [ ] Task view
+  - [x] Step form
+  - [ ] Step view
+
 - Others
-    - [x] App icon and launch screen
-	- [ ] Token storage
-	- [ ] Export all tasks to csv
+  - [x] App icon and launch screen
+  - [x] Token storage
+  - [ ] Export all tasks to csv
