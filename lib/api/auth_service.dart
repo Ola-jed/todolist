@@ -21,8 +21,8 @@ class AuthService extends ApiBase {
       var jsonResult = json.decode(result) as Map<String, String>;
       if (jsonResult['token'] == null) throw Exception('Signup failed');
       return jsonResult['token']!;
-    } catch (e) {
-      throw ResponseRetrievingException(e.toString());
+    } on Exception catch (e) {
+      throw ResponseRetrievingException('$e');
     }
   }
 
@@ -35,11 +35,11 @@ class AuthService extends ApiBase {
     try {
       signinData['device_name'] = await _getDeviceIdentity();
       var result = await postUrl(Uri.parse(signinUrl), json.encode(signinData));
-      var jsonResult = json.decode(result) as Map<String, String>;
+      var jsonResult = json.decode(result) as Map<String, dynamic>;
       if (jsonResult['token'] == null) throw Exception('Signin failed');
       return jsonResult['token']!;
-    } catch (e) {
-      throw ResponseRetrievingException(e.toString());
+    } on Exception catch (e) {
+      throw ResponseRetrievingException('$e');
     }
   }
 

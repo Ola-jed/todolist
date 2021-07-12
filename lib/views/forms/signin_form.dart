@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todolist/api/auth_service.dart';
 
 /// Our signin form
 class SigninForm extends StatefulWidget {
@@ -83,13 +85,24 @@ class _SigninFormState extends State<SigninForm> {
                   primary: Colors.teal,
                   side: BorderSide(color: Colors.black, width: 1)
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // TODO: handle data
+                    try{
+                      var token = await AuthService().makeSignin(data);
+                      var preferences = await SharedPreferences.getInstance();
+                      preferences.setString('token', token);
+                      Navigator.pushNamed(context, '/');
+                    }
+                    on Exception catch(e) {
+                      ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(
+                          content: Text('Auth failed $e')
+                      ));
+                    }
                   }
                 },
-                child: const Text('Sign in'),
+                child: const Text('Sign in')
               )
             ),
             Center(

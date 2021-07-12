@@ -25,6 +25,7 @@ class _TaskWidgetState extends State<TaskWidget> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             widget.task.title,
@@ -34,11 +35,12 @@ class _TaskWidgetState extends State<TaskWidget> {
             )
           ),
           Container(
+            alignment: Alignment.center,
             margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(5),
-            child: Text(widget.task.description),
-            decoration: BoxDecoration(
-              color: Colors.black38
+            child: Text(
+              widget.task.description,
+              textAlign: TextAlign.center
             )
           ),
           Row(

@@ -15,7 +15,7 @@ class TaskService extends ApiBase {
   /// ### Params (all optional)
   /// - offset : offset for pagination
   /// - limit : limit for query
-  Future<List> getTasks([int offset = 0, int limit = 0]) async {
+  Future<List<Task>> getTasks([int offset = 0, int limit = 0]) async {
     final data = '{"offset":$offset,"limit":$limit}';
     var results = await getUrl(Uri.parse(tasksUrl), data, token);
     var jsonContent = jsonDecode(results);
@@ -48,8 +48,21 @@ class TaskService extends ApiBase {
   ///
   /// ### Params (optional)
   /// - finished : bool to know if we should retrieve finished tasks or not
-  Future<List> getFinishedTasks([bool finished = true]) async {
+  Future<List<Task>> getFinishedTasks([bool finished = true]) async {
     var uri = Uri.parse(tasksUrl + (finished ? 'finished' : 'unfinished'));
+    var results = await getUrl(uri, '', token);
+    var jsonContent = jsonDecode(results);
+    var listTasks = <Task>[];
+    (jsonContent['data'] as List).forEach((element) {
+      listTasks.add(Task.fromJson(element));
+    });
+    return listTasks;
+  }
+
+  /// Get all tasks expired (date_limit passed)
+  /// Iterate on the json result to build a list of tasks
+  Future<List<Task>> getExpiredTasks() async {
+    var uri = Uri.parse(tasksUrl + 'expired');
     var results = await getUrl(uri, '', token);
     var jsonContent = jsonDecode(results);
     var listTasks = <Task>[];
