@@ -9,7 +9,6 @@ class Actions{
   static const String FinishedTasks = 'Finished tasks';
   static const String UnfinishedTasks = 'Unfinished tasks';
   static const String ExpiredTasks = 'Expired tasks';
-  static const String Search = 'Search';
   static const String Signin = 'Signin';
   static const String Logout = 'Logout';
   static const List<String> choices = <String>[
@@ -17,7 +16,6 @@ class Actions{
     FinishedTasks,
     UnfinishedTasks,
     ExpiredTasks,
-    Search,
     Signin,
     Logout
   ];
@@ -62,10 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
         break;
       }
-      case 'Search': {
-        print('Search');
-        break;
-      }
       case 'Signin': {
         Navigator.pushNamed(context, '/signin');
         break;
@@ -99,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        //title: const Text('Todolist'),
         title: Material(
           color: Colors.transparent,
           child: Row(
@@ -107,7 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               Expanded(
                 child: TextField(
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    // TODO : make search
+                  }
                 )
               ),
               Icon(
@@ -135,7 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: TasksList(tasksFillType: taskFillType),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          // TODO : show task form
+        },
         backgroundColor: Colors.teal,
         child: const Icon(Icons.add)
       )

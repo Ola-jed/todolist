@@ -72,6 +72,22 @@ class TaskService extends ApiBase {
     return listTasks;
   }
 
+  /// Search tasks by title
+  /// Iterate on the json result to build a list of tasks
+  ///
+  /// ### Params
+  /// - title : The title to use for the search
+  Future<List<Task>> searchTasks(String title) async {
+    var uri = Uri.parse(tasksUrl + 'search/$title');
+    var results = await getUrl(uri, '', token);
+    var jsonContent = jsonDecode(results);
+    var listTasks = <Task>[];
+    (jsonContent['data'] as List).forEach((element) {
+      listTasks.add(Task.fromJson(element));
+    });
+    return listTasks;
+  }
+
   /// Get a specific task with its slug
   ///
   /// ### Params

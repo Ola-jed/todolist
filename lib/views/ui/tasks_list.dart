@@ -6,7 +6,7 @@ import 'package:todolist/views/ui/task_widget.dart';
 
 /// Type of tasks we want to show
 /// Will be passed to the constructor
-enum TasksFillType{All,Finished,Unfinished,Expired}
+enum TasksFillType{All,Search,Finished,Unfinished,Expired}
 
 /// List of tasks
 /// Built depending on the type of filling
@@ -33,6 +33,10 @@ class _TasksListState extends State<TasksList> {
         return taskService.getFinishedTasks(false);
       case TasksFillType.Expired:
         return taskService.getExpiredTasks();
+      case TasksFillType.Search:
+        // TODO: Handle this case.
+        return taskService.getTasks();
+        break;
     }
   }
 
