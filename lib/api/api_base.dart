@@ -107,21 +107,37 @@ abstract class ApiBase {
   }
 
   /// Base function for http get requests
+  ///
+  /// ### Params
+  /// - uri : The uri to call
+  /// - (optional) data : The data to pass
   Future<String> getUrl(Uri uri, [String data = '', String token = '']) async {
     return callUrl(uri, HTTP_METHOD.GET, data, token);
   }
 
   /// Base function for http post requests
+  ///
+  /// ### Params
+  /// - uri : The uri to call
+  /// - (optional) data : The data to pass
   Future<String> postUrl(Uri uri, [String data = '', String token = '']) async {
     return callUrl(uri, HTTP_METHOD.POST, data, token);
   }
 
   /// Base function for http put requests
+  ///
+  /// ### Params
+  /// - uri : The uri to call
+  /// - (optional) data : The data to pass
   Future<String> putUrl(Uri uri, [String data = '', String token = '']) async {
     return callUrl(uri, HTTP_METHOD.PUT, data, token);
   }
 
   /// Base function for http delete requests
+  ///
+  /// ### Params
+  /// - uri : The uri to call
+  /// - (optional) data : The data to pass
   Future<String> deleteUrl(Uri uri,
       [String data = '', String token = '']) async {
     return callUrl(uri, HTTP_METHOD.DELETE, data, token);
