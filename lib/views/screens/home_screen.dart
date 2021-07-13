@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 )
               ),
-              Icon(
+              const Icon(
                 Icons.search,
                 color: Colors.white
               )
