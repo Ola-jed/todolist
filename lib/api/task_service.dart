@@ -27,12 +27,23 @@ class TaskService extends ApiBase {
   }
 
   /// Creating a new task
+  /// For the date, we convert yyyy-MM-dd to dd/MM/yyyy
   ///
   /// ### Params
   /// - taskToCreate : The new task to create
   Future<bool> createTask(Task taskToCreate) async {
     try {
       var taskAsJson = taskToCreate.toJson();
+      var newDate = '';
+      int i = 0;
+      (taskAsJson['date_limit'] as String)
+          .split('-')
+          .reversed
+          .forEach((element) {
+        ++i;
+        newDate += ((i == 2) ? '0' : '') + element + '/';
+      });
+      taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
       var result =
           await postUrl(Uri.parse(tasksUrl), jsonEncode(taskAsJson), token);
@@ -106,6 +117,16 @@ class TaskService extends ApiBase {
   Future<bool> updateTask(String slug, Task taskNewValue) async {
     try {
       var taskAsJson = taskNewValue.toJson();
+      var newDate = '';
+      int i = 0;
+      (taskAsJson['date_limit'] as String)
+          .split('-')
+          .reversed
+          .forEach((element) {
+        ++i;
+        newDate += ((i == 2) ? '0' : '') + element + '/';
+      });
+      taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
       var resultOfUpdate = await putUrl(
           Uri.parse(tasksUrl + slug), jsonEncode(taskAsJson), token);

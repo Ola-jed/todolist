@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:slugify/slugify.dart';
+import 'package:todolist/api/task_service.dart';
+import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 
 /// Our task creation and update form
@@ -91,7 +93,7 @@ class _TaskFormState extends State<TaskForm> {
                   prefixIcon: Icon(Icons.date_range),
                 ),
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty){
+                  if(value == null || value.length < 10){
                     return 'The date limit field is required';
                   }
                   return null;
@@ -103,8 +105,10 @@ class _TaskFormState extends State<TaskForm> {
                     firstDate:DateTime(2021),
                     lastDate: DateTime(2030)
                   );
-                  dateController.text = date.toString().substring(0,10);
-                  data['date_limit'] = date.toString().substring(0,10);
+                  if(date.toString().length >= 10) {
+                    dateController.text = date.toString().substring(0,10);
+                    data['date_limit'] = date.toString().substring(0,10);
+                  }
                 }
               )
             ),
@@ -133,6 +137,7 @@ class _TaskFormState extends State<TaskForm> {
                 children: <Widget>[
                   Checkbox(
                     onChanged: (bool? value) {
+                      print(value);
                       setState(() {
                         hasSteps = value!;
                       });
@@ -141,7 +146,7 @@ class _TaskFormState extends State<TaskForm> {
                     checkColor: Colors.teal,
                     fillColor: MaterialStateProperty.resolveWith((states) => Colors.white),
                   ),
-                  Expanded(
+                  const Expanded(
                     child: const Text('Has steps ?')
                   )
                 ],
@@ -152,9 +157,9 @@ class _TaskFormState extends State<TaskForm> {
                 style: ElevatedButton.styleFrom(
                   onPrimary: Colors.white,
                   primary: Colors.teal,
-                  side: BorderSide(color: Colors.black, width: 1)
+                  side: const BorderSide(color: Colors.black, width: 1)
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     data['slug'] = slugify(data['title']);
@@ -162,15 +167,29 @@ class _TaskFormState extends State<TaskForm> {
                     data['has_steps'] = hasSteps;
                     data['is_finished'] = false;
                     var task = Task.fromJson(data);
-                    print(task.toJson());
-                    // TODO : handle data
+                    var token = await getToken();
+                    var hasCreated = await TaskService(token).createTask(task);
+                    if(hasCreated) {
+                      Navigator.pushNamed(context, '/');
+                    }
+                    else {
+                      showDialog(
+                        context: context,
+                        builder:(context) {
+                          return const AlertDialog(
+                            title: Text('Task creation'),
+                            content: Text('Could not create the  task')
+                          );
+                        }
+                      );
+                    }
                   }
                 },
-                child: const Text('Create task'),
+                child: const Text('Create task')
               )
             )
           ]
-        ),
+        )
       )
     );
   }

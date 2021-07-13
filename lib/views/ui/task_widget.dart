@@ -60,7 +60,6 @@ class _TaskWidgetState extends State<TaskWidget> {
             children: <Widget>[
               IconButton(
                 onPressed: (){
-
                   // TODO : show the form to update the task
                 },
                 icon: const Icon(Icons.update),
