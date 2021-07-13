@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/api/task_service.dart';
+import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 
 class TaskWidget extends StatefulWidget {
@@ -19,8 +21,8 @@ class _TaskWidgetState extends State<TaskWidget> {
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border.all(
-          color: Colors.black,
-          width: 4,
+          color: Colors.white,
+          width: 3
         ),
         borderRadius: BorderRadius.circular(10),
       ),
@@ -31,7 +33,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             widget.task.title,
             style: TextStyle(
               decoration: TextDecoration.underline,
-              fontSize: 16
+              fontSize: 15
             )
           ),
           Container(
@@ -58,6 +60,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             children: <Widget>[
               IconButton(
                 onPressed: (){
+
                   // TODO : show the form to update the task
                 },
                 icon: const Icon(Icons.update),
@@ -65,8 +68,25 @@ class _TaskWidgetState extends State<TaskWidget> {
               ),
               Spacer(),
               IconButton(
-                onPressed: (){
-                  // TODO : implement task deletion
+                /// We delete and remove this task
+                onPressed: () async{
+                  var token = await getToken();
+                  var hasDeleted = await TaskService(token).deleteTask(widget.task.slug);
+                  if(hasDeleted) {
+                    dispose();
+                    Navigator.pushNamed(context, '/');
+                  }
+                  else{
+                    showDialog(
+                      context: context,
+                      builder:(context) {
+                        return AlertDialog(
+                          title: Text('Task deletion'),
+                          content: Text('Could not delete task')
+                        );
+                      }
+                    );
+                  }
                 },
                 icon: const Icon(Icons.delete),
                 color: Colors.red,

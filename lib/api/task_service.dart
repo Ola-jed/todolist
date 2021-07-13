@@ -139,7 +139,7 @@ class TaskService extends ApiBase {
   Future<bool> deleteTask(String slug) async {
     try {
       var resultOfDelete =
-          await deleteUrl((Uri.parse(tasksUrl + slug)), ' ', token);
+          await deleteUrl((Uri.parse(tasksUrl + slug)), '', token);
       return jsonDecode(resultOfDelete)['message'] as String == 'Task deleted';
     } on Exception {
       return false;

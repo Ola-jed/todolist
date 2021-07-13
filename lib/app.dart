@@ -9,7 +9,7 @@ MaterialApp app() {
       brightness: Brightness.dark,
       primaryColor: Colors.teal
     ),
-    initialRoute: '/',
+    initialRoute: '/signin',
     routes: {
       '/signup': (context) => AuthScreen(authType: AuthType.Signup),
       '/signin': (context) => AuthScreen(authType: AuthType.Signin),

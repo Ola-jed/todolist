@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/api/auth_service.dart';
+import 'package:todolist/api/token_handler.dart';
 
 /// Our signup form
 class SignupForm extends StatefulWidget {
@@ -110,12 +110,10 @@ class _SignupFormState extends State<SignupForm> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     try{
-                      var token = await AuthService().makeSignup(data);
-                      var preferences = await SharedPreferences.getInstance();
-                      preferences.setString('token', token);
+                      await storeToken(await AuthService().makeSignup(data));
                       Navigator.pushNamed(context, '/');
                     }
-                    on Exception catch(e){
+                    on Exception{
                       ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(
                           content: Text('Signup failed'))

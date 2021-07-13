@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/api/task_service.dart';
+import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 import 'package:todolist/views/ui/task_widget.dart';
 
@@ -28,9 +28,9 @@ class _TasksListState extends State<TasksList> {
   /// Expired : Get the expired tasks (limit date passed)
   /// Search : Search the tasks corresponding to searchContent
   Future<List> _getCorrespondingTasks() async {
-    var preferences = await SharedPreferences.getInstance();
-    var token = preferences.getString('token');
-    var taskService = TaskService(token!);
+    var token = await getToken();
+    if(token.isEmpty) return [];
+    var taskService = TaskService(token);
     switch(widget.tasksFillType){
       case TasksFillType.All :
         return taskService.getTasks();

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/api/api_base.dart';
 import 'package:todolist/api/exceptions/response_retrieving_exception.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -44,12 +45,15 @@ class AuthService extends ApiBase {
   }
 
   /// Logout the user
+  /// We remove the token from local preferences
   ///
   /// ### Params
   /// - token : The token granted to the user who wants to logout himself
   Future<bool> makeLogout(String token) async {
     try {
       var result = await postUrl(Uri.parse(logoutUrl), '', token);
+      var preferences = await SharedPreferences.getInstance();
+      await preferences.remove('token');
       return (jsonDecode(result)['message'] as String) == 'Logout successful';
     } on Exception {
       return false;

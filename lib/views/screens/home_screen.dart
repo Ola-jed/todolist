@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/api/auth_service.dart';
+import 'package:todolist/views/forms/task_form.dart';
 import 'package:todolist/views/ui/tasks_list.dart';
 
 /// All actions of our menu
@@ -11,13 +12,15 @@ class Actions{
   static const String ExpiredTasks = 'Expired tasks';
   static const String Signin = 'Signin';
   static const String Logout = 'Logout';
+  static const String About = 'About';
   static const List<String> choices = <String>[
     AllTasks,
     FinishedTasks,
     UnfinishedTasks,
     ExpiredTasks,
     Signin,
-    Logout
+    Logout,
+    About
   ];
 }
 
@@ -91,6 +94,16 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         break;
       }
+      case 'About' : {
+        showAboutDialog(
+          context: context,
+          applicationName: 'Todolist',
+          applicationVersion: '1.0',
+          applicationIcon: const Image(
+            image: AssetImage('assets/icon.png')
+          )
+        );
+      }
     }
   }
 
@@ -98,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
+        automaticallyImplyLeading: false,
         title: Material(
           color: Colors.transparent,
           child: Row(
@@ -105,11 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               Expanded(
                 child: TextField(
+                  autofocus: false,
+                  decoration: const InputDecoration(
+                    hintText: 'Your search',
+                  ),
                   onChanged: (value) {
                     setState(() {
                       searchContent = value;
                       taskFillType = TasksFillType.Search;
-                      print(searchContent);
                     });
                   }
                 )
@@ -140,7 +157,17 @@ class _HomeScreenState extends State<HomeScreen> {
       body: TasksList(tasksFillType: taskFillType,searchContent: searchContent),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO : show task form
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Scaffold(
+                // TODO : handle this task form
+                body: TaskForm(
+
+                )
+              );
+            }
+          );
         },
         backgroundColor: Colors.teal,
         child: const Icon(Icons.add)
