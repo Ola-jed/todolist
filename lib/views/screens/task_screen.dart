@@ -31,7 +31,9 @@ class _TaskScreenState extends State<TaskScreen> {
       appBar: AppBar(
         title: Text(widget.task.title),
       ),
-      body: Column(
+      body: ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: false,
         children:<Widget> [
           Container(
             padding: EdgeInsets.all(5),
@@ -115,7 +117,9 @@ class _TaskScreenState extends State<TaskScreen> {
                   );
                 }
                 return ListView.builder(
-                  itemCount: (snapshot.data as List<Task>).length,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: (snapshot.data as List<StepData.Step>).length,
                   itemBuilder: (context,index) {
                     return StepWidget(
                       step: (snapshot.data as List<StepData.Step>)[index],

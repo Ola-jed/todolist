@@ -82,7 +82,7 @@ class _StepWidgetState extends State<StepWidget> {
                     context: context,
                     builder: (context) {
                       return Scaffold(
-                        body: StepForm(taskSlug: 'e')
+                        body: StepForm(taskSlug: 'e',step: widget.step)
                       );
                     }
                   );
@@ -98,14 +98,15 @@ class _StepWidgetState extends State<StepWidget> {
                   var hasDeleted = await StepService(token).deleteStep(widget.step.id);
                   if(hasDeleted) {
                     dispose();
+                    Navigator.pop(context,true);
                   }
                   else{
                     showDialog(
                       context: context,
                       builder:(context) {
                         return AlertDialog(
-                            title: Text('Step deletion'),
-                            content: Text('Could not delete task step')
+                          title: Text('Step deletion'),
+                          content: Text('Could not delete task step')
                         );
                       }
                     );

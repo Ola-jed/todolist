@@ -22,6 +22,7 @@ class _StepFormState extends State<StepForm> {
 
   @override
   Widget build(BuildContext context) {
+    var hasStep = widget.step != null;
     return Form(
       key: _formKey,
       child: Container(
@@ -42,6 +43,7 @@ class _StepFormState extends State<StepForm> {
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: TextFormField(
+                initialValue: hasStep ? widget.step!.title : null,
                 onSaved: (value) => title = value!,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -97,10 +99,23 @@ class _StepFormState extends State<StepForm> {
                       // Update the step
                       hasCreated = await StepService(token).updateStep(widget.step!.id, step);
                     }
-                    // TODO : handle data
+                    if(hasCreated) {
+                      Navigator.pop(context);
+                    }
+                    else {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const AlertDialog(
+                            title: Text('Step creation'),
+                            content: Text('Could not create the task step')
+                          );
+                        }
+                      );
+                    }
                   }
                 },
-                child: const Text('Create step')
+                child: Text(hasStep ? 'Update task' : 'Create step')
               )
             )
           ]

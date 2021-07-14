@@ -92,7 +92,9 @@ abstract class ApiBase {
           new ContentType("application", "json", charset: "utf-8");
       request.headers.add("Accept", "application/json");
       request.headers.add("Authorization", 'Bearer $token');
-      request.contentLength = data.length;
+      if(data.trim().isNotEmpty) {
+        request.contentLength = data.length;
+      }
       if (data.trim().isNotEmpty) request.write(data);
       var response = await request.close();
       var responseContent = await response.transform(utf8.decoder).join("");
@@ -102,6 +104,7 @@ abstract class ApiBase {
       }
       return responseContent;
     } catch (e) {
+      print(e);
       throw ApiConnectionException(e.toString());
     }
   }

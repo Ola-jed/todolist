@@ -97,6 +97,7 @@ class StepService extends ApiBase {
     try {
       var resultOfDelete = await deleteUrl(
           (Uri.parse(stepsUrl + stepId.toString())), ' ', token);
+      print(resultOfDelete);
       return jsonDecode(resultOfDelete)['message'] as String == 'Step deleted';
     } on Exception {
       return false;
