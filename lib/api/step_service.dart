@@ -93,7 +93,7 @@ class StepService extends ApiBase {
   ///
   /// ### Params
   /// - stepId : The id of the step to delete
-  Future<bool> deleteTask(int stepId) async {
+  Future<bool> deleteStep(int stepId) async {
     try {
       var resultOfDelete = await deleteUrl(
           (Uri.parse(stepsUrl + stepId.toString())), ' ', token);

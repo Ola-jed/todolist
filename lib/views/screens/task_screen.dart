@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/api/step_service.dart';
+import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 
 /// Our task screen <br>
@@ -13,6 +15,13 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+
+  /// We retrieve all the steps of a task
+  Future<List> _getSteps() async {
+    var token = await getToken();
+    return await StepService(token).getStepsFromTask(widget.task.slug);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +34,6 @@ class _TaskScreenState extends State<TaskScreen> {
             padding: EdgeInsets.all(5),
             margin: EdgeInsets.only(top: 5,bottom: 5),
             decoration: BoxDecoration(
-              color: Colors.transparent,
               border: Border(
                 bottom: BorderSide(
                   color: Colors.white,
@@ -90,6 +98,48 @@ class _TaskScreenState extends State<TaskScreen> {
               ]
             )
           ),
+          FutureBuilder(
+            future: _getSteps(),
+            builder: (context,snapshot) {
+              if(snapshot.hasData) {
+                if((snapshot.data as List).isEmpty) {
+                  return Center(
+                    child: Text(
+                      'No step found',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white,fontSize: 16)
+                    )
+                  );
+                }
+                return ListView.builder(
+                  itemCount: (snapshot.data as List<Task>).length,
+                  itemBuilder: (context,index) {
+                    // TODO : insert steps widgets here
+                    return Container()/*task: (snapshot.data as List<Task>)[index])*/;
+                  }
+                );
+              }
+              else if(snapshot.hasError) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 5,bottom: 5),
+                    child: const Text(
+                      'This task does not have steps',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white,fontSize: 16)
+                    )
+                  )
+                );
+              }
+              else {
+                return Center(
+                  child: Container(
+                    child: CircularProgressIndicator()
+                  )
+                );
+              }
+            }
+          )
         ]
       )
     );

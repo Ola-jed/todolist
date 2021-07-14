@@ -3,6 +3,7 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:todolist/models/step.dart' as StepData;
 
 /// Our step creation and update form
+/// TODO : handle update case
 class StepForm extends StatefulWidget {
   const StepForm({Key? key}) : super(key: key);
 
