@@ -117,6 +117,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   );
                 }
                 return ListView.builder(
+                  physics: ClampingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: (snapshot.data as List<StepData.Step>).length,
