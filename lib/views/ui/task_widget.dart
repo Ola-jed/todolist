@@ -3,6 +3,7 @@ import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 import 'package:todolist/views/forms/task_form.dart';
+import 'package:todolist/views/screens/task_screen.dart';
 
 class TaskWidget extends StatefulWidget {
   final Task task;
@@ -30,12 +31,29 @@ class _TaskWidgetState extends State<TaskWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            widget.task.title,
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              fontSize: 15
-            )
+          Row(
+            children: <Widget>[
+              Expanded(
+                child : Text(
+                  widget.task.title,
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 15
+                  )
+                )
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TaskScreen(task: widget.task)
+                    )
+                  );
+                },
+                icon: Icon(Icons.visibility)
+              )
+            ]
           ),
           Container(
             alignment: Alignment.center,
