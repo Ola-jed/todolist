@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/step_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
+import 'package:todolist/models/step.dart' as StepData;
+import 'package:todolist/views/forms/step_form.dart';
+import 'package:todolist/views/ui/step_widget.dart';
 
 /// Our task screen <br>
 /// We display a task and all of its steps <br>
@@ -114,8 +117,10 @@ class _TaskScreenState extends State<TaskScreen> {
                 return ListView.builder(
                   itemCount: (snapshot.data as List<Task>).length,
                   itemBuilder: (context,index) {
-                    // TODO : insert steps widgets here
-                    return Container()/*task: (snapshot.data as List<Task>)[index])*/;
+                    return StepWidget(
+                      step: (snapshot.data as List<StepData.Step>)[index],
+                      taskSlug: widget.task.slug
+                    );
                   }
                 );
               }
@@ -141,6 +146,20 @@ class _TaskScreenState extends State<TaskScreen> {
             }
           )
         ]
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Scaffold(
+                body: StepForm(taskSlug: widget.task.slug)
+              );
+            }
+          );
+        },
+        backgroundColor: Colors.teal,
+        child: const Icon(Icons.add)
       )
     );
   }

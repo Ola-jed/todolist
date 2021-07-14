@@ -8,7 +8,8 @@ import 'package:todolist/views/forms/step_form.dart';
 /// A widget to show a step
 class StepWidget extends StatefulWidget {
   final StepData.Step step;
-  const StepWidget({Key? key, required this.step}) : super(key: key);
+  final String taskSlug;
+  const StepWidget({Key? key, required this.step, required this.taskSlug}) : super(key: key);
 
   @override
   _StepWidgetState createState() => _StepWidgetState();
@@ -81,7 +82,7 @@ class _StepWidgetState extends State<StepWidget> {
                     context: context,
                     builder: (context) {
                       return Scaffold(
-                        body: StepForm()
+                        body: StepForm(taskSlug: 'e')
                       );
                     }
                   );

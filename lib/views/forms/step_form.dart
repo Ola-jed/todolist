@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:todolist/api/step_service.dart';
+import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/step.dart' as StepData;
 
 /// Our step creation and update form
 /// TODO : handle update case
 class StepForm extends StatefulWidget {
-  const StepForm({Key? key}) : super(key: key);
+  final StepData.Step? step;
+  final String taskSlug;
+  const StepForm({Key? key, required this.taskSlug, this.step}) : super(key: key);
 
   @override
   _StepFormState createState() => _StepFormState();
@@ -79,11 +83,20 @@ class _StepFormState extends State<StepForm> {
                   primary: Colors.teal,
                   side: BorderSide(color: Colors.black, width: 1)
                 ),
-                onPressed: () {
+                onPressed: () async{
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     var step = StepData.Step(title, priority);
-                    print(step.toJson());
+                    var token = await getToken();
+                    var hasCreated = false;
+                    if(widget.step == null) {
+                      // Create a new step
+                      hasCreated = await StepService(token).createStep(widget.taskSlug, step);
+                    }
+                    else {
+                      // Update the step
+                      hasCreated = await StepService(token).updateStep(widget.step!.id, step);
+                    }
                     // TODO : handle data
                   }
                 },
