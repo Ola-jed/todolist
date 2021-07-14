@@ -161,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
             context: context,
             builder: (context) {
               return Scaffold(
-                // TODO : handle this task form
                 body: TaskForm()
               );
             }

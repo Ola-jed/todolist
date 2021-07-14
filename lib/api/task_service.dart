@@ -145,7 +145,7 @@ class TaskService extends ApiBase {
     try {
       var data = <String, int>{'status': (finishOrNot ? 1 : 0)};
       var resultOfMarkingFinished =
-          await putUrl(Uri.parse(tasksUrl + slug), jsonEncode(data), token);
+          await putUrl(Uri.parse(tasksUrl + slug + "/finish"), jsonEncode(data), token);
       return jsonDecode(resultOfMarkingFinished)['message'] ==
           'Task status updated';
     } on Exception {

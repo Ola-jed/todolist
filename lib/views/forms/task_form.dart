@@ -7,7 +7,8 @@ import 'package:todolist/models/task.dart';
 
 /// Our task creation and update form
 class TaskForm extends StatefulWidget {
-  const TaskForm({Key? key}) : super(key: key);
+  final Task? task;
+  const TaskForm({Key? key, this.task}) : super(key: key);
 
   @override
   _TaskFormState createState() => _TaskFormState();
@@ -22,6 +23,7 @@ class _TaskFormState extends State<TaskForm> {
 
   @override
   Widget build(BuildContext context) {
+    var hasTask = widget.task != null;
     return Form(
       key: _formKey,
       child: Container(
@@ -42,6 +44,7 @@ class _TaskFormState extends State<TaskForm> {
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: TextFormField(
+                initialValue: hasTask ? widget.task!.title : null,
                 onSaved: (value) => data['title'] = value,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -60,6 +63,7 @@ class _TaskFormState extends State<TaskForm> {
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: TextFormField(
+                initialValue: hasTask ? widget.task!.description : null,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -115,7 +119,7 @@ class _TaskFormState extends State<TaskForm> {
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
               child: SpinBox(
-                value: 1,
+                value: hasTask ? widget.task!.priority.toDouble() : 1,
                 validator: (value) {
                   if(value == null || value.trim().isEmpty){
                     return 'The priority field is required';
@@ -168,24 +172,31 @@ class _TaskFormState extends State<TaskForm> {
                     data['is_finished'] = false;
                     var task = Task.fromJson(data);
                     var token = await getToken();
-                    var hasCreated = await TaskService(token).createTask(task);
+                    var taskService = TaskService(token);
+                    var hasCreated = false;
+                    // Two cases
+                    // The task cannot exist : We create it
+                    // Otherwise we update it
+                    hasCreated = (widget.task == null)
+                      ? await taskService.createTask(task)
+                      : await taskService.updateTask(widget.task!.slug,task);
                     if(hasCreated) {
                       Navigator.pushNamed(context, '/');
                     }
                     else {
                       showDialog(
                         context: context,
-                        builder:(context) {
+                        builder: (context) {
                           return const AlertDialog(
                             title: Text('Task creation'),
-                            content: Text('Could not create the  task')
+                            content: Text('Could not create the task')
                           );
                         }
                       );
                     }
                   }
                 },
-                child: const Text('Create task')
+                child: Text(hasTask ? 'Update task' : 'Create task')
               )
             )
           ]

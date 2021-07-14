@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
+import 'package:todolist/views/forms/task_form.dart';
 
 class TaskWidget extends StatefulWidget {
   final Task task;
@@ -49,10 +50,30 @@ class _TaskWidgetState extends State<TaskWidget> {
             children: <Widget>[
               Text(widget.task.dateLimit.toString().substring(0,10)),
               Spacer(),
-              Text(
-                widget.task.isFinished
-                  ? 'Finished'
-                  : 'Not finished'
+              Expanded(
+                child: CheckboxListTile(
+                  contentPadding: EdgeInsets.all(0),
+                  title: const Text('Finished ? '),
+                  value: widget.task.isFinished,
+                  activeColor: Colors.black,
+                  onChanged: (value) async {
+                    /// Mark as (un)finished
+                    var token = await getToken();
+                    var hasMarked = await TaskService(token).finishTask(widget.task.slug, value!);
+                    if(hasMarked) {
+                      setState(() {
+                        widget.task.isFinished = !widget.task.isFinished;
+                      });
+                    }
+                    else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Could not update this task')
+                        )
+                      );
+                    }
+                  }
+                )
               )
             ]
           ),
@@ -60,7 +81,14 @@ class _TaskWidgetState extends State<TaskWidget> {
             children: <Widget>[
               IconButton(
                 onPressed: (){
-                  // TODO : show the form to update the task
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Scaffold(
+                        body: TaskForm(task: widget.task)
+                      );
+                    }
+                  );
                 },
                 icon: const Icon(Icons.update),
                 color: Colors.teal,
