@@ -58,8 +58,9 @@ class TaskService extends ApiBase {
   Future<List<Task>> getFinishedTasks([bool finished = true]) async {
     final uri = Uri.parse(tasksUrl + (finished ? 'finished' : 'unfinished'));
     final results = await getUrl(uri, '', token);
-    final jsonContent = jsonDecode(results);
-    return (jsonContent['data'] as List).map((e) => Task.fromJson(e)).toList();
+    return ((jsonDecode(results))['data'] as List)
+        .map((e) => Task.fromJson(e))
+        .toList();
   }
 
   /// Get all tasks expired (date_limit passed)

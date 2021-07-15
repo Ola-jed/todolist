@@ -16,7 +16,7 @@ class StepService extends ApiBase {
   /// ### Params
   /// - taskSlug : slug of the task
   Future<List> getStepsFromTask(String taskSlug) async {
-    var results = await getUrl(
+    final results = await getUrl(
         Uri.parse(TaskService.tasksUrl + taskSlug + '/steps'), '', token);
     return ((jsonDecode(results))['data'] as List)
         .map((e) => Step.fromJson(e))
@@ -30,11 +30,11 @@ class StepService extends ApiBase {
   /// - stepToCreate : The new task to create
   Future<bool> createStep(String taskSlug, Step stepToCreate) async {
     try {
-      var result = await postUrl(
+      final result = await postUrl(
           Uri.parse(TaskService.tasksUrl + taskSlug + '/steps'),
           jsonEncode(stepToCreate.toJson()),
           token);
-      var resultAsMap = jsonDecode(result);
+      final resultAsMap = jsonDecode(result);
       return resultAsMap['message'] as String == 'Step created';
     } on Exception {
       return false;
@@ -46,10 +46,9 @@ class StepService extends ApiBase {
   /// ### Params
   /// - stepId : The id of the searched step
   Future<Step> getStep(int stepId) async {
-    var taskAsJson =
+    final taskAsJson =
         await getUrl(Uri.parse(stepsUrl + stepId.toString()), '', token);
-    var step = Step.fromJson(jsonDecode(taskAsJson));
-    return step;
+    return Step.fromJson(jsonDecode(taskAsJson));
   }
 
   /// Update a specific step
@@ -59,7 +58,7 @@ class StepService extends ApiBase {
   /// - stepNewValue : The new value of the step
   Future<bool> updateStep(int stepId, Step stepNewValue) async {
     try {
-      var resultOfUpdate = await putUrl(Uri.parse(stepsUrl + stepId.toString()),
+      final resultOfUpdate = await putUrl(Uri.parse(stepsUrl + stepId.toString()),
           jsonEncode(stepNewValue.toJson()), token);
       return jsonDecode(resultOfUpdate)['message'] as String == 'Step updated';
     } on Exception {
@@ -74,8 +73,8 @@ class StepService extends ApiBase {
   /// - finishOrNot : The status to set
   Future<bool> finishStep(int stepId, bool finishOrNot) async {
     try {
-      var data = <String, int>{'status': (finishOrNot ? 1 : 0)};
-      var resultOfMarkingFinished = await putUrl(
+      final data = <String, int>{'status': (finishOrNot ? 1 : 0)};
+      final resultOfMarkingFinished = await putUrl(
           Uri.parse(stepsUrl + stepId.toString() + '/finish'),
           jsonEncode(data),
           token);
@@ -92,9 +91,8 @@ class StepService extends ApiBase {
   /// - stepId : The id of the step to delete
   Future<bool> deleteStep(int stepId) async {
     try {
-      var resultOfDelete = await deleteUrl(
+      final resultOfDelete = await deleteUrl(
           (Uri.parse(stepsUrl + stepId.toString())), ' ', token);
-      print(resultOfDelete);
       return jsonDecode(resultOfDelete)['message'] as String == 'Step deleted';
     } on Exception {
       return false;
