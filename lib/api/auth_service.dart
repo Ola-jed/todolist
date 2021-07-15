@@ -18,8 +18,9 @@ class AuthService extends ApiBase {
   Future<String> makeSignup(Map signupData) async {
     try {
       signupData['device_name'] = await _getDeviceIdentity();
-      var result = await postUrl(Uri.parse(signupUrl), json.encode(signupData));
-      var jsonResult = json.decode(result) as Map<String, String>;
+      final result =
+          await postUrl(Uri.parse(signupUrl), json.encode(signupData));
+      final jsonResult = json.decode(result) as Map<String, String>;
       if (jsonResult['token'] == null) throw Exception('Signup failed');
       return jsonResult['token']!;
     } on Exception catch (e) {
@@ -35,8 +36,9 @@ class AuthService extends ApiBase {
   Future<String> makeSignin(Map signinData) async {
     try {
       signinData['device_name'] = await _getDeviceIdentity();
-      var result = await postUrl(Uri.parse(signinUrl), json.encode(signinData));
-      var jsonResult = json.decode(result) as Map<String, dynamic>;
+      final result =
+          await postUrl(Uri.parse(signinUrl), json.encode(signinData));
+      final jsonResult = json.decode(result) as Map<String, dynamic>;
       if (jsonResult['token'] == null) throw Exception('Signin failed');
       return jsonResult['token']!;
     } on Exception catch (e) {
@@ -51,8 +53,8 @@ class AuthService extends ApiBase {
   /// - token : The token granted to the user who wants to logout himself
   Future<bool> makeLogout(String token) async {
     try {
-      var result = await postUrl(Uri.parse(logoutUrl), '', token);
-      var preferences = await SharedPreferences.getInstance();
+      final result = await postUrl(Uri.parse(logoutUrl), '', token);
+      final preferences = await SharedPreferences.getInstance();
       await preferences.remove('token');
       return (jsonDecode(result)['message'] as String) == 'Logout successful';
     } on Exception {
@@ -62,9 +64,7 @@ class AuthService extends ApiBase {
 
   /// Get the device identity for auth requests
   Future<String> _getDeviceIdentity() async {
-    var deviceIdentity = '';
     AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
-    deviceIdentity = "${info.device}-${info.id}";
-    return deviceIdentity;
+    return '${info.device}-${info.id}';
   }
 }

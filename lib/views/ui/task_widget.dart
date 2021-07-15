@@ -26,7 +26,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           color: Colors.white,
           width: 3
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10)
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,12 +134,12 @@ class _TaskWidgetState extends State<TaskWidget> {
                   }
                 },
                 icon: const Icon(Icons.delete),
-                color: Colors.red,
+                color: Colors.red
               )
             ]
           )
-        ],
-      ),
+        ]
+      )
     );
   }
 }

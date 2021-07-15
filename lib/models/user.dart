@@ -2,8 +2,8 @@ import 'package:todolist/models/serializable.dart';
 
 /// Users of todolist
 class User extends Serializable {
-  String name;
-  String email;
+  final String name;
+  final String email;
 
   User(this.name, this.email);
 

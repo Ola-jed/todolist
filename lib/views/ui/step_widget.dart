@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:todolist/api/step_service.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/models/step.dart' as StepData;
-import 'package:flutter/material.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/views/forms/step_form.dart';
 import 'package:todolist/views/screens/task_screen.dart';
@@ -27,8 +27,8 @@ class _StepWidgetState extends State<StepWidget> {
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border.all(
-            color: Colors.white,
-            width: 3
+          color: Colors.white,
+          width: 3
         ),
         borderRadius: BorderRadius.circular(10),
       ),
@@ -122,7 +122,7 @@ class _StepWidgetState extends State<StepWidget> {
                   }
                 },
                 icon: const Icon(Icons.delete),
-                color: Colors.red,
+                color: Colors.red
               )
             ]
           )

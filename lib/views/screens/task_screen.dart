@@ -35,7 +35,7 @@ class _TaskScreenState extends State<TaskScreen> {
             Navigator.pushNamed(context, '/');
           }
         ),
-        title: Text(widget.task.title),
+        title: Text(widget.task.title)
       ),
       body: ListView(
         scrollDirection: Axis.vertical,
@@ -103,7 +103,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     contentPadding: EdgeInsets.all(0),
                     title: const Text('Finished ? '),
                     value: widget.task.isFinished,
-                    activeColor: Colors.black,
+                    activeColor: Colors.black
                   )
                 )
               ]

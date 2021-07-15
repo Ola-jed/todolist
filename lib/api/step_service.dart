@@ -1,7 +1,7 @@
 import 'dart:convert' show jsonEncode, jsonDecode;
 import 'package:todolist/api/api_base.dart';
-import 'package:todolist/api/task_service.dart';
 import 'package:todolist/models/step.dart';
+import 'package:todolist/api/task_service.dart';
 
 /// Service that calls backend for steps management
 class StepService extends ApiBase {
@@ -18,12 +18,9 @@ class StepService extends ApiBase {
   Future<List> getStepsFromTask(String taskSlug) async {
     var results = await getUrl(
         Uri.parse(TaskService.tasksUrl + taskSlug + '/steps'), '', token);
-    var jsonContent = jsonDecode(results);
-    var listSteps = <Step>[];
-    (jsonContent['data'] as List).forEach((element) {
-      listSteps.add(Step.fromJson(element));
-    });
-    return listSteps;
+    return ((jsonDecode(results))['data'] as List)
+        .map((e) => Step.fromJson(e))
+        .toList();
   }
 
   /// Creating a new step for a task
