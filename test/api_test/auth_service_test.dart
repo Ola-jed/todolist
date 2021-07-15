@@ -2,11 +2,12 @@ import 'package:test/test.dart';
 import 'package:todolist/api/auth_service.dart';
 
 // Don't forget to flush the database to avoid insert errors
+// Or to change the default values
 void main() {
   var authService = AuthService();
   final testEmail = 'ola@yahoo.bj';
-  group('Auth test', () {
-    test('Signup', () {
+  group('Auth test', () async{
+    test('Signup', () async{
       var signupData = <String, String>{
         'name': 'Test user',
         'email': testEmail,
@@ -14,27 +15,20 @@ void main() {
         'password2': '0000',
         'device_name': 'Test user'
       };
-      authService.makeSignup(signupData).then((value) {
-        expect(value, () {
-          allOf([isNotEmpty]);
-        });
-        print(value);
-      }).onError((error, stackTrace) {
-        fail(error.toString());
+      final value = await authService.makeSignup(signupData);
+      expect(value, () {
+        allOf([isNotEmpty]);
       });
     });
-    test('Signin ', () {
+    test('Signin ', () async{
       var signinData = <String, String>{
         'email': testEmail,
         'password': '0000',
         'device_name': testEmail
       };
-      authService.makeSignin(signinData).then((value) {
-        expect(value, () {
-          allOf([isNotEmpty]);
-        });
-      }).onError((error, stackTrace) {
-        fail(error.toString());
+      final value = await authService.makeSignin(signinData);
+      expect(value, () {
+        allOf([isNotEmpty]);
       });
     });
   });
