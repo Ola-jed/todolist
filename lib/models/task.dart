@@ -24,7 +24,7 @@ class Task extends Serializable {
         priority = json['priority'] as int,
         isFinished = json['is_finished'] as bool;
 
-  /// Custom formatting because i want to limit dependencies
+  /// Custom formatting because I want to limit dependencies
   @override
   Map<String, dynamic> toJson() => {
     'title': title,

@@ -17,13 +17,9 @@ class TaskService extends ApiBase {
   /// - limit : limit for query
   Future<List<Task>> getTasks([int offset = 0, int limit = 0]) async {
     final data = '{"offset":$offset,"limit":$limit}';
-    var results = await getUrl(Uri.parse(tasksUrl), data, token);
-    var jsonContent = jsonDecode(results);
-    var listTasks = <Task>[];
-    (jsonContent['data'] as List).forEach((element) {
-      listTasks.add(Task.fromJson(element));
-    });
-    return listTasks;
+    final results = await getUrl(Uri.parse(tasksUrl), data, token);
+    final jsonContent = jsonDecode(results);
+    return (jsonContent['data'] as List).map((e) => Task.fromJson(e)).toList();
   }
 
   /// Creating a new task
@@ -33,7 +29,7 @@ class TaskService extends ApiBase {
   /// - taskToCreate : The new task to create
   Future<bool> createTask(Task taskToCreate) async {
     try {
-      var taskAsJson = taskToCreate.toJson();
+      final taskAsJson = taskToCreate.toJson();
       var newDate = '';
       int i = 0;
       (taskAsJson['date_limit'] as String)
@@ -45,9 +41,9 @@ class TaskService extends ApiBase {
       });
       taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
-      var result =
+      final result =
           await postUrl(Uri.parse(tasksUrl), jsonEncode(taskAsJson), token);
-      var resultAsMap = jsonDecode(result);
+      final resultAsMap = jsonDecode(result);
       return resultAsMap['message'] as String == 'Task created';
     } on Exception {
       return false;
@@ -60,27 +56,18 @@ class TaskService extends ApiBase {
   /// ### Params (optional)
   /// - finished : bool to know if we should retrieve finished tasks or not
   Future<List<Task>> getFinishedTasks([bool finished = true]) async {
-    var uri = Uri.parse(tasksUrl + (finished ? 'finished' : 'unfinished'));
-    var results = await getUrl(uri, '', token);
-    var jsonContent = jsonDecode(results);
-    var listTasks = <Task>[];
-    (jsonContent['data'] as List).forEach((element) {
-      listTasks.add(Task.fromJson(element));
-    });
-    return listTasks;
+    final uri = Uri.parse(tasksUrl + (finished ? 'finished' : 'unfinished'));
+    final results = await getUrl(uri, '', token);
+    final jsonContent = jsonDecode(results);
+    return (jsonContent['data'] as List).map((e) => Task.fromJson(e)).toList();
   }
 
   /// Get all tasks expired (date_limit passed)
   /// Iterate on the json result to build a list of tasks
   Future<List<Task>> getExpiredTasks() async {
-    var uri = Uri.parse(tasksUrl + 'expired');
-    var results = await getUrl(uri, '', token);
-    var jsonContent = jsonDecode(results);
-    var listTasks = <Task>[];
-    (jsonContent['data'] as List).forEach((element) {
-      listTasks.add(Task.fromJson(element));
-    });
-    return listTasks;
+    final uri = Uri.parse(tasksUrl + 'expired');
+    final results = await getUrl(uri, '', token);
+    return ((jsonDecode(results))['data'] as List).map((e) => Task.fromJson(e)).toList();
   }
 
   /// Search tasks by title
@@ -89,14 +76,9 @@ class TaskService extends ApiBase {
   /// ### Params
   /// - title : The title to use for the search
   Future<List<Task>> searchTasks(String title) async {
-    var uri = Uri.parse(tasksUrl + 'search/$title');
-    var results = await getUrl(uri, '', token);
-    var jsonContent = jsonDecode(results);
-    var listTasks = <Task>[];
-    (jsonContent['data'] as List).forEach((element) {
-      listTasks.add(Task.fromJson(element));
-    });
-    return listTasks;
+    final uri = Uri.parse(tasksUrl + 'search/$title');
+    final results = await getUrl(uri, '', token);
+    return ((jsonDecode(results))['data'] as List).map((e) => Task.fromJson(e)).toList();
   }
 
   /// Get a specific task with its slug
@@ -104,9 +86,8 @@ class TaskService extends ApiBase {
   /// ### Params
   /// - slug : The slug for the research
   Future<Task> getTask(String slug) async {
-    var taskAsJson = await getUrl(Uri.parse(tasksUrl + slug), '', token);
-    var task = Task.fromJson((jsonDecode(taskAsJson))['task']);
-    return task;
+    final taskAsJson = await getUrl(Uri.parse(tasksUrl + slug), '', token);
+    return Task.fromJson((jsonDecode(taskAsJson))['task']);
   }
 
   /// Update a specific task
@@ -116,9 +97,9 @@ class TaskService extends ApiBase {
   /// - taskNewValue : The new task value
   Future<bool> updateTask(String slug, Task taskNewValue) async {
     try {
-      var taskAsJson = taskNewValue.toJson();
+      final taskAsJson = taskNewValue.toJson();
       var newDate = '';
-      int i = 0;
+      var i = 0;
       (taskAsJson['date_limit'] as String)
           .split('-')
           .reversed
@@ -128,7 +109,7 @@ class TaskService extends ApiBase {
       });
       taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
-      var resultOfUpdate = await putUrl(
+      final resultOfUpdate = await putUrl(
           Uri.parse(tasksUrl + slug), jsonEncode(taskAsJson), token);
       return jsonDecode(resultOfUpdate)['message'] as String == 'Task updated';
     } on Exception {
