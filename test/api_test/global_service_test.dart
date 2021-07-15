@@ -8,25 +8,21 @@ void main() {
   var authService = AuthService();
   final testEmail = 'johndoe@outlook.com';
   group('Services test', () {
-    test('Signup', () {
-      var signupData = <String, String>{
+    test('Signup', () async {
+      final signupData = <String, String>{
         'name': 'Test user',
         'email': testEmail,
         'password1': '0000',
         'password2': '0000',
         'device_name': 'Test user'
       };
-      authService.makeSignup(signupData).then((value) {
+      final value = await authService.makeSignup(signupData);
         expect(value, () {
           allOf([isNotEmpty]);
         });
-        print(value);
-      }).onError((error, stackTrace) {
-        fail(error.toString());
-      });
     });
     test('Signin and tasks testing', () {
-      var signinData = <String, String>{
+      final signinData = <String, String>{
         'email': testEmail,
         'password': '0000',
         'device_name': testEmail
