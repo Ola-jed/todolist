@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:todolist/api/step_service.dart';
+import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/step.dart' as StepData;
+import 'package:todolist/views/screens/task_screen.dart';
 
 /// Our step creation and update form
-/// TODO : handle update case
 class StepForm extends StatefulWidget {
   final StepData.Step? step;
   final String taskSlug;
@@ -83,7 +84,7 @@ class _StepFormState extends State<StepForm> {
                 style: ElevatedButton.styleFrom(
                   onPrimary: Colors.white,
                   primary: Colors.teal,
-                  side: BorderSide(color: Colors.black, width: 1)
+                  side: const BorderSide(color: Colors.black, width: 1)
                 ),
                 onPressed: () async{
                   if (_formKey.currentState!.validate()) {
@@ -100,7 +101,16 @@ class _StepFormState extends State<StepForm> {
                       hasCreated = await StepService(token).updateStep(widget.step!.id, step);
                     }
                     if(hasCreated) {
-                      Navigator.pop(context);
+                      // We redirect to the task screen but we get the task before
+                      var token = await getToken();
+                      var task = await TaskService(token).getTask(widget.taskSlug);
+                      print(task.toJson());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TaskScreen(task: task)
+                        )
+                      );
                     }
                     else {
                       showDialog(
@@ -119,7 +129,7 @@ class _StepFormState extends State<StepForm> {
               )
             )
           ]
-        ),
+        )
       )
     );
   }

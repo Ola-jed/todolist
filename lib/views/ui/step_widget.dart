@@ -1,8 +1,10 @@
 import 'package:todolist/api/step_service.dart';
+import 'package:todolist/api/task_service.dart';
 import 'package:todolist/models/step.dart' as StepData;
 import 'package:flutter/material.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/views/forms/step_form.dart';
+import 'package:todolist/views/screens/task_screen.dart';
 
 
 /// A widget to show a step
@@ -97,8 +99,15 @@ class _StepWidgetState extends State<StepWidget> {
                   var token = await getToken();
                   var hasDeleted = await StepService(token).deleteStep(widget.step.id);
                   if(hasDeleted) {
-                    dispose();
-                    Navigator.pop(context,true);
+                    // We redirect to the task screen but we get the task before
+                    var token = await getToken();
+                    var task = await TaskService(token).getTask(widget.taskSlug);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TaskScreen(task: task)
+                      )
+                    );
                   }
                   else{
                     showDialog(

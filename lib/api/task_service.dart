@@ -105,7 +105,7 @@ class TaskService extends ApiBase {
   /// - slug : The slug for the research
   Future<Task> getTask(String slug) async {
     var taskAsJson = await getUrl(Uri.parse(tasksUrl + slug), '', token);
-    var task = Task.fromJson(jsonDecode(taskAsJson));
+    var task = Task.fromJson((jsonDecode(taskAsJson))['task']);
     return task;
   }
 
