@@ -20,7 +20,7 @@ class AuthService extends ApiBase {
       signupData['device_name'] = await _getDeviceIdentity();
       final result =
           await postUrl(Uri.parse(signupUrl), json.encode(signupData));
-      final jsonResult = json.decode(result) as Map<String, String>;
+      final jsonResult = json.decode(result) as Map<String, dynamic>;
       if (jsonResult['token'] == null) throw Exception('Signup failed');
       return jsonResult['token']!;
     } on Exception catch (e) {
@@ -64,7 +64,7 @@ class AuthService extends ApiBase {
 
   /// Get the device identity for auth requests
   Future<String> _getDeviceIdentity() async {
-    AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
+    final info = await DeviceInfoPlugin().androidInfo;
     return '${info.device}-${info.id}';
   }
 }

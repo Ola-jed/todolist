@@ -1,4 +1,3 @@
-/// Here we have the functions to encapsulate token storage
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Function to store the token in local preferences
