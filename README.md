@@ -22,9 +22,9 @@ This mobile app is meant to be used with the api available [here](https://github
   - [x] Signup form
   - [x] Signin form
   - [x] Task form
-  - [ ] Task view
+  - [x] Task view
   - [x] Step form
-  - [ ] Step view
+  - [x] Step view
 
 - Others
   - [x] App icon and launch screen
