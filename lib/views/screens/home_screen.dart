@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/api/auth_service.dart';
+import 'package:todolist/api/task_service.dart';
+import 'package:todolist/api/token_handler.dart';
+import 'package:todolist/utils/tasks_csv_export.dart';
 import 'package:todolist/views/forms/task_form.dart';
 import 'package:todolist/views/ui/tasks_list.dart';
 
@@ -10,6 +13,7 @@ class Actions{
   static const String FinishedTasks = 'Finished tasks';
   static const String UnfinishedTasks = 'Unfinished tasks';
   static const String ExpiredTasks = 'Expired tasks';
+  static const String SaveAll = 'Save all';
   static const String Signin = 'Signin';
   static const String Logout = 'Logout';
   static const String About = 'About';
@@ -18,6 +22,7 @@ class Actions{
     FinishedTasks,
     UnfinishedTasks,
     ExpiredTasks,
+    SaveAll,
     Signin,
     Logout,
     About
@@ -45,35 +50,41 @@ class _HomeScreenState extends State<HomeScreen> {
   /// - context : The handler to locate the widget
   Future<void> choiceAction(String choice,BuildContext context) async {
     switch (choice){
-      case 'All tasks' : {
+      case Actions.AllTasks : {
         setState(() {
           taskFillType = TasksFillType.All;
         });
         break;
       }
-      case 'Finished tasks': {
+      case Actions.FinishedTasks: {
         setState(() {
           taskFillType = TasksFillType.Finished;
         });
         break;
       }
-      case 'Unfinished tasks': {
+      case Actions.UnfinishedTasks: {
         setState(() {
           taskFillType = TasksFillType.Unfinished;
         });
         break;
       }
-      case 'Expired tasks': {
+      case Actions.ExpiredTasks: {
         setState(() {
           taskFillType = TasksFillType.Expired;
         });
         break;
       }
-      case 'Signin': {
+      case Actions.SaveAll : {
+        final token = await getToken();
+        final tasks = await TaskService(token).getTasks();
+        await saveTasksToCsv(tasks);
+        break;
+      }
+      case Actions.Signin: {
         Navigator.pushNamed(context, '/signin');
         break;
       }
-      case 'Logout': {
+      case Actions.Logout: {
         var preferences = await SharedPreferences.getInstance();
         var hasLogout = preferences.containsKey('token')
           ? await AuthService().makeLogout(preferences.getString('token')!)
@@ -94,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         break;
       }
-      case 'About' : {
+      case Actions.About : {
         showAboutDialog(
           context: context,
           applicationName: 'Todolist',
@@ -154,7 +165,10 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ]
       ),
-      body: TasksList(tasksFillType: taskFillType,searchContent: searchContent),
+      body: TasksList(
+        tasksFillType: taskFillType,
+        searchContent: searchContent
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
