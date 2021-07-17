@@ -107,7 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
         else{
-          Navigator.pushNamed(context, '/signin');
+          Navigator.of(context)
+            .pushNamedAndRemoveUntil('/signin', (Route<dynamic> route) => false);
         }
         break;
       }

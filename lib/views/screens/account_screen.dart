@@ -254,7 +254,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                             var hasDeleted = await AccountService(token).deleteAccount(data['password']);
                                             if(hasDeleted) {
                                               await removeToken();
-                                              Navigator.pushNamed(context, '/signup');
+                                              Navigator.of(context)
+                                                .pushNamedAndRemoveUntil('/signup', (Route<dynamic> route) => false);
                                             }
                                             else {
                                               ScaffoldMessenger.of(context)
