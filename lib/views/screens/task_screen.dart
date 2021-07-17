@@ -9,20 +9,14 @@ import 'package:todolist/views/ui/step_widget.dart';
 /// Our task screen <br>
 /// We display a task and all of its steps <br>
 /// The task is read-only meanwhile the steps are modifiable/deletable
-class TaskScreen extends StatefulWidget {
+class TaskScreen extends StatelessWidget {
   final Task task;
   const TaskScreen({Key? key, required this.task}) : super(key: key);
-
-  @override
-  _TaskScreenState createState() => _TaskScreenState();
-}
-
-class _TaskScreenState extends State<TaskScreen> {
 
   /// We retrieve all the steps of a task
   Future<List> _getSteps() async {
     var token = await getToken();
-    return await StepService(token).getStepsFromTask(widget.task.slug);
+    return await StepService(token).getStepsFromTask(task.slug);
   }
 
   @override
@@ -35,7 +29,7 @@ class _TaskScreenState extends State<TaskScreen> {
             Navigator.pushNamed(context, '/');
           }
         ),
-        title: Text(widget.task.title)
+        title: Text(task.title)
       ),
       body: ListView(
         scrollDirection: Axis.vertical,
@@ -59,7 +53,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 Container(
                   padding: EdgeInsets.only(top: 5,bottom: 5),
                   child: Text(
-                    widget.task.title,
+                    task.title,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 18,
@@ -70,7 +64,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 Container(
                   padding: EdgeInsets.only(top: 5,bottom: 5),
                   child: Text(
-                    widget.task.description,
+                    task.description,
                     style: const TextStyle(
                       fontSize: 17
                     )
@@ -81,14 +75,14 @@ class _TaskScreenState extends State<TaskScreen> {
                   child: Row(
                     children: <Widget>[
                       Text(
-                        'Priority : ${widget.task.priority}',
+                        'Priority : ${task.priority}',
                         style: const TextStyle(
                           fontSize: 17
                         )
                       ),
                       Spacer(),
                       Text(
-                        'Date limit : ${widget.task.dateLimit.toString().substring(0,10)}',
+                        'Date limit : ${task.dateLimit.toString().substring(0,10)}',
                         style: const TextStyle(
                           fontSize: 17
                         )
@@ -102,7 +96,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     onChanged: (value){},
                     contentPadding: EdgeInsets.all(0),
                     title: const Text('Finished ? '),
-                    value: widget.task.isFinished,
+                    value: task.isFinished,
                     activeColor: Colors.black
                   )
                 )
@@ -130,7 +124,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   itemBuilder: (context,index) {
                     return StepWidget(
                       step: (snapshot.data as List<StepData.Step>)[index],
-                      taskSlug: widget.task.slug
+                      taskSlug: task.slug
                     );
                   }
                 );
@@ -164,7 +158,7 @@ class _TaskScreenState extends State<TaskScreen> {
             context: context,
             builder: (context) {
               return Scaffold(
-                body: StepForm(taskSlug: widget.task.slug)
+                body: StepForm(taskSlug: task.slug)
               );
             }
           );

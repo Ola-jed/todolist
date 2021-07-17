@@ -14,6 +14,7 @@ class Actions{
   static const String UnfinishedTasks = 'Unfinished tasks';
   static const String ExpiredTasks = 'Expired tasks';
   static const String SaveAll = 'Save all';
+  static const String Account = 'Account';
   static const String Signin = 'Signin';
   static const String Logout = 'Logout';
   static const String About = 'About';
@@ -23,6 +24,7 @@ class Actions{
     UnfinishedTasks,
     ExpiredTasks,
     SaveAll,
+    Account,
     Signin,
     Logout,
     About
@@ -80,6 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
         await saveTasksToCsv(tasks);
         break;
       }
+      case Actions.Account: {
+        Navigator.pushNamed(context, '/account');
+        break;
+      }
       case Actions.Signin: {
         Navigator.pushNamed(context, '/signin');
         break;
@@ -132,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: TextField(
                   autofocus: false,
                   decoration: const InputDecoration(
-                    hintText: 'Your search',
+                    hintText: 'Your search'
                   ),
                   onChanged: (value) {
                     setState(() {

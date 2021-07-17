@@ -15,3 +15,9 @@ Future<String> getToken() async {
   final preferences = await SharedPreferences.getInstance();
   return preferences.getString('token') ?? ' ';
 }
+
+/// Delete the stored token
+Future<void> removeToken() async {
+  final preferences = await SharedPreferences.getInstance();
+  await preferences.remove('token');
+}

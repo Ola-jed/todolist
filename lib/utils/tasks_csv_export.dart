@@ -5,8 +5,8 @@ import 'package:todolist/models/task.dart';
 
 /// Get the local path of the application
 Future<String> get _localPath async {
-  final directory = await getApplicationDocumentsDirectory();
-  return directory.path;
+  final directory = await getExternalStorageDirectory();
+  return directory!.path;
 }
 
 /// Get the todolist.csv file
@@ -27,5 +27,6 @@ Future<File> saveTasksToCsv(List<Task> tasksList) async {
       .forEach((element) {
     data += element + '\n';
   });
+  print(file.path);
   return file.writeAsString(data);
 }

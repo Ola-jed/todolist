@@ -137,7 +137,7 @@ class _SignupFormState extends State<SignupForm> {
               )
             )
           ]
-        ),
+        )
       )
     );
   }
