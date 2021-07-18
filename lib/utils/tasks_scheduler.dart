@@ -19,7 +19,7 @@ Future<void> scheduleTask(Task taskToSchedule) async {
       taskToSchedule.description,
       tz.TZDateTime.from(
               taskToSchedule.dateLimit, tz.getLocation('Africa/Porto-Novo'))
-          .add(Duration(hours: 21, minutes: 33)),
+          .add(Duration(hours: 10)),
       NotificationDetails(android: androidNotificationDetails),
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
