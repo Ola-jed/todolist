@@ -275,7 +275,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       ]
                                     );
                                   }
-                              );
+                                );
                               },
                               icon: const Icon(Icons.delete_forever),
                               label: const Text('Delete account'),

@@ -3,6 +3,7 @@ import 'package:todolist/api/step_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 import 'package:todolist/models/step.dart' as StepData;
+import 'package:todolist/utils/tasks_scheduler.dart';
 import 'package:todolist/views/forms/step_form.dart';
 import 'package:todolist/views/ui/step_widget.dart';
 
@@ -36,8 +37,8 @@ class TaskScreen extends StatelessWidget {
         shrinkWrap: false,
         children:<Widget> [
           Container(
-            padding: EdgeInsets.all(5),
-            margin: EdgeInsets.only(top: 5,bottom: 5),
+            padding: EdgeInsets.only(left: 5,right: 5),
+            margin: EdgeInsets.only(left: 5,right: 5,bottom: 5),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -51,18 +52,21 @@ class TaskScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(top: 5,bottom: 5),
+                  padding: EdgeInsets.only(top: 10,bottom: 10),
+                  margin: EdgeInsets.only(bottom: 10),
+                  decoration: const BoxDecoration(
+                    color: Colors.black38
+                  ),
                   child: Text(
                     task.title,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 18,
-                      decoration: TextDecoration.underline
+                      fontSize: 18
                     )
                   )
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 5,bottom: 5),
+                  padding: EdgeInsets.only(top: 5,bottom: 15),
                   child: Text(
                     task.description,
                     style: const TextStyle(
@@ -98,6 +102,24 @@ class TaskScreen extends StatelessWidget {
                     title: const Text('Finished ? '),
                     value: task.isFinished,
                     activeColor: Colors.black
+                  )
+                ),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    try{
+                      await scheduleTask(task);
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text('Reminder defined')));
+                    }
+                    on Exception catch (e,stack) {
+                      ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('Could not define reminder')));
+                    }
+                  },
+                  icon: Icon(Icons.add_alarm),
+                  label: const Text('Define reminder'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.teal
                   )
                 )
               ]
