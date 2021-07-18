@@ -25,6 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_local_notifications: ^6.0.0
   flutter_spinbox: ^0.5.2
   path_provider: ^2.0.2
   shared_preferences: ^2.0.6

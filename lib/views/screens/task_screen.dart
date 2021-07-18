@@ -154,20 +154,20 @@ class TaskScreen extends StatelessWidget {
       ),
       floatingActionButton: task.hasSteps
         ? FloatingActionButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return Scaffold(
-                  body: StepForm(taskSlug: task.slug)
-                );
-              }
-            );
-          },
-          backgroundColor: Colors.teal,
-          child: const Icon(Icons.add)
-      )
-      : null
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return Scaffold(
+                    body: StepForm(taskSlug: task.slug)
+                  );
+                }
+              );
+            },
+            backgroundColor: Colors.teal,
+            child: const Icon(Icons.add)
+        )
+        : null
     );
   }
 }
