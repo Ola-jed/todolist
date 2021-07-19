@@ -109,9 +109,9 @@ class TaskScreen extends StatelessWidget {
                     try{
                       await scheduleTask(task);
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('Reminder defined')));
+                        .showSnackBar(SnackBar(content: Text('Reminder defined')));
                     }
-                    on Exception catch (e,stack) {
+                    on Exception {
                       ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text('Could not define reminder')));
                     }

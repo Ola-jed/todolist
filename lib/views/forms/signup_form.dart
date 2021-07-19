@@ -92,7 +92,7 @@ class _SignupFormState extends State<SignupForm> {
                   )
                 ),
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty){
+                  if(value == null || value.trim().isEmpty) {
                     return 'The password field is required';
                   }
                   return null;

@@ -30,7 +30,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushNamed(context, '/');
           }
@@ -64,7 +64,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               filled: true,
-                              prefixIcon: Icon(Icons.account_circle_outlined)
+                              prefixIcon: const Icon(Icons.account_circle_outlined)
                             ),
                             validator: (value) {
                               if(value == null || value.trim().isEmpty){
@@ -82,7 +82,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               filled: true,
-                              prefixIcon: Icon(Icons.email)
+                              prefixIcon: const Icon(Icons.email)
                             ),
                             onSaved: (value) => data['email'] = value,
                             validator: (value) {
@@ -108,7 +108,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               border: OutlineInputBorder(),
                               filled: true,
                               hintText: 'Enter your password',
-                              prefixIcon: Icon(Icons.lock),
+                              prefixIcon: const Icon(Icons.lock),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   setState(() => _passwordIsObscure = !_passwordIsObscure);
@@ -136,7 +136,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               border: OutlineInputBorder(),
                               filled: true,
                               hintText: 'New password (facultative)',
-                              prefixIcon: Icon(Icons.lock),
+                              prefixIcon: const Icon(Icons.lock),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   setState(() => _newPasswordIsObscure = !_newPasswordIsObscure);
@@ -175,7 +175,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             height: 60,
                             width: double.infinity,
                             child: ElevatedButton.icon(
-                              icon: Icon(Icons.update),
+                              icon: const Icon(Icons.update),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.teal
                               ),
@@ -201,24 +201,24 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 else{
                                                   ScaffoldMessenger.of(context)
                                                     .showSnackBar(SnackBar(
-                                                      content: Text('Account update failed'))
+                                                      content: const Text('Account update failed'))
                                                   );
                                                 }
                                               }
                                               on Exception{
                                                 ScaffoldMessenger.of(context)
                                                   .showSnackBar(SnackBar(
-                                                    content: Text('Account update failed'))
+                                                    content: const Text('Account update failed'))
                                                 );
                                               }
                                             },
-                                            child: Text('Yes')
+                                            child: const Text('Yes')
                                           ),
                                           TextButton(
                                               onPressed: () {
                                                 Navigator.pop(context,true);
                                               },
-                                              child: Text('No')
+                                              child: const Text('No')
                                           )
                                         ]
                                       );
@@ -244,8 +244,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text('Delete account ?'),
-                                      content: Text('Do you really want to delete your account ?'),
+                                      title: const Text('Delete account ?'),
+                                      content: const Text('Do you really want to delete your account ?'),
                                       actions: [
                                         TextButton(
                                           onPressed: () async {
@@ -264,13 +264,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                               );
                                             }
                                           },
-                                          child: Text('Yes')
+                                          child: const Text('Yes')
                                         ),
                                         TextButton(
                                           onPressed: () {
                                             Navigator.pop(context,true);
                                           },
-                                          child: Text('No')
+                                          child: const Text('No')
                                         )
                                       ]
                                     );
@@ -286,7 +286,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           )
                         )
                       ]
-                    ),
+                    )
                   )
                 );
               }
@@ -295,7 +295,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   child: Text(
                     'Something weird happened ${snapshot.stackTrace.toString()}',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white,fontSize: 16)
+                    style: const TextStyle(color: Colors.white,fontSize: 16)
                   )
                 );
               }

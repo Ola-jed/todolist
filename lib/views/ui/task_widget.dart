@@ -36,7 +36,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               Expanded(
                 child : Text(
                   widget.task.title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     decoration: TextDecoration.underline,
                     fontSize: 15
                   )
@@ -51,7 +51,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     )
                   );
                 },
-                icon: Icon(Icons.visibility)
+                icon: Icon(Icons.read_more)
               )
             ]
           ),
@@ -86,7 +86,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Could not update this task')
+                          content: const Text('Could not update this task')
                         )
                       );
                     }
@@ -115,23 +115,45 @@ class _TaskWidgetState extends State<TaskWidget> {
               IconButton(
                 /// We delete and remove this task
                 onPressed: () async{
-                  var token = await getToken();
-                  var hasDeleted = await TaskService(token).deleteTask(widget.task.slug);
-                  if(hasDeleted) {
-                    dispose();
-                    Navigator.pushNamed(context, '/');
-                  }
-                  else{
-                    showDialog(
-                      context: context,
-                      builder:(context) {
-                        return AlertDialog(
-                          title: Text('Task deletion'),
-                          content: Text('Could not delete task')
-                        );
-                      }
-                    );
-                  }
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Delete task ?'),
+                        content: const Text('Do you want to delete this task ?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () async {
+                              var token = await getToken();
+                              var hasDeleted = await TaskService(token).deleteTask(widget.task.slug);
+                              if(hasDeleted) {
+                                dispose();
+                                Navigator.pushNamed(context, '/');
+                              }
+                              else{
+                                showDialog(
+                                  context: context,
+                                  builder:(context) {
+                                    return const AlertDialog(
+                                      title: const Text('Task deletion'),
+                                      content: const Text('Could not delete task')
+                                    );
+                                  }
+                                );
+                              }
+                            },
+                            child: const Text('Yes')
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context,true);
+                            },
+                            child: const Text('No')
+                          )
+                        ]
+                      );
+                    }
+                  );
                 },
                 icon: const Icon(Icons.delete),
                 color: Colors.red
