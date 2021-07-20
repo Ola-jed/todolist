@@ -21,12 +21,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       margin: EdgeInsets.all(5),
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border.all(
-          color: Colors.white,
-          width: 3
-        ),
-        borderRadius: BorderRadius.circular(10)
+        color: const Color(0xFF1C1C1C).withOpacity(1)
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

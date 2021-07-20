@@ -31,13 +31,11 @@ class TaskService extends ApiBase {
     try {
       final taskAsJson = taskToCreate.toJson();
       var newDate = '';
-      int i = 0;
       (taskAsJson['date_limit'] as String)
           .split('-')
           .reversed
           .forEach((element) {
-        ++i;
-        newDate += ((i == 2) ? '0' : '') + element + '/';
+        newDate += ((element.length >= 2) ? '' : '0') + element + '/';
       });
       taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;

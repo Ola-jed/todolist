@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:todolist/models/task.dart';
 
@@ -17,7 +16,7 @@ Future<File> get _localFile async {
 
 /// Save a task list into a csv file
 ///
-/// ### Params
+/// ### Param
 /// - taskList : The list containing the tasks to save
 Future<File> saveTasksToCsv(List<Task> tasksList) async {
   final file = await _localFile;
@@ -27,6 +26,5 @@ Future<File> saveTasksToCsv(List<Task> tasksList) async {
       .forEach((element) {
     data += element + '\n';
   });
-  print(file.path);
   return file.writeAsString(data);
 }

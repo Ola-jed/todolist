@@ -11,7 +11,7 @@ enum TasksFillType{All,Search,Finished,Unfinished,Expired}
 /// List of tasks
 /// Built depending on the type of filling
 class TasksList extends StatefulWidget {
-  var searchContent = '';
+  final searchContent;
   final TasksFillType tasksFillType;
   TasksList({required this.tasksFillType,this.searchContent = '',Key? key}) : super(key: key);
 
@@ -28,7 +28,7 @@ class _TasksListState extends State<TasksList> {
   /// Expired : Get the expired tasks (limit date passed)
   /// Search : Search the tasks corresponding to searchContent
   Future<List> _getCorrespondingTasks() async {
-    var token = await getToken();
+    final token = await getToken();
     if(token.isEmpty) return [];
     var taskService = TaskService(token);
     switch(widget.tasksFillType){
