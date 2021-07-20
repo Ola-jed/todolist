@@ -6,6 +6,19 @@ A todolist for android
 
 This mobile app is meant to be used with the api available [here](https://github.com/Ola-jed/todo-api)
 
+## Project setup
+
+Make sure [flutter](https://flutter.dev/docs/get-started/install) is installed on your device
+
+Setup the [api](https://github.com/Ola-jed/todo-api)
+
+```bash
+git clone https://github.com/Ola-jed/todolist
+cd todolist
+flutter pub get
+flutter run
+```
+
 ## Screenshots
 
 ![signin](https://user-images.githubusercontent.com/66482155/126379054-004e4510-2b51-493f-ae43-98bbcfa4954a.png)
@@ -15,7 +28,6 @@ This mobile app is meant to be used with the api available [here](https://github
 ![home](https://user-images.githubusercontent.com/66482155/126379156-2d46209f-bec8-40f2-9857-d5d9920d1ac2.png)
 
 ![task](https://user-images.githubusercontent.com/66482155/126379201-10eb1d1f-7c6e-456c-8854-237043ede96e.png)
-
 
 ## Todo
 
