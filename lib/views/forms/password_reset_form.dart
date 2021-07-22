@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
-import 'package:todolist/api/token_handler.dart';
 
 /// Our signin form
-class SigninForm extends StatefulWidget {
-  const SigninForm({Key? key}) : super(key: key);
+class PasswordResetForm extends StatefulWidget {
+  const PasswordResetForm({Key? key}) : super(key: key);
 
   @override
-  _SigninFormState createState() => _SigninFormState();
+  _PasswordResetFormState createState() => _PasswordResetFormState();
 }
 
-class _SigninFormState extends State<SigninForm> {
+class _PasswordResetFormState extends State<PasswordResetForm> {
   var data = Map();
   final _formKey = GlobalKey<FormState>();
-  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +24,10 @@ class _SigninFormState extends State<SigninForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: const Image(
-                image: AssetImage('assets/icon.png')
-              )
+              child: const Text(
+                'Password reset',
+                style: const TextStyle(fontSize: 17,)
+              ),
             ),
             Container(
               padding: EdgeInsets.only(top: 10,bottom: 10),
@@ -52,32 +51,6 @@ class _SigninFormState extends State<SigninForm> {
                 }
               )
             ),
-            Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
-              child: TextFormField(
-                obscureText: _isObscure,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                onSaved: (value) => data['password'] = value,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  hintText: 'Enter your password',
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() => _isObscure = !_isObscure);
-                    },
-                    icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off)
-                  )
-                ),
-                validator: (value) {
-                  if(value == null || value.trim().isEmpty){
-                    return 'The password field is required';
-                  }
-                  return null;
-                }
-              )
-            ),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -89,8 +62,42 @@ class _SigninFormState extends State<SigninForm> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     try{
-                      await storeToken(await AuthService().makeSignin(data));
-                      Navigator.pushNamed(context, '/');
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Reset password'),
+                            content: const Text('Do you want to reset your password ?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  final hasReset = await AuthService().resetPassword(data);
+                                  if(hasReset) {
+                                    ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                        content: Text('An email has been sent to you. Check your emails')
+                                    ));
+                                  }
+                                  else {
+                                    ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                        content: Text('An error occurred during the process')
+                                    ));
+                                  }
+                                  Navigator.pop(context,true);
+                                },
+                                child: const Text('Yes')
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context,true);
+                                },
+                                child: const Text('No')
+                              )
+                            ]
+                          );
+                        }
+                      );
                     }
                     on Exception{
                       ScaffoldMessenger.of(context)
@@ -100,7 +107,7 @@ class _SigninFormState extends State<SigninForm> {
                     }
                   }
                 },
-                child: const Text('Sign in')
+                child: const Text('Reset password')
               )
             ),
             Center(
@@ -113,18 +120,6 @@ class _SigninFormState extends State<SigninForm> {
                   Navigator.pushNamed(context, '/signup');
                 },
                 child: const Text('Not yet registered ? Sign up')
-              )
-            ),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.transparent,
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/forgotten-password');
-                },
-                child: const Text('Forgotten password ?')
               )
             )
           ]

@@ -9,6 +9,7 @@ class AuthService extends ApiBase {
   static final String signupUrl = ApiBase.apiUrl + 'signup';
   static final String signinUrl = ApiBase.apiUrl + 'signin';
   static final String logoutUrl = ApiBase.apiUrl + 'logout';
+  static final String passwordResetUrl = ApiBase.apiUrl + 'password-reset';
 
   /// Handle the signup
   /// Call api with data and return token if the process completed successfully
@@ -57,6 +58,20 @@ class AuthService extends ApiBase {
       final preferences = await SharedPreferences.getInstance();
       await preferences.remove('token');
       return (jsonDecode(result)['message'] as String) == 'Logout successful';
+    } on Exception {
+      return false;
+    }
+  }
+
+  /// Start the password reset process
+  ///
+  /// ### Params
+  /// - email : The email to where we should send the email
+  Future<bool> resetPassword(Map passwordResetData) async {
+    try {
+      final result = await postUrl(
+          Uri.parse(passwordResetUrl), json.encode(passwordResetData));
+      return (jsonDecode(result)['message'] as String) == 'Password reset';
     } on Exception {
       return false;
     }
