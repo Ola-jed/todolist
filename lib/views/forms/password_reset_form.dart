@@ -75,13 +75,13 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                                   if(hasReset) {
                                     ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
-                                        content: Text('An email has been sent to you. Check your emails')
+                                        content: const Text('An email has been sent to you. Check your emails')
                                     ));
                                   }
                                   else {
                                     ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
-                                        content: Text('An error occurred during the process')
+                                        content: const Text('An error occurred during the process')
                                     ));
                                   }
                                   Navigator.pop(context,true);
