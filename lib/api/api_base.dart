@@ -64,7 +64,7 @@ abstract class ApiBase {
     511: 'Network authentication required'
   };
 
-  static final String apiUrl = 'http://10.0.2.2:8000/api/';
+  static final String apiUrl = 'http://192.168.43.193:8000/api/';
   static String token = '';
 
   /// Our base function for api calls

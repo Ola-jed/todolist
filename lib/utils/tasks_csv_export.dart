@@ -20,9 +20,9 @@ Future<File> get _localFile async {
 /// - taskList : The list containing the tasks to save
 Future<File> saveTasksToCsv(List<Task> tasksList) async {
   final file = await _localFile;
-  var data = 'Title;Priority;Date limit;Finished';
+  var data = 'Title,Priority,Date limit,Finished';
   tasksList
-      .map((e) => '${e.title};${e.priority};${e.dateLimit};${e.isFinished}')
+      .map((e) => '${e.title},${e.priority},${e.dateLimit.toString()},${e.isFinished}')
       .forEach((element) {
     data += element + '\n';
   });
