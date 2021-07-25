@@ -9,8 +9,6 @@ class AccountService extends ApiBase {
   final String token;
 
   static final String accountUrl = ApiBase.apiUrl + 'account';
-  static final String accountUpdateUrl = ApiBase.apiUrl + 'account/update';
-  static final String accountDeleteUrl = ApiBase.apiUrl + 'account/delete';
 
   AccountService(this.token);
 
@@ -33,7 +31,7 @@ class AccountService extends ApiBase {
   Future<bool> updateAccount(Map userData) async {
     try {
       final result =
-          await putUrl(Uri.parse(accountUpdateUrl), json.encode(userData),token);
+          await putUrl(Uri.parse(accountUrl), json.encode(userData),token);
       final jsonResult = json.decode(result) as Map<String, dynamic>;
       return jsonResult['message'] == 'Account updated';
     } on Exception catch (e) {
@@ -49,7 +47,7 @@ class AccountService extends ApiBase {
   Future<bool> deleteAccount(String password) async {
     try {
       final data = jsonEncode({'password': password});
-      final result = await deleteUrl(Uri.parse(accountDeleteUrl), data, token);
+      final result = await deleteUrl(Uri.parse(accountUrl), data, token);
       final preferences = await SharedPreferences.getInstance();
       await preferences.remove('token');
       return (jsonDecode(result)['message'] as String) == 'User deleted';
