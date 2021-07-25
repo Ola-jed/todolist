@@ -97,7 +97,7 @@ abstract class ApiBase {
       }
       if (data.trim().isNotEmpty) request.write(data);
       var response = await request.close();
-      var responseContent = await response.transform(utf8.decoder).join("");
+      final responseContent = await response.transform(utf8.decoder).join("");
       if (response.statusCode >= 300) {
         print(responseContent);
         throw Exception(HTTP_CODES[response.statusCode]);

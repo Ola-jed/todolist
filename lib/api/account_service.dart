@@ -31,7 +31,7 @@ class AccountService extends ApiBase {
   Future<bool> updateAccount(Map userData) async {
     try {
       final result =
-          await putUrl(Uri.parse(accountUrl), json.encode(userData),token);
+          await putUrl(Uri.parse(accountUrl), json.encode(userData), token);
       final jsonResult = json.decode(result) as Map<String, dynamic>;
       return jsonResult['message'] == 'Account updated';
     } on Exception catch (e) {

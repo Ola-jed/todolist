@@ -10,11 +10,12 @@ class AuthService extends ApiBase {
   static final String signinUrl = ApiBase.apiUrl + 'signin';
   static final String logoutUrl = ApiBase.apiUrl + 'logout';
   static final String passwordResetUrl = ApiBase.apiUrl + 'password-reset';
+  static final String tokenCheckUrl = ApiBase.apiUrl + 'token-check';
 
   /// Handle the signup
   /// Call api with data and return token if the process completed successfully
   ///
-  /// ### Params
+  /// ### Param
   /// - signupData : The serialized data with email name and password
   Future<String> makeSignup(Map signupData) async {
     try {
@@ -32,7 +33,7 @@ class AuthService extends ApiBase {
   /// Handle the signin for users
   /// Returns the token if available
   ///
-  /// ### Params
+  /// ### Param
   /// - signinData : The serialized data with email and password
   Future<String> makeSignin(Map signinData) async {
     try {
@@ -50,7 +51,7 @@ class AuthService extends ApiBase {
   /// Logout the user
   /// We remove the token from local preferences
   ///
-  /// ### Params
+  /// ### Param
   /// - token : The token granted to the user who wants to logout himself
   Future<bool> makeLogout(String token) async {
     try {
@@ -65,7 +66,7 @@ class AuthService extends ApiBase {
 
   /// Start the password reset process
   ///
-  /// ### Params
+  /// ### Param
   /// - email : The email to where we should send the email
   Future<bool> resetPassword(Map passwordResetData) async {
     try {
@@ -77,9 +78,24 @@ class AuthService extends ApiBase {
     }
   }
 
+  /// Method to check if the given token is correct
+  ///
+  /// ### Param
+  /// - token : The token we want to check
+  Future<bool> checkToken(String token) async {
+    try{
+      final result = await getUrl(Uri.parse(tokenCheckUrl),'',token);
+      return (jsonDecode(result)['authenticated'] as bool);
+    }
+    on Exception {
+      return false;
+    }
+  }
+
   /// Get the device identity for auth requests
   Future<String> _getDeviceIdentity() async {
     final info = await DeviceInfoPlugin().androidInfo;
+    print('${info.device}-${info.id}');
     return '${info.device}-${info.id}';
   }
 }
