@@ -17,7 +17,7 @@ class StepService extends ApiBase {
   /// - taskSlug : slug of the task
   Future<List> getStepsFromTask(String taskSlug) async {
     final results = await getUrl(
-        Uri.parse(TaskService.tasksUrl + taskSlug + '/steps'), '', token);
+        Uri.parse(TaskService.tasksUrl + '/' + taskSlug + '/steps'), '', token);
     return ((jsonDecode(results))['data'] as List)
         .map((e) => Step.fromJson(e))
         .toList();
@@ -31,7 +31,7 @@ class StepService extends ApiBase {
   Future<bool> createStep(String taskSlug, Step stepToCreate) async {
     try {
       final result = await postUrl(
-          Uri.parse(TaskService.tasksUrl + taskSlug + '/steps'),
+          Uri.parse(TaskService.tasksUrl + '/' + taskSlug + '/steps'),
           jsonEncode(stepToCreate.toJson()),
           token);
       final resultAsMap = jsonDecode(result);

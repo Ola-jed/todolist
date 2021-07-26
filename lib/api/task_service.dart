@@ -4,7 +4,7 @@ import 'package:todolist/models/task.dart';
 
 /// Service that calls backend for tasks management
 class TaskService extends ApiBase {
-  static final tasksUrl = ApiBase.apiUrl + 'tasks/';
+  static final tasksUrl = ApiBase.apiUrl + 'tasks';
   String token;
 
   TaskService(this.token);
@@ -54,7 +54,7 @@ class TaskService extends ApiBase {
   /// ### Params (optional)
   /// - finished : bool to know if we should retrieve finished tasks or not
   Future<List<Task>> getFinishedTasks([bool finished = true]) async {
-    final uri = Uri.parse(tasksUrl + (finished ? 'finished' : 'unfinished'));
+    final uri = Uri.parse(tasksUrl + (finished ? '/finished' : '/unfinished'));
     final results = await getUrl(uri, '', token);
     return ((jsonDecode(results))['data'] as List)
         .map((e) => Task.fromJson(e))
@@ -64,7 +64,7 @@ class TaskService extends ApiBase {
   /// Get all tasks expired (date_limit passed)
   /// Iterate on the json result to build a list of tasks
   Future<List<Task>> getExpiredTasks() async {
-    final uri = Uri.parse(tasksUrl + 'expired');
+    final uri = Uri.parse(tasksUrl + '/expired');
     final results = await getUrl(uri, '', token);
     return ((jsonDecode(results))['data'] as List)
         .map((e) => Task.fromJson(e))
@@ -77,7 +77,7 @@ class TaskService extends ApiBase {
   /// ### Params
   /// - title : The title to use for the search
   Future<List<Task>> searchTasks(String title) async {
-    final uri = Uri.parse(tasksUrl + 'search/$title');
+    final uri = Uri.parse(tasksUrl + '/search/$title');
     final results = await getUrl(uri, '', token);
     return ((jsonDecode(results))['data'] as List)
         .map((e) => Task.fromJson(e))
@@ -89,7 +89,7 @@ class TaskService extends ApiBase {
   /// ### Params
   /// - slug : The slug for the research
   Future<Task> getTask(String slug) async {
-    final taskAsJson = await getUrl(Uri.parse(tasksUrl + slug), '', token);
+    final taskAsJson = await getUrl(Uri.parse(tasksUrl + '/' + slug), '', token);
     return Task.fromJson((jsonDecode(taskAsJson))['task']);
   }
 
@@ -113,7 +113,7 @@ class TaskService extends ApiBase {
       taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
       final resultOfUpdate = await putUrl(
-          Uri.parse(tasksUrl + slug), jsonEncode(taskAsJson), token);
+          Uri.parse(tasksUrl + '/' + slug), jsonEncode(taskAsJson), token);
       return jsonDecode(resultOfUpdate)['message'] as String == 'Task updated';
     } on Exception {
       return false;
@@ -129,7 +129,7 @@ class TaskService extends ApiBase {
     try {
       final data = <String, int>{'status': (finishOrNot ? 1 : 0)};
       final resultOfMarkingFinished = await putUrl(
-          Uri.parse(tasksUrl + slug + "/finish"), jsonEncode(data), token);
+          Uri.parse(tasksUrl + '/' + slug + "/finish"), jsonEncode(data), token);
       return jsonDecode(resultOfMarkingFinished)['message'] ==
           'Task status updated';
     } on Exception {
@@ -144,7 +144,7 @@ class TaskService extends ApiBase {
   Future<bool> deleteTask(String slug) async {
     try {
       final resultOfDelete =
-          await deleteUrl((Uri.parse(tasksUrl + slug)), '', token);
+          await deleteUrl((Uri.parse(tasksUrl + '/' + slug)), '', token);
       return jsonDecode(resultOfDelete)['message'] as String == 'Task deleted';
     } on Exception {
       return false;
