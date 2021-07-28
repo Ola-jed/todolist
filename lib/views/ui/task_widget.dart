@@ -21,7 +21,8 @@ class _TaskWidgetState extends State<TaskWidget> {
       margin: EdgeInsets.all(5),
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: const Color(0xFF1C1C1C).withOpacity(1)
+        borderRadius: BorderRadius.circular(10),
+        color: const Color(0xFF1C1C1C)
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +57,8 @@ class _TaskWidgetState extends State<TaskWidget> {
             padding: EdgeInsets.all(5),
             child: Text(
               widget.task.description,
-              textAlign: TextAlign.center
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 15)
             )
           ),
           Row(

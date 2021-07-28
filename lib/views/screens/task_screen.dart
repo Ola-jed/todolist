@@ -66,17 +66,13 @@ class TaskScreen extends StatelessWidget {
                   )
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 5,bottom: 15),
+                  padding: EdgeInsets.all(5),
                   child: Text(
                     task.description,
                     style: const TextStyle(
                       fontSize: 17
                     )
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xffc4c4c4),
-                  ),
+                  )
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 5,bottom: 5),
@@ -168,10 +164,8 @@ class TaskScreen extends StatelessWidget {
                 );
               }
               else {
-                return Center(
-                  child: Container(
-                    child: CircularProgressIndicator()
-                  )
+                return const Center(
+                  child: const CircularProgressIndicator()
                 );
               }
             }

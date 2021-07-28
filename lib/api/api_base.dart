@@ -69,6 +69,9 @@ abstract class ApiBase {
   static final String apiUrl = 'https://todolist-rest-api.herokuapp.com/api/';
   static String token = '';
 
+  /// Our HttpClient
+  final httpClient = HttpClient();
+
   /// Our base function for api calls
   ///
   /// ### Params
@@ -81,7 +84,6 @@ abstract class ApiBase {
   /// - data :  The json data to pass to the api
   Future<String> callUrl(Uri uri, HTTP_METHOD httpMethod,
       [String data = '', String token = '']) async {
-    var httpClient = HttpClient();
     try {
       var request = (httpMethod == HTTP_METHOD.GET)
           ? await httpClient.getUrl(uri)
@@ -94,7 +96,7 @@ abstract class ApiBase {
           new ContentType("application", "json", charset: "utf-8");
       request.headers.add("Accept", "application/json");
       request.headers.add("Authorization", 'Bearer $token');
-      if(data.trim().isNotEmpty) {
+      if (data.trim().isNotEmpty) {
         request.contentLength = data.length;
       }
       if (data.trim().isNotEmpty) request.write(data);
