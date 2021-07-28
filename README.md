@@ -6,6 +6,10 @@ A todolist for android
 
 This mobile app is meant to be used with the api available [here](https://github.com/Ola-jed/todo-api)
 
+## Download
+
+You can download the app [here](https://github.com/Ola-jed/todolist/releases/download/v1.0/app-release.apk)
+
 ## Project setup
 
 Make sure [flutter](https://flutter.dev/docs/get-started/install) is installed on your device
@@ -52,4 +56,4 @@ flutter run
 - Others
   - [x] App icon and launch screen
   - [x] Token storage
-  - [ ] Export all tasks to csv
+  - [x] Export all tasks to csv

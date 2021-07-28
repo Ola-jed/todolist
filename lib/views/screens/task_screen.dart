@@ -72,7 +72,11 @@ class TaskScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 17
                     )
-                  )
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color(0xffc4c4c4),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 5,bottom: 5),
