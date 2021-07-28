@@ -95,7 +95,6 @@ class AuthService extends ApiBase {
   /// Get the device identity for auth requests
   Future<String> _getDeviceIdentity() async {
     final info = await DeviceInfoPlugin().androidInfo;
-    print('${info.device}-${info.id}');
     return '${info.device}-${info.id}';
   }
 }

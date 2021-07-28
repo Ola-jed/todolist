@@ -38,7 +38,7 @@ class _SigninFormState extends State<SigninForm> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Enter your email',
+                  labelText: 'Email',
                   prefixIcon: Icon(Icons.email)
                 ),
                 validator: (value) {
@@ -61,7 +61,7 @@ class _SigninFormState extends State<SigninForm> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Enter your password',
+                  labelText: 'Password',
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -95,7 +95,7 @@ class _SigninFormState extends State<SigninForm> {
                     on Exception{
                       ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(
-                          content: Text('Signin failed')
+                          content: const Text('Signin failed')
                       ));
                     }
                   }

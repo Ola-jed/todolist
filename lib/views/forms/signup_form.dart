@@ -37,7 +37,7 @@ class _SignupFormState extends State<SignupForm> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Enter your name',
+                  labelText: 'Name',
                   prefixIcon: Icon(Icons.account_circle_outlined)
                 ),
                 validator: (value) {
@@ -55,7 +55,7 @@ class _SignupFormState extends State<SignupForm> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Enter your email',
+                  labelText: 'Email',
                   prefixIcon: Icon(Icons.email)
                 ),
                 onSaved: (value) => data['email'] = value,
@@ -82,7 +82,7 @@ class _SignupFormState extends State<SignupForm> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Enter your password',
+                  labelText: 'Password',
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     onPressed: () {

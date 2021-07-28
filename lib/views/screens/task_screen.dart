@@ -16,7 +16,7 @@ class TaskScreen extends StatelessWidget {
 
   /// We retrieve all the steps of a task
   Future<List> _getSteps() async {
-    var token = await getToken();
+    final token = await getToken();
     return await StepService(token).getStepsFromTask(task.slug);
   }
 

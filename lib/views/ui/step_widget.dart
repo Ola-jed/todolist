@@ -25,7 +25,8 @@ class _StepWidgetState extends State<StepWidget> {
       margin: EdgeInsets.all(5),
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: const Color(0xFF1C1C1C).withOpacity(1)
+        borderRadius: BorderRadius.circular(10),
+        color: const Color(0xFF1C1C1C)
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +35,7 @@ class _StepWidgetState extends State<StepWidget> {
             padding: EdgeInsets.all(5),
             child: Text(
               widget.step.title,
-              style: TextStyle(
+              style: const TextStyle(
                 decoration: TextDecoration.underline,
                 fontSize: 15
               )
@@ -42,7 +43,10 @@ class _StepWidgetState extends State<StepWidget> {
           ),
           Row(
             children: <Widget>[
-              Text('Priority : ${widget.step.priority}'),
+              Text(
+                'Priority : ${widget.step.priority}',
+                style: const TextStyle(fontSize: 15)
+              ),
               Spacer(),
               Expanded(
                 child: CheckboxListTile(
@@ -52,8 +56,8 @@ class _StepWidgetState extends State<StepWidget> {
                   activeColor: Colors.black,
                   onChanged: (value) async {
                     /// Mark as (un)finished
-                    var token = await getToken();
-                    var hasMarked = await StepService(token).finishStep(widget.step.id, value!);
+                    final token = await getToken();
+                    final hasMarked = await StepService(token).finishStep(widget.step.id, value!);
                     if(hasMarked) {
                       setState(() {
                         widget.step.isFinished = !widget.step.isFinished;
@@ -62,7 +66,7 @@ class _StepWidgetState extends State<StepWidget> {
                     else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Could not update this step')
+                          content: const Text('Could not update this step')
                         )
                       );
                     }
@@ -79,7 +83,7 @@ class _StepWidgetState extends State<StepWidget> {
                     context: context,
                     builder: (context) {
                       return Scaffold(
-                        body: StepForm(taskSlug: 'e',step: widget.step)
+                        body: StepForm(taskSlug: widget.taskSlug,step: widget.step)
                       );
                     }
                   );
@@ -91,12 +95,11 @@ class _StepWidgetState extends State<StepWidget> {
               IconButton(
                 /// We delete and remove this step
                 onPressed: () async{
-                  var token = await getToken();
-                  var hasDeleted = await StepService(token).deleteStep(widget.step.id);
+                  final token = await getToken();
+                  final hasDeleted = await StepService(token).deleteStep(widget.step.id);
                   if(hasDeleted) {
                     // We redirect to the task screen but we get the task before
-                    var token = await getToken();
-                    var task = await TaskService(token).getTask(widget.taskSlug);
+                    final task = await TaskService(token).getTask(widget.taskSlug);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -108,7 +111,7 @@ class _StepWidgetState extends State<StepWidget> {
                     showDialog(
                       context: context,
                       builder:(context) {
-                        return AlertDialog(
+                        return const AlertDialog(
                           title: Text('Step deletion'),
                           content: Text('Could not delete task step')
                         );

@@ -37,6 +37,7 @@ class _StepFormState extends State<StepForm> {
                 'Step',
                 style: const TextStyle(
                   fontSize: 16,
+                  fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline
                 )
               )
@@ -49,7 +50,7 @@ class _StepFormState extends State<StepForm> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Title',
+                  labelText: 'Title',
                   prefixIcon: Icon(Icons.title)
                 ),
                 validator: (value) {
@@ -89,8 +90,8 @@ class _StepFormState extends State<StepForm> {
                 onPressed: () async{
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    var step = StepData.Step(title, priority);
-                    var token = await getToken();
+                    final step = StepData.Step(title, priority);
+                    final token = await getToken();
                     var hasCreated = false;
                     if(widget.step == null) {
                       // Create a new step
@@ -102,8 +103,8 @@ class _StepFormState extends State<StepForm> {
                     }
                     if(hasCreated) {
                       // We redirect to the task screen but we get the task before
-                      var token = await getToken();
-                      var task = await TaskService(token).getTask(widget.taskSlug);
+                      final token = await getToken();
+                      final task = await TaskService(token).getTask(widget.taskSlug);
                       print(task.toJson());
                       Navigator.push(
                         context,
@@ -118,14 +119,14 @@ class _StepFormState extends State<StepForm> {
                         builder: (context) {
                           return const AlertDialog(
                             title: Text('Step creation'),
-                            content: Text('Could not create the task step')
+                            content: Text('Could not create/update the task step')
                           );
                         }
                       );
                     }
                   }
                 },
-                child: Text(hasStep ? 'Update task' : 'Create step')
+                child: Text(hasStep ? 'Update step' : 'Create step')
               )
             )
           ]

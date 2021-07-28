@@ -37,6 +37,7 @@ class _TaskFormState extends State<TaskForm> {
                 'Task',
                 style: TextStyle(
                   fontSize: 16,
+                  fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline
                 )
               )
@@ -49,7 +50,7 @@ class _TaskFormState extends State<TaskForm> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Title',
+                  labelText: 'Title',
                   prefixIcon: Icon(Icons.title)
                 ),
                 validator: (value) {
@@ -68,7 +69,7 @@ class _TaskFormState extends State<TaskForm> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Description',
+                  labelText: 'Description',
                   prefixIcon: Icon(Icons.description)
                 ),
                 onSaved: (value) => data['description'] = value,
@@ -93,7 +94,7 @@ class _TaskFormState extends State<TaskForm> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Date limit',
+                  labelText: 'Date limit',
                   prefixIcon: Icon(Icons.date_range),
                 ),
                 validator: (value) {
@@ -141,7 +142,6 @@ class _TaskFormState extends State<TaskForm> {
                 children: <Widget>[
                   Checkbox(
                     onChanged: (bool? value) {
-                      print(value);
                       setState(() {
                         hasSteps = value!;
                       });

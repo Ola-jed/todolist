@@ -80,6 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
         final token = await getToken();
         final tasks = await TaskService(token).getTasks();
         await saveTasksToCsv(tasks);
+        ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(
+            content: const Text(
+              'Tasks exported in Android/data/com.ola.todolist/files/todolist.csv'
+            )
+        ));
         break;
       }
       case Actions.Account: {
@@ -139,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: TextField(
                   autofocus: false,
                   decoration: const InputDecoration(
-                    hintText: 'Your search'
+                    hintText: 'Home'
                   ),
                   onChanged: (value) {
                     setState(() {
