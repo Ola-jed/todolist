@@ -177,9 +177,9 @@ class _TaskFormState extends State<TaskForm> {
                     // Two cases
                     // The task cannot exist : We create it
                     // Otherwise we update it
-                    hasCreated = (widget.task == null)
-                      ? await taskService.createTask(task)
-                      : await taskService.updateTask(widget.task!.slug,task);
+                    hasCreated = hasTask
+                      ? await taskService.updateTask(widget.task!.slug,task)
+                      : await taskService.createTask(task);
                     if(hasCreated) {
                       Navigator.pushNamed(context, '/');
                     }
@@ -187,9 +187,13 @@ class _TaskFormState extends State<TaskForm> {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return const AlertDialog(
-                            title: Text('Task creation'),
-                            content: Text('Could not create the task')
+                          return AlertDialog(
+                            title: Text(hasTask ? 'Task update' : 'Task creation'),
+                            content: Text(
+                              hasTask
+                              ? 'Could not update the task'
+                              : 'Could not create the task'
+                            )
                           );
                         }
                       );
