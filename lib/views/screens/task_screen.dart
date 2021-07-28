@@ -66,7 +66,7 @@ class TaskScreen extends StatelessWidget {
                   )
                 ),
                 Container(
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.only(top: 5,bottom: 10),
                   child: Text(
                     task.description,
                     style: const TextStyle(
