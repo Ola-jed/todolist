@@ -158,7 +158,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           padding: EdgeInsets.all(5),
                           child: ElevatedButton.icon(
                             icon: Icon(Icons.arrow_drop_down,),
-                            onPressed: () => setState(() {_dangerZoneVisible = !_dangerZoneVisible;}),
+                            onPressed: () => setState(() => _dangerZoneVisible = !_dangerZoneVisible),
                             label: Text(
                               'Danger zone',
                               style: TextStyle(fontSize: 18,color: Colors.red)
@@ -215,10 +215,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                             child: const Text('Yes')
                                           ),
                                           TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context,true);
-                                              },
-                                              child: const Text('No')
+                                            onPressed: () {
+                                              Navigator.pop(context,true);
+                                            },
+                                            child: const Text('No')
                                           )
                                         ]
                                       );
