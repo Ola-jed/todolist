@@ -71,8 +71,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                     activeColor: Colors.black,
                     onChanged: (value) async {
                       /// Mark as (un)finished
-                      final String token = await getToken();
-                      final bool hasMarked = await TaskService(token).finishTask(widget.task.slug, value!);
+                      final token = await getToken();
+                      final hasMarked = await TaskService(token).finishTask(widget.task.slug, value!);
                       if(hasMarked) {
                         setState(() {
                           widget.task.isFinished = !widget.task.isFinished;
@@ -119,7 +119,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                           actions: [
                             TextButton(
                               onPressed: () async {
-                                final String token = await getToken();
+                                final token = await getToken();
                                 final hasDeleted = await TaskService(token).deleteTask(widget.task.slug);
                                 if(hasDeleted) {
                                   dispose();

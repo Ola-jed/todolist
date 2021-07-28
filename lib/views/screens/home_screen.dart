@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todolist/api/auth_service.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/tasks_csv_export.dart';
 import 'package:todolist/views/forms/task_form.dart';
+import 'package:todolist/views/ui/bottom_menubar.dart';
 import 'package:todolist/views/ui/tasks_list.dart';
 
 /// All actions of our menu
@@ -14,9 +13,7 @@ class Actions{
   static const String UnfinishedTasks = 'Unfinished tasks';
   static const String ExpiredTasks = 'Expired tasks';
   static const String SaveAll = 'Save all';
-  static const String Account = 'Account';
   static const String Signin = 'Signin';
-  static const String Logout = 'Logout';
   static const String About = 'About';
   static const List<String> choices = <String>[
     AllTasks,
@@ -24,9 +21,7 @@ class Actions{
     UnfinishedTasks,
     ExpiredTasks,
     SaveAll,
-    Account,
     Signin,
-    Logout,
     About
   ];
 }
@@ -88,34 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
         break;
       }
-      case Actions.Account: {
-        Navigator.pushNamed(context, '/account');
-        break;
-      }
       case Actions.Signin: {
         Navigator.pushNamed(context, '/signin');
-        break;
-      }
-      case Actions.Logout: {
-        var preferences = await SharedPreferences.getInstance();
-        var hasLogout = preferences.containsKey('token')
-          ? await AuthService().makeLogout(preferences.getString('token')!)
-          : false;
-        if(!hasLogout){
-          showDialog(
-            context: context,
-            builder:(context) {
-              return const AlertDialog(
-                title: const Text('Logout'),
-                content: const Text('Could not logout')
-              );
-            }
-          );
-        }
-        else{
-          Navigator.of(context)
-            .pushNamedAndRemoveUntil('/signin', (Route<dynamic> route) => false);
-        }
         break;
       }
       case Actions.About : {
@@ -195,7 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         backgroundColor: Colors.teal,
         child: const Icon(Icons.add)
-      )
+      ),
+      bottomNavigationBar: BottomMenuBar(currentIndex: 0)
     );
   }
 }

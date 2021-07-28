@@ -170,8 +170,8 @@ class _TaskFormState extends State<TaskForm> {
                     data['priority'] = priority;
                     data['has_steps'] = hasSteps;
                     data['is_finished'] = false;
-                    var task = Task.fromJson(data);
-                    var token = await getToken();
+                    final task = Task.fromJson(data);
+                    final token = await getToken();
                     var taskService = TaskService(token);
                     var hasCreated = false;
                     // Two cases

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/account_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/user.dart';
+import 'package:todolist/views/ui/bottom_menubar.dart';
 
 /// Account screen
 class AccountScreen extends StatefulWidget {
@@ -310,7 +311,8 @@ class _AccountScreenState extends State<AccountScreen> {
             }
           )
         ]
-      )
+      ),
+      bottomNavigationBar: BottomMenuBar(currentIndex: 1)
     );
   }
 }

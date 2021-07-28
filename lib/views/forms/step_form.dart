@@ -90,8 +90,8 @@ class _StepFormState extends State<StepForm> {
                 onPressed: () async{
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    final step = StepData.Step(title, priority);
                     final token = await getToken();
+                    final step = StepData.Step(title, priority);
                     var hasCreated = false;
                     if(widget.step == null) {
                       // Create a new step
@@ -103,7 +103,6 @@ class _StepFormState extends State<StepForm> {
                     }
                     if(hasCreated) {
                       // We redirect to the task screen but we get the task before
-                      final token = await getToken();
                       final task = await TaskService(token).getTask(widget.taskSlug);
                       print(task.toJson());
                       Navigator.push(
