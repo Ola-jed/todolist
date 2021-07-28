@@ -66,7 +66,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                 Expanded(
                   child: CheckboxListTile(
                     contentPadding: EdgeInsets.all(0),
-                    title: const Text('Finished ? '),
+                    title: const Text('Finished '),
                     value: widget.task.isFinished,
                     activeColor: Colors.black,
                     onChanged: (value) async {
