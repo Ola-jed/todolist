@@ -34,7 +34,8 @@ class _AccountScreenState extends State<AccountScreen> {
           onPressed: () {
             Navigator.pushNamed(context, '/');
           }
-        )
+        ),
+        title: const Text('Account')
       ),
       body: ListView(
         children: <Widget>[
@@ -42,7 +43,7 @@ class _AccountScreenState extends State<AccountScreen> {
             future: _getConnectedUser(),
             builder: (context,snapshot) {
               if(snapshot.hasData) {
-                var usr = (snapshot.data as User);
+                final usr = (snapshot.data as User);
                 return Form(
                   key: _formKey,
                   child: Container(
