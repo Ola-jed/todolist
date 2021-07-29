@@ -25,7 +25,7 @@ class TaskScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushNamed(context, '/');
           }
@@ -39,7 +39,7 @@ class TaskScreen extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(left: 5,right: 5),
             margin: EdgeInsets.only(left: 5,right: 5,bottom: 5),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   color: Colors.white,
@@ -99,7 +99,7 @@ class TaskScreen extends StatelessWidget {
                   child: CheckboxListTile(
                     onChanged: (value){},
                     contentPadding: EdgeInsets.all(0),
-                    title: const Text('Finished ? '),
+                    title: const Text('Finished '),
                     value: task.isFinished,
                     activeColor: Colors.black
                   )
@@ -109,11 +109,15 @@ class TaskScreen extends StatelessWidget {
                     try{
                       await scheduleTask(task);
                       ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Reminder defined')));
+                        .showSnackBar(
+                          const SnackBar(content: Text('Reminder defined'))
+                      );
                     }
                     on Exception {
                       ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Could not define reminder')));
+                        .showSnackBar(
+                          const SnackBar(content: Text('Could not define reminder'))
+                      );
                     }
                   },
                   icon: Icon(Icons.add_alarm),
@@ -130,8 +134,8 @@ class TaskScreen extends StatelessWidget {
             builder: (context,snapshot) {
               if(snapshot.hasData) {
                 if((snapshot.data as List).isEmpty) {
-                  return Center(
-                    child: Text(
+                  return const Center(
+                    child: const Text(
                       'No step found',
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white,fontSize: 16)
@@ -165,7 +169,7 @@ class TaskScreen extends StatelessWidget {
               }
               else {
                 return const Center(
-                  child: const CircularProgressIndicator()
+                  child: CircularProgressIndicator()
                 );
               }
             }

@@ -12,7 +12,6 @@ Future<void> storeToken(String token) async {
 /// Get the stored token
 /// If no token exists, returns an empty String
 Future<String> getToken() async {
-  await Future.delayed(Duration(seconds: 2));
   final preferences = await SharedPreferences.getInstance();
   return preferences.getString('token') ?? '';
 }

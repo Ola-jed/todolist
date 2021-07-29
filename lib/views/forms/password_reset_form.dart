@@ -56,7 +56,7 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                 style: ElevatedButton.styleFrom(
                   onPrimary: Colors.white,
                   primary: Colors.teal,
-                  side: BorderSide(color: Colors.black, width: 1)
+                  side: const BorderSide(color: Colors.black, width: 1)
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
