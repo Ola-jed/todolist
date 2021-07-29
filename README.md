@@ -25,13 +25,13 @@ flutter run
 
 ## Screenshots
 
-![signin](https://user-images.githubusercontent.com/66482155/126379054-004e4510-2b51-493f-ae43-98bbcfa4954a.png)
+![Screenshot_20210728_233259](https://user-images.githubusercontent.com/66482155/127466989-708a4795-d98a-4f5d-859c-3cd192bc8ca5.jpg)
 
-![task_form](https://user-images.githubusercontent.com/66482155/126379114-752466e1-7157-4a9e-8af4-3895e848eea2.png)
+![Screenshot_20210728_233217](https://user-images.githubusercontent.com/66482155/127467063-cc2f612e-bf21-4836-b5cb-a147b5996c47.jpg)
 
-![home](https://user-images.githubusercontent.com/66482155/126379156-2d46209f-bec8-40f2-9857-d5d9920d1ac2.png)
+![Screenshot_20210728_233241](https://user-images.githubusercontent.com/66482155/127467114-d50ddd25-e28e-4afe-91eb-3819bb0058a8.jpg)
 
-![task](https://user-images.githubusercontent.com/66482155/126379201-10eb1d1f-7c6e-456c-8854-237043ede96e.png)
+![Screenshot_20210728_233138](https://user-images.githubusercontent.com/66482155/127467164-189307e4-9677-4833-af2b-21f388fee015.jpg)
 
 ## Todo
 
