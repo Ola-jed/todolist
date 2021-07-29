@@ -13,7 +13,6 @@ class Actions{
   static const String UnfinishedTasks = 'Unfinished tasks';
   static const String ExpiredTasks = 'Expired tasks';
   static const String SaveAll = 'Save all';
-  static const String Signin = 'Signin';
   static const String About = 'About';
   static const List<String> choices = <String>[
     AllTasks,
@@ -21,7 +20,6 @@ class Actions{
     UnfinishedTasks,
     ExpiredTasks,
     SaveAll,
-    Signin,
     About
   ];
 }
@@ -41,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var taskFillType = TasksFillType.All;
 
   /// Handle the action triggered on the menu
+  /// Depending on the chosen action, different tasks will be loaded
   ///
   /// ### Params
   /// - choice : The menu item chosen
@@ -81,10 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
               'Tasks exported in Android/data/com.ola.todolist/files/todolist.csv'
             )
         ));
-        break;
-      }
-      case Actions.Signin: {
-        Navigator.pushNamed(context, '/signin');
         break;
       }
       case Actions.About : {
