@@ -35,6 +35,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _isSearching = false;
+  var _controller = TextEditingController();
   var searchContent = '';
   var taskFillType = TasksFillType.All;
 
@@ -99,7 +101,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(_isSearching ? Icons.close : Icons.search),
+          color: Colors.white,
+          onPressed: () {
+            setState(() {
+              _isSearching = !_isSearching;
+              if(!_isSearching) {
+                _controller.clear();
+              }
+            });
+          },
+        ),
         title: Material(
           color: Colors.transparent,
           child: Row(
@@ -108,9 +121,16 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: TextField(
                   autofocus: false,
+                  controller: _controller,
+                  readOnly: !_isSearching,
                   decoration: const InputDecoration(
                     hintText: 'Home'
                   ),
+                  onTap: () {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                  },
                   onChanged: (value) {
                     setState(() {
                       searchContent = value;
@@ -119,10 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 )
               ),
-              const Icon(
-                Icons.search,
-                color: Colors.white
-              )
+
             ]
           )
         ),
