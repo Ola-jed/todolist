@@ -29,15 +29,10 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushNamed(context, '/');
-          }
-        ),
-        title: const Text('Account')
-      ),
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   title: const Text('Account')
+      // ),
       body: ListView(
         children: <Widget>[
           FutureBuilder(
@@ -48,7 +43,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 return Form(
                   key: _formKey,
                   child: Container(
-                    margin: EdgeInsets.only(left: 15,right: 15),
+                    margin: EdgeInsets.only(top: 35,left: 15,right: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
