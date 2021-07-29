@@ -109,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
               _isSearching = !_isSearching;
               if(!_isSearching) {
                 _controller.clear();
+                searchContent = '';
               }
             });
           },
@@ -124,7 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   controller: _controller,
                   readOnly: !_isSearching,
                   decoration: const InputDecoration(
-                    hintText: 'Home'
+                    hintText: 'Home',
+                    border: InputBorder.none
                   ),
                   onTap: () {
                     setState(() {
@@ -139,7 +141,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 )
               ),
-
             ]
           )
         ),
