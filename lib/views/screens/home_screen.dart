@@ -13,14 +13,12 @@ class Actions{
   static const String UnfinishedTasks = 'Unfinished tasks';
   static const String ExpiredTasks = 'Expired tasks';
   static const String SaveAll = 'Save all';
-  static const String About = 'About';
   static const List<String> choices = <String>[
     AllTasks,
     FinishedTasks,
     UnfinishedTasks,
     ExpiredTasks,
-    SaveAll,
-    About
+    SaveAll
   ];
 }
 
@@ -83,16 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
             )
         ));
         break;
-      }
-      case Actions.About : {
-        showAboutDialog(
-          context: context,
-          applicationName: 'Todolist',
-          applicationVersion: '1.0',
-          applicationIcon: const Image(
-            image: AssetImage('assets/icon.png')
-          )
-        );
       }
     }
   }
