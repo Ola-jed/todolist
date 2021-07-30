@@ -10,18 +10,15 @@ import 'package:todolist/views/screens/password_reset_screen.dart';
 MaterialApp app(bool hasValidToken) {
   return MaterialApp(
     title: 'TodoList',
-    theme: ThemeData(
-      brightness: Brightness.dark,
-      primaryColor: Colors.teal
-    ),
+    theme: ThemeData(brightness: Brightness.dark, primaryColor: Colors.teal),
     initialRoute: hasValidToken ? '/' : '/signin',
     routes: {
       '/signup': (context) => AuthScreen(authType: AuthType.Signup),
       '/signin': (context) => AuthScreen(authType: AuthType.Signin),
       '/account': (context) => AccountScreen(),
       '/forgotten-password': (context) => PasswordResetScreen(),
-      '/' : (context) => HomeScreen()
+      '/': (context) => HomeScreen()
     },
-    debugShowCheckedModeBanner: false
+    debugShowCheckedModeBanner: false,
   );
 }
