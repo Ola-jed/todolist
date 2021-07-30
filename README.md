@@ -53,7 +53,8 @@ flutter run
   - [x] Step form
   - [x] Step view
 
-- Others
+- Misc
   - [x] App icon and launch screen
   - [x] Token storage
   - [x] Export all tasks to csv
+  - [ ] Some icons
