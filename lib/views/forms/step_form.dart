@@ -23,7 +23,7 @@ class _StepFormState extends State<StepForm> {
 
   @override
   Widget build(BuildContext context) {
-    var hasStep = widget.step != null;
+    final hasStep = widget.step != null;
     return Form(
       key: _formKey,
       child: Container(
