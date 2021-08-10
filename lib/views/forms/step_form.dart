@@ -104,11 +104,10 @@ class _StepFormState extends State<StepForm> {
                     if(hasCreated) {
                       // We redirect to the task screen but we get the task before
                       final task = await TaskService(token).getTask(widget.taskSlug);
-                      print(task.toJson());
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TaskScreen(task: task)
+                          builder: (context) => TaskScreen(task: task)
                         )
                       );
                     }
