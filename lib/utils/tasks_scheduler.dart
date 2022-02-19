@@ -9,7 +9,7 @@ Future<void> scheduleTask(Task taskToSchedule) async {
       AndroidInitializationSettings('app_icon');
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final androidNotificationDetails =
-      AndroidNotificationDetails('1', 'Todolist', 'Tasks from todolist app');
+      AndroidNotificationDetails('1', 'Todolist', channelDescription: 'Tasks from todolist app');
   final initializationSettings =
       InitializationSettings(android: initializationSettingsAndroid);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);

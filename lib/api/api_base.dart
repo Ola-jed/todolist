@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert' show utf8;
 import 'package:todolist/api/exceptions/api_connection_exception.dart';
+import 'package:todolist/utils/string_helpers.dart';
 
 /// HTTP verbs
 enum HTTP_METHOD { GET, PUT, POST, DELETE }
@@ -99,7 +100,7 @@ abstract class ApiBase {
       if (data.trim().isNotEmpty) {
         request.contentLength = data.length;
       }
-      if (data.trim().isNotEmpty) request.write(data);
+      if (data.isBlank()) request.write(data);
       var response = await request.close();
       final responseContent = await response.transform(utf8.decoder).join("");
       if (response.statusCode >= 300) {
