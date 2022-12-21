@@ -34,6 +34,8 @@ flutter run
 ![Screenshot_20210728_233138](https://user-images.githubusercontent.com/66482155/127467164-189307e4-9677-4833-af2b-21f388fee015.jpg)
 
 ## Todo
+- [ ] Update to flutter 3
+
 
 - Finish api services
   - [x] Auth service
