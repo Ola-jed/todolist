@@ -20,8 +20,10 @@ class AuthService extends ApiBase {
   Future<String> makeSignup(Map signupData) async {
     try {
       signupData['device_name'] = await _getDeviceIdentity();
-      final result =
-          await postUrl(Uri.parse(signupUrl), json.encode(signupData));
+      final result = await postUrl(
+        Uri.parse(signupUrl),
+        json.encode(signupData),
+      );
       final jsonResult = json.decode(result) as Map<String, dynamic>;
       if (jsonResult['token'] == null) throw Exception('Signup failed');
       return jsonResult['token']!;
@@ -38,8 +40,10 @@ class AuthService extends ApiBase {
   Future<String> makeSignin(Map signinData) async {
     try {
       signinData['device_name'] = await _getDeviceIdentity();
-      final result =
-          await postUrl(Uri.parse(signinUrl), json.encode(signinData));
+      final result = await postUrl(
+        Uri.parse(signinUrl),
+        json.encode(signinData),
+      );
       final jsonResult = json.decode(result) as Map<String, dynamic>;
       if (jsonResult['token'] == null) throw Exception('Signin failed');
       return jsonResult['token']!;
@@ -71,7 +75,9 @@ class AuthService extends ApiBase {
   Future<bool> resetPassword(Map passwordResetData) async {
     try {
       final result = await postUrl(
-          Uri.parse(passwordResetUrl), json.encode(passwordResetData));
+        Uri.parse(passwordResetUrl),
+        json.encode(passwordResetData),
+      );
       return (jsonDecode(result)['message'] as String) == 'Password reset';
     } on Exception {
       return false;
@@ -83,11 +89,10 @@ class AuthService extends ApiBase {
   /// ### Param
   /// - token : The token we want to check
   Future<bool> checkToken(String token) async {
-    try{
-      final result = await getUrl(Uri.parse(tokenCheckUrl),'',token);
+    try {
+      final result = await getUrl(Uri.parse(tokenCheckUrl), '', token);
       return (jsonDecode(result)['authenticated'] as bool);
-    }
-    on Exception {
+    } on Exception {
       return false;
     }
   }

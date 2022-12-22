@@ -14,64 +14,60 @@ class _SignupFormState extends State<SignupForm> {
   bool _isObscure = true;
   final _formKey = GlobalKey<FormState>();
   var data = Map();
+  final emailRegex = RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+");
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Container(
-        margin: EdgeInsets.only(left: 15,right: 15),
+        margin: EdgeInsets.only(left: 15, right: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Center(
-              child: const Image(
-                image: AssetImage('assets/icon.png')
-              )
-            ),
+            Center(child: const Image(image: AssetImage('assets/icon.png'))),
             Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
                 onSaved: (value) => data['name'] = value,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
                   labelText: 'Name',
-                  prefixIcon: Icon(Icons.account_circle_outlined)
+                  prefixIcon: Icon(Icons.account_circle_outlined),
                 ),
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty){
+                  if (value?.trim().isEmpty ?? false) {
                     return 'The name field is required';
                   }
                   return null;
-                }
-              )
+                },
+              ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.email)
-                ),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email)),
                 onSaved: (value) => data['email'] = value,
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty){
+                  if (value?.trim().isEmpty ?? false) {
                     return 'The email field is required';
                   }
-                  if(!RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+").hasMatch(value)){
+                  if (!emailRegex.hasMatch(value!)) {
                     return 'Invalid email format';
                   }
                   return null;
-                }
-              )
+                },
+              ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
                 onSaved: (value) {
                   data['password1'] = value;
@@ -88,57 +84,63 @@ class _SignupFormState extends State<SignupForm> {
                     onPressed: () {
                       setState(() => _isObscure = !_isObscure);
                     },
-                    icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off)
-                  )
+                    icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off),
+                  ),
                 ),
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty) {
+                  if (value?.trim().isEmpty ?? false) {
                     return 'The password field is required';
                   }
                   return null;
-                }
-              )
+                },
+              ),
             ),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.teal,
-                  side: BorderSide(color: Colors.black, width: 1)
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.teal,
+                  side: BorderSide(color: Colors.black, width: 1),
+                  minimumSize: const Size.fromHeight(50),
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    try{
+                    try {
                       await storeToken(await AuthService().makeSignup(data));
                       Navigator.pushNamed(context, '/');
-                    }
-                    on Exception{
-                      ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(
-                          content: Text('Signup failed'))
+                    } on Exception {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Signup failed'),
+                        ),
                       );
                     }
                   }
                 },
-                child: const Text('Sign up')
-              )
+                child: const Text('Sign up'),
+              ),
             ),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.transparent,
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 4),
+              child: Center(
+                child: TextButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signin');
+                  },
+                  child: const Text('Already registered ? Sign in'),
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/signin');
-                },
-                child: const Text('Already registered ? Sign in')
-              )
-            )
-          ]
-        )
-      )
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

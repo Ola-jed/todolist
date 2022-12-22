@@ -11,8 +11,9 @@ class SigninForm extends StatefulWidget {
 }
 
 class _SigninFormState extends State<SigninForm> {
-  var data = Map();
   final _formKey = GlobalKey<FormState>();
+  final emailRegex = RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+");
+  final data = Map();
   bool _isObscure = true;
 
   @override
@@ -20,18 +21,18 @@ class _SigninFormState extends State<SigninForm> {
     return Form(
       key: _formKey,
       child: Container(
-        margin: EdgeInsets.only(left: 15,right: 15),
+        margin: EdgeInsets.only(left: 15, right: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
               child: const Image(
-                image: AssetImage('assets/icon.png')
-              )
+                image: AssetImage('assets/icon.png'),
+              ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onSaved: (value) => data['email'] = value,
@@ -39,21 +40,21 @@ class _SigninFormState extends State<SigninForm> {
                   border: OutlineInputBorder(),
                   filled: true,
                   labelText: 'Email',
-                  prefixIcon: Icon(Icons.email)
+                  prefixIcon: Icon(Icons.email),
                 ),
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty){
+                  if (value?.trim().isEmpty ?? false) {
                     return 'The email field is required';
                   }
-                  if(!RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+").hasMatch(value)){
+                  if (!emailRegex.hasMatch(value!)) {
                     return 'Invalid email format';
                   }
                   return null;
-                }
-              )
+                },
+              ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
                 obscureText: _isObscure,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -67,69 +68,82 @@ class _SigninFormState extends State<SigninForm> {
                     onPressed: () {
                       setState(() => _isObscure = !_isObscure);
                     },
-                    icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off)
-                  )
+                    icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off),
+                  ),
                 ),
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty){
+                  if (value?.trim().isEmpty ?? false) {
                     return 'The password field is required';
                   }
                   return null;
-                }
-              )
+                },
+              ),
             ),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.teal,
-                  side: BorderSide(color: Colors.black, width: 1)
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    try{
-                      await storeToken(await AuthService().makeSignin(data));
-                      Navigator.pushNamed(context, '/');
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 4),
+              child: Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.teal,
+                    side: BorderSide(color: Colors.black, width: 1),
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      try {
+                        await storeToken(await AuthService().makeSignin(data));
+                        Navigator.pushNamed(context, '/');
+                      } on Exception {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Signin failed'),
+                          ),
+                        );
+                      }
                     }
-                    on Exception{
-                      ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(
-                          content: const Text('Signin failed')
-                      ));
-                    }
-                  }
-                },
-                child: const Text('Sign in')
-              )
-            ),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.transparent,
+                  },
+                  child: const Text('Sign in'),
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/signup');
-                },
-                child: const Text('Not yet registered ? Sign up')
-              )
+              ),
             ),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.transparent,
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 4),
+              child: Center(
+                child: TextButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  child: const Text('Not yet registered ? Sign up'),
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/forgotten-password');
-                },
-                child: const Text('Forgotten password ?')
-              )
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 4),
+              child: Center(
+                child: TextButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/forgotten-password');
+                  },
+                  child: const Text('Forgotten password ?'),
+                ),
+              ),
             )
-          ]
-        )
-      )
+          ],
+        ),
+      ),
     );
   }
 }

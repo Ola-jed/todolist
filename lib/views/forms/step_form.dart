@@ -10,7 +10,12 @@ import 'package:todolist/views/screens/task_screen.dart';
 class StepForm extends StatefulWidget {
   final StepData.Step? step;
   final String taskSlug;
-  const StepForm({Key? key, required this.taskSlug, this.step}) : super(key: key);
+
+  const StepForm({
+    Key? key,
+    required this.taskSlug,
+    this.step,
+  }) : super(key: key);
 
   @override
   _StepFormState createState() => _StepFormState();
@@ -27,7 +32,7 @@ class _StepFormState extends State<StepForm> {
     return Form(
       key: _formKey,
       child: Container(
-        margin: EdgeInsets.only(left: 15,right: 15),
+        margin: EdgeInsets.only(left: 15, right: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,12 +43,12 @@ class _StepFormState extends State<StepForm> {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline
-                )
-              )
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
                 initialValue: hasStep ? widget.step!.title : null,
                 onSaved: (value) => title = value!,
@@ -51,24 +56,25 @@ class _StepFormState extends State<StepForm> {
                   border: OutlineInputBorder(),
                   filled: true,
                   labelText: 'Title',
-                  prefixIcon: Icon(Icons.title)
+                  prefixIcon: Icon(Icons.title),
                 ),
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty){
+                  if (value?.trim().isEmpty ?? false) {
                     return 'The title field is required';
                   }
                   return null;
-                }
-              )
+                },
+              ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: SpinBox(
                 value: 1,
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty){
+                  if (value?.trim().isEmpty ?? false) {
                     return 'The priority field is required';
                   }
+                  return null;
                 },
                 onChanged: (value) => priority = value.toInt(),
                 min: 1,
@@ -76,60 +82,63 @@ class _StepFormState extends State<StepForm> {
                 decoration: const InputDecoration(
                   labelText: 'Priority',
                   border: OutlineInputBorder(),
-                  filled: true
-                )
-              )
+                  filled: true,
+                ),
+              ),
             ),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.teal,
-                  side: const BorderSide(color: Colors.black, width: 1)
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.teal,
+                  side: const BorderSide(
+                    color: Colors.black,
+                    width: 1,
+                  ),
+                  minimumSize: const Size.fromHeight(50),
                 ),
-                onPressed: () async{
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     final token = await getToken();
                     final step = StepData.Step(title, priority);
                     var hasCreated = false;
-                    if(widget.step == null) {
-                      // Create a new step
-                      hasCreated = await StepService(token).createStep(widget.taskSlug, step);
+                    if (widget.step == null) {
+                      hasCreated = await StepService(token)
+                          .createStep(widget.taskSlug, step);
+                    } else {
+                      hasCreated = await StepService(token)
+                          .updateStep(widget.step!.id, step);
                     }
-                    else {
-                      // Update the step
-                      hasCreated = await StepService(token).updateStep(widget.step!.id, step);
-                    }
-                    if(hasCreated) {
-                      // We redirect to the task screen but we get the task before
+                    if (hasCreated) {
                       final task = await TaskService(token).getTask(widget.taskSlug);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TaskScreen(task: task)
-                        )
+                          builder: (context) => TaskScreen(task: task),
+                        ),
                       );
-                    }
-                    else {
+                    } else {
                       showDialog(
                         context: context,
-                        builder: (context) {
+                        builder: (_) {
                           return const AlertDialog(
                             title: Text('Step creation'),
-                            content: Text('Could not create/update the task step')
+                            content: Text(
+                              'Could not create/update the task step',
+                            ),
                           );
-                        }
+                        },
                       );
                     }
                   }
                 },
-                child: Text(hasStep ? 'Update step' : 'Create step')
-              )
+                child: Text(hasStep ? 'Update step' : 'Create step'),
+              ),
             )
-          ]
-        )
-      )
+          ],
+        ),
+      ),
     );
   }
 }
