@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
 import 'package:todolist/api/token_handler.dart';
+import 'package:todolist/utils/todolist_theme.dart';
 
 /// Our signin form
 class SigninForm extends StatefulWidget {
@@ -85,12 +86,7 @@ class _SigninFormState extends State<SigninForm> {
               margin: EdgeInsets.symmetric(vertical: 4),
               child: Center(
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.teal,
-                    side: BorderSide(color: Colors.black, width: 1),
-                    minimumSize: const Size.fromHeight(50),
-                  ),
+                  style: TodolistTheme.primaryBtn(),
                   onPressed: _loading
                       ? null
                       : () async {
@@ -124,11 +120,7 @@ class _SigninFormState extends State<SigninForm> {
               margin: EdgeInsets.symmetric(vertical: 4),
               child: Center(
                 child: TextButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.transparent,
-                    minimumSize: const Size.fromHeight(50),
-                  ),
+                  style: TodolistTheme.secondaryBtn(context),
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
                   },
@@ -140,11 +132,7 @@ class _SigninFormState extends State<SigninForm> {
               margin: EdgeInsets.symmetric(vertical: 4),
               child: Center(
                 child: TextButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.transparent,
-                    minimumSize: const Size.fromHeight(50),
-                  ),
+                  style: TodolistTheme.secondaryBtn(context),
                   onPressed: () {
                     Navigator.pushNamed(context, '/forgotten-password');
                   },

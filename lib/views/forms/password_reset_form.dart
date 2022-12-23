@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
+import 'package:todolist/utils/todolist_theme.dart';
 
 /// Our signin form
 class PasswordResetForm extends StatefulWidget {
@@ -57,12 +58,7 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
             ),
             Center(
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.teal,
-                  side: const BorderSide(color: Colors.black, width: 1),
-                  minimumSize: const Size.fromHeight(50),
-                ),
+                style: TodolistTheme.primaryBtn(),
                 onPressed: _loading
                     ? null
                     : () async {
@@ -133,11 +129,7 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
               margin: EdgeInsets.symmetric(vertical: 4),
               child: Center(
                 child: TextButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.transparent,
-                    minimumSize: const Size.fromHeight(50),
-                  ),
+                  style: TodolistTheme.secondaryBtn(context),
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
                   },

@@ -8,46 +8,50 @@ import 'package:todolist/views/screens/task_screen.dart';
 /// Widget to show tasks on home screen
 class TaskWidget extends StatefulWidget {
   final Task task;
-  const TaskWidget({Key? key, required this.task}) : super(key: key);
+
+  const TaskWidget({
+    Key? key,
+    required this.task,
+  }) : super(key: key);
 
   @override
   _TaskWidgetState createState() => _TaskWidgetState();
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      highlightColor: Colors.tealAccent,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TaskScreen(task: widget.task)
-          )
-        );
-      },
-      child: Container(
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: const Color(0xFF1C1C1C)
-        ),
+    return Container(
+      margin: EdgeInsets.all(5),
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).colorScheme.surface
+      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TaskScreen(
+                task: widget.task,
+              ),
+            ),
+          );
+        },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(left: 10,top: 10),
+              padding: EdgeInsets.only(left: 10, top: 10),
               child: Text(
                 widget.task.title,
                 style: const TextStyle(
                   decoration: TextDecoration.underline,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
-                )
-              )
+                ),
+              ),
             ),
             Container(
               alignment: Alignment.center,
@@ -56,51 +60,48 @@ class _TaskWidgetState extends State<TaskWidget> {
               child: Text(
                 widget.task.description,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 15)
-              )
+                style: const TextStyle(fontSize: 15),
+              ),
             ),
-            Row(
-              children: <Widget>[
-                Text(widget.task.dateLimit.toString().substring(0,10)),
-                Spacer(),
-                Expanded(
-                  child: CheckboxListTile(
-                    contentPadding: EdgeInsets.all(0),
-                    title: const Text('Finished '),
-                    value: widget.task.isFinished,
-                    activeColor: Colors.black,
-                    onChanged: (value) async {
-                      /// Mark as (un)finished
-                      final token = await getToken();
-                      final hasMarked = await TaskService(token).finishTask(widget.task.slug, value!);
-                      if(hasMarked) {
-                        setState(() {
-                          widget.task.isFinished = !widget.task.isFinished;
-                        });
-                      }
-                      else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: const Text('Could not update this task')
-                          )
-                        );
-                      }
+            Row(children: <Widget>[
+              Text(widget.task.dateLimit.toString().substring(0, 10)),
+              Spacer(),
+              Expanded(
+                child: CheckboxListTile(
+                  contentPadding: EdgeInsets.all(0),
+                  title: const Text('Finished '),
+                  value: widget.task.isFinished,
+                  activeColor: Colors.black,
+                  onChanged: (value) async {
+                    final token = await getToken();
+                    final hasMarked = await TaskService(token)
+                        .finishTask(widget.task.slug, value!);
+                    if (hasMarked) {
+                      setState(() {
+                        widget.task.isFinished = !widget.task.isFinished;
+                      });
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: const Text('Could not update this task'),
+                        ),
+                      );
                     }
-                  )
-                )
-              ]
-            ),
+                  },
+                ),
+              )
+            ]),
             Row(
               children: <Widget>[
                 IconButton(
-                  onPressed: (){
+                  onPressed: () {
                     showDialog(
                       context: context,
                       builder: (context) {
                         return Scaffold(
-                          body: TaskForm(task: widget.task)
+                          body: TaskForm(task: widget.task),
                         );
-                      }
+                      },
                     );
                   },
                   icon: const Icon(Icons.update),
@@ -108,59 +109,61 @@ class _TaskWidgetState extends State<TaskWidget> {
                 ),
                 Spacer(),
                 IconButton(
-                  /// We delete and remove this task
-                  onPressed: () async{
+                  onPressed: () async {
                     showDialog(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
                           title: const Text('Delete task ?'),
-                          content: const Text('Do you want to delete this task ?'),
+                          content: const Text(
+                            'Do you want to delete this task ?',
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () async {
                                 final token = await getToken();
-                                final hasDeleted = await TaskService(token).deleteTask(widget.task.slug);
-                                if(hasDeleted) {
+                                final hasDeleted = await TaskService(token)
+                                    .deleteTask(widget.task.slug);
+                                if (hasDeleted) {
                                   dispose();
                                   Navigator.pushNamed(context, '/');
-                                }
-                                else{
+                                } else {
                                   showDialog(
                                     context: context,
-                                    builder:(context) {
+                                    builder: (context) {
                                       return const AlertDialog(
-                                        title: const Text('Task deletion'),
-                                        content: const Text('Could not delete task')
+                                        title: const Text(
+                                          'Task deletion',
+                                        ),
+                                        content: const Text(
+                                          'Could not delete task',
+                                        ),
                                       );
-                                    }
+                                    },
                                   );
                                 }
                               },
-                              child: const Text('Yes')
+                              child: const Text('Yes'),
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(context,true);
+                                Navigator.pop(context, true);
                               },
-                              child: const Text('No')
+                              child: const Text('No'),
                             )
-                          ]
+                          ],
                         );
-                      }
+                      },
                     );
                   },
                   icon: const Icon(Icons.delete),
-                  color: Colors.red
+                  color: Colors.red,
                 )
-              ]
-            )
-          ]
-        )
-      )
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-
-
-

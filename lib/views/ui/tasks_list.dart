@@ -6,21 +6,25 @@ import 'package:todolist/views/ui/task_widget.dart';
 
 /// Type of tasks we want to show
 /// Will be passed to the constructor
-enum TasksFillType{All,Search,Finished,Unfinished,Expired}
+enum TasksFillType { All, Search, Finished, Unfinished, Expired }
 
 /// List of tasks
 /// Built depending on the type of filling
 class TasksList extends StatefulWidget {
-  final searchContent;
+  final String searchContent;
   final TasksFillType tasksFillType;
-  TasksList({required this.tasksFillType,this.searchContent = '',Key? key}) : super(key: key);
+
+  TasksList({
+    required this.tasksFillType,
+    this.searchContent = '',
+    Key? key,
+  }) : super(key: key);
 
   @override
   _TasksListState createState() => _TasksListState();
 }
 
 class _TasksListState extends State<TasksList> {
-
   /// Load correctly the tasks depending on the fill type
   /// All : all tasks of the user
   /// Finished : All the finished tasks of the user
@@ -29,10 +33,10 @@ class _TasksListState extends State<TasksList> {
   /// Search : Search the tasks corresponding to searchContent
   Future<List> _getCorrespondingTasks() async {
     final token = await getToken();
-    if(token.isEmpty) return [];
+    if (token.isEmpty) return [];
     var taskService = TaskService(token);
-    switch(widget.tasksFillType){
-      case TasksFillType.All :
+    switch (widget.tasksFillType) {
+      case TasksFillType.All:
         return taskService.getTasks();
       case TasksFillType.Finished:
         return taskService.getFinishedTasks(true);
@@ -41,10 +45,9 @@ class _TasksListState extends State<TasksList> {
       case TasksFillType.Expired:
         return taskService.getExpiredTasks();
       case TasksFillType.Search:
-        if(widget.searchContent.isNotEmpty){
+        if (widget.searchContent.isNotEmpty) {
           return taskService.searchTasks(widget.searchContent);
-        }
-        else{
+        } else {
           return taskService.getTasks();
         }
     }
@@ -55,40 +58,44 @@ class _TasksListState extends State<TasksList> {
     return FutureBuilder(
       future: _getCorrespondingTasks(),
       builder: (context, snapshot) {
-        if(snapshot.hasData) {
-          if((snapshot.data as List).isEmpty) {
+        if (snapshot.hasData) {
+          final tasks = snapshot.data as List<Task>;
+          if (tasks.isEmpty) {
             return Center(
               child: Text(
                 'No task',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white,fontSize: 16)
-              )
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  fontSize: 17,
+                ),
+              ),
             );
           }
+
           return ListView.builder(
-            itemCount: (snapshot.data as List<Task>).length,
-            itemBuilder: (context,index) {
-              return TaskWidget(task: (snapshot.data as List<Task>)[index]);
-            }
+            itemCount: tasks.length,
+            itemBuilder: (context, index) => TaskWidget(task: tasks[index]),
           );
-        }
-        else if(snapshot.hasError) {
+        } else if (snapshot.hasError) {
           return Center(
             child: Text(
               'Something weird happened',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white,fontSize: 16)
-            )
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+                fontSize: 17,
+              ),
+            ),
           );
-        }
-        else {
+        } else {
           return Center(
             child: Container(
-              child: CircularProgressIndicator()
-            )
+              child: CircularProgressIndicator(),
+            ),
           );
         }
-      }
+      },
     );
   }
 }

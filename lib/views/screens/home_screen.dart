@@ -94,10 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
+      appBar: AppBar(
         leading: IconButton(
           icon: Icon(_isSearching ? Icons.close : Icons.search),
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onBackground,
           onPressed: () {
             setState(() {
               _isSearching = !_isSearching;
@@ -146,14 +146,14 @@ class _HomeScreenState extends State<HomeScreen> {
               await choiceAction(val, context);
             },
             itemBuilder: (BuildContext context) {
-              return Actions.choices.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
+              return Actions.choices
+                  .map((String choice) => PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(choice),
+                      ))
+                  .toList();
             },
-          )
+          ),
         ],
       ),
       body: TasksList(
@@ -169,8 +169,11 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           );
         },
-        backgroundColor: Colors.teal,
-        child: const Icon(Icons.add),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.background,
+        ),
       ),
       bottomNavigationBar: BottomMenuBar(currentIndex: 0),
     );

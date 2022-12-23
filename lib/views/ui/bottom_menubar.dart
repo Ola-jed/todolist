@@ -109,6 +109,9 @@ class BottomMenuBar extends StatelessWidget {
             }
         }
       },
+      selectedItemColor: Theme.of(context).colorScheme.primary,
+      selectedFontSize: 16,
+      showUnselectedLabels: false,
     );
   }
 }

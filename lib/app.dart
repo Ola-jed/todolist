@@ -1,5 +1,6 @@
 import 'package:connection_notifier/connection_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:todolist/utils/todolist_theme.dart';
 import 'package:todolist/views/screens/account_screen.dart';
 import 'package:todolist/views/screens/auth_screen.dart';
 import 'package:todolist/views/screens/home_screen.dart';
@@ -12,7 +13,9 @@ Widget app(bool hasValidToken) {
   return ConnectionNotifier(
     child: MaterialApp(
       title: 'TodoList',
-      theme: ThemeData(brightness: Brightness.dark, primaryColor: Colors.teal),
+      theme: TodolistTheme.lightTheme,
+      darkTheme: TodolistTheme.darkTheme,
+      themeMode: ThemeMode.system,
       initialRoute: hasValidToken ? '/' : '/signin',
       routes: {
         '/signup': (context) => AuthScreen(authType: AuthType.Signup),
