@@ -86,6 +86,8 @@ abstract class ApiBase {
   Future<String> callUrl(Uri uri, HTTP_METHOD httpMethod,
       [String data = '', String token = '']) async {
     try {
+      print("${httpMethod.name} - ${uri.toString()}");
+      print(data);
       var request = (httpMethod == HTTP_METHOD.GET)
           ? await httpClient.getUrl(uri)
           : (httpMethod == HTTP_METHOD.POST)
@@ -93,14 +95,19 @@ abstract class ApiBase {
               : (httpMethod == HTTP_METHOD.PUT)
                   ? await httpClient.putUrl(uri)
                   : await httpClient.deleteUrl(uri);
-      request.headers.contentType =
-          new ContentType("application", "json", charset: "utf-8");
+      request.headers.contentType = ContentType(
+        "application",
+        "json",
+        charset: "utf-8",
+      );
       request.headers.add("Accept", "application/json");
       request.headers.add("Authorization", 'Bearer $token');
       if (data.trim().isNotEmpty) {
         request.contentLength = data.length;
       }
-      if (data.isBlank()) request.write(data);
+      if (!data.isBlank()) {
+        request.write(data);
+      }
       var response = await request.close();
       final responseContent = await response.transform(utf8.decoder).join("");
       if (response.statusCode >= 300) {

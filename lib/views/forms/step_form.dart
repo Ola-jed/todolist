@@ -111,7 +111,8 @@ class _StepFormState extends State<StepForm> {
                           .updateStep(widget.step!.id, step);
                     }
                     if (hasCreated) {
-                      final task = await TaskService(token).getTask(widget.taskSlug);
+                      final task =
+                          await TaskService(token).getTask(widget.taskSlug);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -133,9 +134,11 @@ class _StepFormState extends State<StepForm> {
                     }
                   }
                 },
-                child: Text(hasStep ? 'Update step' : 'Create step'),
+                child: Text(
+                  hasStep ? 'Update step' : 'Create step',
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),

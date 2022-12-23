@@ -14,6 +14,7 @@ class _SigninFormState extends State<SigninForm> {
   final _formKey = GlobalKey<FormState>();
   final emailRegex = RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+");
   final data = Map();
+  bool _loading = false;
   bool _isObscure = true;
 
   @override
@@ -90,22 +91,32 @@ class _SigninFormState extends State<SigninForm> {
                     side: BorderSide(color: Colors.black, width: 1),
                     minimumSize: const Size.fromHeight(50),
                   ),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      try {
-                        await storeToken(await AuthService().makeSignin(data));
-                        Navigator.pushNamed(context, '/');
-                      } on Exception {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Signin failed'),
-                          ),
-                        );
-                      }
-                    }
-                  },
-                  child: const Text('Sign in'),
+                  onPressed: _loading
+                      ? null
+                      : () async {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            setState(() => _loading = true);
+
+                            try {
+                              await storeToken(
+                                await AuthService().makeSignin(data),
+                              );
+                              Navigator.pushNamed(context, '/');
+                            } on Exception {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text('Signin failed'),
+                                ),
+                              );
+                            } finally {
+                              setState(() => _loading = false);
+                            }
+                          }
+                        },
+                  child: _loading
+                      ? CircularProgressIndicator()
+                      : const Text('Sign in'),
                 ),
               ),
             ),
@@ -140,7 +151,7 @@ class _SigninFormState extends State<SigninForm> {
                   child: const Text('Forgotten password ?'),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

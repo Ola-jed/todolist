@@ -20,6 +20,7 @@ class AuthService extends ApiBase {
   Future<String> makeSignup(Map signupData) async {
     try {
       signupData['device_name'] = await _getDeviceIdentity();
+      print(signupData);
       final result = await postUrl(
         Uri.parse(signupUrl),
         json.encode(signupData),

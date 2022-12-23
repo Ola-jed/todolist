@@ -39,8 +39,11 @@ class TaskService extends ApiBase {
       });
       taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
-      final result =
-          await postUrl(Uri.parse(tasksUrl), jsonEncode(taskAsJson), token);
+      final result = await postUrl(
+        Uri.parse(tasksUrl),
+        jsonEncode(taskAsJson),
+        token,
+      );
       final resultAsMap = jsonDecode(result);
       return resultAsMap['message'] as String == 'Task created';
     } on Exception {
@@ -89,7 +92,11 @@ class TaskService extends ApiBase {
   /// ### Params
   /// - slug : The slug for the research
   Future<Task> getTask(String slug) async {
-    final taskAsJson = await getUrl(Uri.parse(tasksUrl + '/' + slug), '', token);
+    final taskAsJson = await getUrl(
+      Uri.parse(tasksUrl + '/' + slug),
+      '',
+      token,
+    );
     return Task.fromJson((jsonDecode(taskAsJson))['task']);
   }
 
@@ -113,7 +120,10 @@ class TaskService extends ApiBase {
       taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
       final resultOfUpdate = await putUrl(
-          Uri.parse(tasksUrl + '/' + slug), jsonEncode(taskAsJson), token);
+        Uri.parse(tasksUrl + '/' + slug),
+        jsonEncode(taskAsJson),
+        token,
+      );
       return jsonDecode(resultOfUpdate)['message'] as String == 'Task updated';
     } on Exception {
       return false;
@@ -129,7 +139,10 @@ class TaskService extends ApiBase {
     try {
       final data = <String, int>{'status': (finishOrNot ? 1 : 0)};
       final resultOfMarkingFinished = await putUrl(
-          Uri.parse(tasksUrl + '/' + slug + "/finish"), jsonEncode(data), token);
+        Uri.parse(tasksUrl + '/' + slug + "/finish"),
+        jsonEncode(data),
+        token,
+      );
       return jsonDecode(resultOfMarkingFinished)['message'] ==
           'Task status updated';
     } on Exception {
@@ -143,8 +156,11 @@ class TaskService extends ApiBase {
   /// - slug : The slug of the task to delete
   Future<bool> deleteTask(String slug) async {
     try {
-      final resultOfDelete =
-          await deleteUrl((Uri.parse(tasksUrl + '/' + slug)), '', token);
+      final resultOfDelete = await deleteUrl(
+        (Uri.parse(tasksUrl + '/' + slug)),
+        '',
+        token,
+      );
       return jsonDecode(resultOfDelete)['message'] as String == 'Task deleted';
     } on Exception {
       return false;

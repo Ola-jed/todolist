@@ -7,7 +7,7 @@ import 'package:todolist/views/ui/bottom_menubar.dart';
 import 'package:todolist/views/ui/tasks_list.dart';
 
 /// All actions of our menu
-class Actions{
+class Actions {
   static const String AllTasks = 'All tasks';
   static const String FinishedTasks = 'Finished tasks';
   static const String UnfinishedTasks = 'Unfinished tasks';
@@ -44,44 +44,50 @@ class _HomeScreenState extends State<HomeScreen> {
   /// ### Params
   /// - choice : The menu item chosen
   /// - context : The handler to locate the widget
-  Future<void> choiceAction(String choice,BuildContext context) async {
-    switch (choice){
-      case Actions.AllTasks : {
-        setState(() {
-          taskFillType = TasksFillType.All;
-        });
-        break;
-      }
-      case Actions.FinishedTasks: {
-        setState(() {
-          taskFillType = TasksFillType.Finished;
-        });
-        break;
-      }
-      case Actions.UnfinishedTasks: {
-        setState(() {
-          taskFillType = TasksFillType.Unfinished;
-        });
-        break;
-      }
-      case Actions.ExpiredTasks: {
-        setState(() {
-          taskFillType = TasksFillType.Expired;
-        });
-        break;
-      }
-      case Actions.SaveAll : {
-        final token = await getToken();
-        final tasks = await TaskService(token).getTasks();
-        await saveTasksToCsv(tasks);
-        ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(
-            content: const Text(
-              'Tasks exported in Android/data/com.ola.todolist/files/todolist.csv'
-            )
-        ));
-        break;
-      }
+  Future<void> choiceAction(String choice, BuildContext context) async {
+    switch (choice) {
+      case Actions.AllTasks:
+        {
+          setState(() {
+            taskFillType = TasksFillType.All;
+          });
+          break;
+        }
+      case Actions.FinishedTasks:
+        {
+          setState(() {
+            taskFillType = TasksFillType.Finished;
+          });
+          break;
+        }
+      case Actions.UnfinishedTasks:
+        {
+          setState(() {
+            taskFillType = TasksFillType.Unfinished;
+          });
+          break;
+        }
+      case Actions.ExpiredTasks:
+        {
+          setState(() {
+            taskFillType = TasksFillType.Expired;
+          });
+          break;
+        }
+      case Actions.SaveAll:
+        {
+          final token = await getToken();
+          final tasks = await TaskService(token).getTasks();
+          await saveTasksToCsv(tasks);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: const Text(
+                'Tasks exported in Android/data/com.ola.todolist/files/todolist.csv',
+              ),
+            ),
+          );
+          break;
+        }
     }
   }
 
@@ -95,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             setState(() {
               _isSearching = !_isSearching;
-              if(!_isSearching) {
+              if (!_isSearching) {
                 _controller.clear();
                 searchContent = '';
               }
@@ -114,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   readOnly: !_isSearching,
                   decoration: const InputDecoration(
                     hintText: 'Home',
-                    border: InputBorder.none
+                    border: InputBorder.none,
                   ),
                   onTap: () {
                     setState(() {
@@ -122,51 +128,51 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                   },
                   onChanged: (value) {
-                    setState(() {
-                      searchContent = value;
-                      taskFillType = TasksFillType.Search;
-                    });
-                  }
-                )
+                    setState(
+                      () {
+                        searchContent = value;
+                        taskFillType = TasksFillType.Search;
+                      },
+                    );
+                  },
+                ),
               ),
-            ]
-          )
+            ],
+          ),
         ),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: (String val) async {
-              await choiceAction(val,context);
+              await choiceAction(val, context);
             },
-            itemBuilder: (BuildContext context){
-              return Actions.choices.map((String choice){
+            itemBuilder: (BuildContext context) {
+              return Actions.choices.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
-                  child: Text(choice)
+                  child: Text(choice),
                 );
               }).toList();
-            }
+            },
           )
-        ]
+        ],
       ),
       body: TasksList(
         tasksFillType: taskFillType,
-        searchContent: searchContent
+        searchContent: searchContent,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
             context: context,
             builder: (context) {
-              return Scaffold(
-                body: TaskForm()
-              );
-            }
+              return Scaffold(body: TaskForm());
+            },
           );
         },
         backgroundColor: Colors.teal,
-        child: const Icon(Icons.add)
+        child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: BottomMenuBar(currentIndex: 0)
+      bottomNavigationBar: BottomMenuBar(currentIndex: 0),
     );
   }
 }

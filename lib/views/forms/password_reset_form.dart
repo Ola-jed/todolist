@@ -13,6 +13,7 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
   var data = Map();
   final _formKey = GlobalKey<FormState>();
   final emailRegex = RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+");
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,63 +63,70 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                   side: const BorderSide(color: Colors.black, width: 1),
                   minimumSize: const Size.fromHeight(50),
                 ),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    try {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Reset password'),
-                            content: const Text(
-                              'Do you want to reset your password ?',
-                            ),
-                            actions: [
-                              TextButton(
-                                  onPressed: () async {
-                                    final hasReset =
-                                        await AuthService().resetPassword(data);
-                                    if (hasReset) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: const Text(
-                                            'An email has been sent to you. Check your emails',
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: const Text(
-                                            'An error occurred during the process',
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                    Navigator.pop(context, true);
-                                  },
-                                  child: const Text('Yes')),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, true);
-                                },
-                                child: const Text('No'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } on Exception {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Signin failed')),
-                      );
-                    }
-                  }
-                },
-                child: const Text('Reset password'),
+                onPressed: _loading
+                    ? null
+                    : () async {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          setState(() => _loading = true);
+                          try {
+                            // TODO : Fix the issue with the snackbars nto showing
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Reset password'),
+                                  content: const Text(
+                                    'Do you want to reset your password ?',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        final hasReset = await AuthService()
+                                            .resetPassword(data);
+                                        if (hasReset) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: const Text(
+                                                'An email has been sent to you. Check your emails',
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: const Text(
+                                                'An error occurred during the process',
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        Navigator.pop(context, true);
+                                      },
+                                      child: const Text('Yes'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, true);
+                                      },
+                                      child: const Text('No'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Signin failed')),
+                            );
+                          } finally {
+                            setState(() => _loading = false);
+                          }
+                        }
+                      },
+                child: _loading
+                    ? CircularProgressIndicator()
+                    : const Text('Reset password'),
               ),
             ),
             Container(

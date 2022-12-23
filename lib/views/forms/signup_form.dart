@@ -12,6 +12,7 @@ class SignupForm extends StatefulWidget {
 
 class _SignupFormState extends State<SignupForm> {
   bool _isObscure = true;
+  bool _loading = false;
   final _formKey = GlobalKey<FormState>();
   var data = Map();
   final emailRegex = RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+");
@@ -50,10 +51,11 @@ class _SignupFormState extends State<SignupForm> {
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email)),
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  labelText: 'Email',
+                  prefixIcon: Icon(Icons.email),
+                ),
                 onSaved: (value) => data['email'] = value,
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
@@ -104,22 +106,31 @@ class _SignupFormState extends State<SignupForm> {
                   side: BorderSide(color: Colors.black, width: 1),
                   minimumSize: const Size.fromHeight(50),
                 ),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    try {
-                      await storeToken(await AuthService().makeSignup(data));
-                      Navigator.pushNamed(context, '/');
-                    } on Exception {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Signup failed'),
-                        ),
-                      );
-                    }
-                  }
-                },
-                child: const Text('Sign up'),
+                onPressed: _loading
+                    ? null
+                    : () async {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          setState(() => _loading = true);
+                          try {
+                            await storeToken(
+                              await AuthService().makeSignup(data),
+                            );
+                            Navigator.pushNamed(context, '/');
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Signup failed'),
+                              ),
+                            );
+                          } finally {
+                            setState(() => _loading = false);
+                          }
+                        }
+                      },
+                child: _loading
+                    ? CircularProgressIndicator()
+                    : const Text('Sign up'),
               ),
             ),
             Container(
