@@ -4,6 +4,7 @@ import 'package:slugify/slugify.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
 
 /// Our task creation and update form
@@ -36,8 +37,8 @@ class _TaskFormState extends State<TaskForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: const Text(
-                'Task',
+              child: Text(
+                $(context).task,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -50,15 +51,15 @@ class _TaskFormState extends State<TaskForm> {
               child: TextFormField(
                 initialValue: hasTask ? widget.task!.title : null,
                 onSaved: (value) => data['title'] = value,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Title',
+                  labelText: $(context).title,
                   prefixIcon: Icon(Icons.title),
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'The title field is required';
+                    return $(context).titleRequired;
                   }
                   return null;
                 },
@@ -69,10 +70,10 @@ class _TaskFormState extends State<TaskForm> {
               child: TextFormField(
                 initialValue: hasTask ? widget.task!.description : null,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Description',
+                  labelText: $(context).description,
                   prefixIcon: Icon(Icons.description),
                 ),
                 onSaved: (value) => data['description'] = value,
@@ -81,7 +82,7 @@ class _TaskFormState extends State<TaskForm> {
                 minLines: 1,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'The description field is required';
+                    return $(context).descriptionRequired;
                   }
                   return null;
                 },
@@ -97,17 +98,17 @@ class _TaskFormState extends State<TaskForm> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Date limit',
+                  labelText: $(context).dateLimit,
                   prefixIcon: Icon(Icons.date_range),
                 ),
                 validator: (value) {
                   if (value == null || value.length < 10) {
-                    return 'The date limit field is required';
+                    return $(context).dateLimitRequired;
                   }
                   return null;
                 },
                 onTap: () async {
-                  var date = await showDatePicker(
+                  final date = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2021),
@@ -127,15 +128,15 @@ class _TaskFormState extends State<TaskForm> {
                 value: hasTask ? widget.task!.priority.toDouble() : 1,
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The priority field is required';
+                    return $(context).priorityRequired;
                   }
                   return null;
                 },
                 onChanged: (value) => priority = value.toInt(),
                 min: 1,
                 max: 10,
-                decoration: const InputDecoration(
-                  labelText: 'Priority',
+                decoration: InputDecoration(
+                  labelText: $(context).priority,
                   border: OutlineInputBorder(),
                   filled: true,
                 ),
@@ -155,7 +156,9 @@ class _TaskFormState extends State<TaskForm> {
                       (states) => Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
-                  const Expanded(child: const Text('Has steps ?'))
+                  Expanded(
+                    child: Text($(context).hasSteps),
+                  ),
                 ],
               ),
             ),
@@ -190,12 +193,14 @@ class _TaskFormState extends State<TaskForm> {
                               builder: (context) {
                                 return AlertDialog(
                                   title: Text(
-                                    hasTask ? 'Task update' : 'Task creation',
+                                    hasTask
+                                        ? $(context).taskUpdate
+                                        : $(context).taskCreation,
                                   ),
                                   content: Text(
                                     hasTask
-                                        ? 'Could not update the task'
-                                        : 'Could not create the task',
+                                        ? $(context).couldNotUpdateTask
+                                        : $(context).couldNotCreateTask,
                                   ),
                                 );
                               },
@@ -206,7 +211,9 @@ class _TaskFormState extends State<TaskForm> {
                       },
                 child: _loading
                     ? CircularProgressIndicator()
-                    : Text(hasTask ? 'Update task' : 'Create task'),
+                    : Text(
+                        hasTask ? $(context).updateTask : $(context).createTask,
+                      ),
               ),
             ),
           ],

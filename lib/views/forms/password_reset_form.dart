@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
 
 /// Our signin form
@@ -27,8 +28,8 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: const Text(
-                'Password reset',
+              child: Text(
+                $(context).passwordReset,
                 style: const TextStyle(
                   fontSize: 17,
                 ),
@@ -39,18 +40,18 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onSaved: (value) => data['email'] = value,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  hintText: 'Enter your email',
+                  hintText: $(context).enterEmail,
                   prefixIcon: Icon(Icons.email),
                 ),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The email field is required';
+                    return $(context).emailRequired;
                   }
                   if (!emailRegex.hasMatch(value!)) {
-                    return 'Invalid email format';
+                    return $(context).invalidEmailFormat;
                   }
                   return null;
                 },
@@ -66,14 +67,14 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                           _formKey.currentState!.save();
                           setState(() => _loading = true);
                           try {
-                            // TODO : Fix the issue with the snackbars nto showing
+                            // TODO : Fix the issue with the snackbars not showing
                             showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: const Text('Reset password'),
-                                  content: const Text(
-                                    'Do you want to reset your password ?',
+                                  title: Text($(context).resetPassword),
+                                  content: Text(
+                                    $(context).resetPasswordQuestion,
                                   ),
                                   actions: [
                                     TextButton(
@@ -81,31 +82,33 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                                         final hasReset = await AuthService()
                                             .resetPassword(data);
                                         if (hasReset) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: const Text(
-                                                'An email has been sent to you. Check your emails',
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                $(context).emailSentToYou,
                                               ),
                                             ),
                                           );
                                         } else {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: const Text(
-                                                'An error occurred during the process',
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                $(context).anErrorOccurred,
                                               ),
                                             ),
                                           );
                                         }
                                         Navigator.pop(context, true);
                                       },
-                                      child: const Text('Yes'),
+                                      child: Text($(context).yes),
                                     ),
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pop(context, true);
                                       },
-                                      child: const Text('No'),
+                                      child: Text($(context).no),
                                     ),
                                   ],
                                 );
@@ -113,7 +116,9 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                             );
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Signin failed')),
+                              SnackBar(
+                                content: Text($(context).anErrorOccurred),
+                              ),
                             );
                           } finally {
                             setState(() => _loading = false);
@@ -122,7 +127,7 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                       },
                 child: _loading
                     ? CircularProgressIndicator()
-                    : const Text('Reset password'),
+                    : Text($(context).resetPassword),
               ),
             ),
             Container(
@@ -133,7 +138,7 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
                   },
-                  child: const Text('Not yet registered ? Sign up'),
+                  child: Text($(context).notYetRegistered),
                 ),
               ),
             ),

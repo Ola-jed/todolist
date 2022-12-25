@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
 import 'package:todolist/api/token_handler.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
 
 /// Our signup form
@@ -33,15 +34,15 @@ class _SignupFormState extends State<SignupForm> {
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
                 onSaved: (value) => data['name'] = value,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Name',
+                  labelText: $(context).name,
                   prefixIcon: Icon(Icons.account_circle_outlined),
                 ),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The name field is required';
+                    return $(context).nameRequired;
                   }
                   return null;
                 },
@@ -51,19 +52,19 @@ class _SignupFormState extends State<SignupForm> {
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Email',
+                  labelText: $(context).email,
                   prefixIcon: Icon(Icons.email),
                 ),
                 onSaved: (value) => data['email'] = value,
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The email field is required';
+                    return $(context).emailRequired;
                   }
                   if (!emailRegex.hasMatch(value!)) {
-                    return 'Invalid email format';
+                    return $(context).invalidEmailFormat;
                   }
                   return null;
                 },
@@ -81,7 +82,7 @@ class _SignupFormState extends State<SignupForm> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Password',
+                  labelText: $(context).password,
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -93,7 +94,7 @@ class _SignupFormState extends State<SignupForm> {
                 ),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The password field is required';
+                    return $(context).passwordRequired;
                   }
                   return null;
                 },
@@ -116,7 +117,7 @@ class _SignupFormState extends State<SignupForm> {
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Signup failed'),
+                                content: Text($(context).signupFailed),
                               ),
                             );
                           } finally {
@@ -126,7 +127,7 @@ class _SignupFormState extends State<SignupForm> {
                       },
                 child: _loading
                     ? CircularProgressIndicator()
-                    : const Text('Sign up'),
+                    : Text($(context).signup),
               ),
             ),
             Container(
@@ -137,7 +138,7 @@ class _SignupFormState extends State<SignupForm> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/signin');
                   },
-                  child: const Text('Already registered ? Sign in'),
+                  child: Text($(context).alreadyRegistered),
                 ),
               ),
             ),

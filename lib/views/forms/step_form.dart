@@ -4,6 +4,7 @@ import 'package:todolist/api/step_service.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/step.dart' as StepData;
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/screens/task_screen.dart';
 
 /// Our step creation and update form
@@ -38,8 +39,8 @@ class _StepFormState extends State<StepForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: const Text(
-                'Step',
+              child: Text(
+                $(context).step,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -52,15 +53,15 @@ class _StepFormState extends State<StepForm> {
               child: TextFormField(
                 initialValue: hasStep ? widget.step!.title : null,
                 onSaved: (value) => title = value!,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Title',
+                  labelText: $(context).title,
                   prefixIcon: Icon(Icons.title),
                 ),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The title field is required';
+                    return $(context).titleRequired;
                   }
                   return null;
                 },
@@ -72,15 +73,15 @@ class _StepFormState extends State<StepForm> {
                 value: 1,
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The priority field is required';
+                    return $(context).priorityRequired;
                   }
                   return null;
                 },
                 onChanged: (value) => priority = value.toInt(),
                 min: 1,
                 max: 10,
-                decoration: const InputDecoration(
-                  labelText: 'Priority',
+                decoration: InputDecoration(
+                  labelText: $(context).priority,
                   border: OutlineInputBorder(),
                   filled: true,
                 ),
@@ -111,8 +112,8 @@ class _StepFormState extends State<StepForm> {
                           .updateStep(widget.step!.id, step);
                     }
                     if (hasCreated) {
-                      final task =
-                          await TaskService(token).getTask(widget.taskSlug);
+                      final task = await TaskService(token)
+                              .getTask(widget.taskSlug);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -123,10 +124,10 @@ class _StepFormState extends State<StepForm> {
                       showDialog(
                         context: context,
                         builder: (_) {
-                          return const AlertDialog(
-                            title: Text('Step creation'),
+                          return AlertDialog(
+                            title: Text($(context).stepCreation),
                             content: Text(
-                              'Could not create/update the task step',
+                              $(context).couldNotCreateOrUpdateStep,
                             ),
                           );
                         },
@@ -135,7 +136,7 @@ class _StepFormState extends State<StepForm> {
                   }
                 },
                 child: Text(
-                  hasStep ? 'Update step' : 'Create step',
+                  hasStep ? $(context).updateStep : $(context).createStep,
                 ),
               ),
             ),

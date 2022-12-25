@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/todolist_theme.dart';
 
@@ -38,18 +39,18 @@ class _SigninFormState extends State<SigninForm> {
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onSaved: (value) => data['email'] = value,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Email',
+                  labelText: $(context).email,
                   prefixIcon: Icon(Icons.email),
                 ),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The email field is required';
+                    return $(context).emailRequired;
                   }
                   if (!emailRegex.hasMatch(value!)) {
-                    return 'Invalid email format';
+                    return $(context).invalidEmailFormat;
                   }
                   return null;
                 },
@@ -64,7 +65,7 @@ class _SigninFormState extends State<SigninForm> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  labelText: 'Password',
+                  labelText: $(context).password,
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -76,7 +77,7 @@ class _SigninFormState extends State<SigninForm> {
                 ),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? false) {
-                    return 'The password field is required';
+                    return $(context).passwordRequired;
                   }
                   return null;
                 },
@@ -102,7 +103,7 @@ class _SigninFormState extends State<SigninForm> {
                             } on Exception {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: const Text('Signin failed'),
+                                  content: Text($(context).signinFailed),
                                 ),
                               );
                             } finally {
@@ -112,7 +113,7 @@ class _SigninFormState extends State<SigninForm> {
                         },
                   child: _loading
                       ? CircularProgressIndicator()
-                      : const Text('Sign in'),
+                      : Text($(context).signin),
                 ),
               ),
             ),
@@ -121,10 +122,8 @@ class _SigninFormState extends State<SigninForm> {
               child: Center(
                 child: TextButton(
                   style: TodolistTheme.secondaryBtn(context),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
-                  child: const Text('Not yet registered ? Sign up'),
+                  onPressed: () => Navigator.pushNamed(context, '/signup'),
+                  child: Text($(context).notYetRegistered),
                 ),
               ),
             ),
@@ -136,7 +135,7 @@ class _SigninFormState extends State<SigninForm> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/forgotten-password');
                   },
-                  child: const Text('Forgotten password ?'),
+                  child: Text($(context).forgottenPassword),
                 ),
               ),
             ),

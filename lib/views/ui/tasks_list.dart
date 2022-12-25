@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/ui/task_widget.dart';
 
 /// Type of tasks we want to show
@@ -63,7 +64,7 @@ class _TasksListState extends State<TasksList> {
           if (tasks.isEmpty) {
             return Center(
               child: Text(
-                'No task',
+                $(context).noTask,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
@@ -80,7 +81,7 @@ class _TasksListState extends State<TasksList> {
         } else if (snapshot.hasError) {
           return Center(
             child: Text(
-              'Something weird happened',
+              $(context).anErrorOccurred,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,

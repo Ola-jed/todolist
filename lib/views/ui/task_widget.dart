@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/forms/task_form.dart';
 import 'package:todolist/views/screens/task_screen.dart';
 
@@ -25,9 +26,8 @@ class _TaskWidgetState extends State<TaskWidget> {
       margin: EdgeInsets.all(5),
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).colorScheme.surface
-      ),
+          borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).colorScheme.surface),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -69,7 +69,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               Expanded(
                 child: CheckboxListTile(
                   contentPadding: EdgeInsets.all(0),
-                  title: const Text('Finished '),
+                  title: Text($(context).finished),
                   value: widget.task.isFinished,
                   activeColor: Colors.black,
                   onChanged: (value) async {
@@ -82,8 +82,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                       });
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: const Text('Could not update this task'),
+                        SnackBar(
+                          content: Text($(context).couldNotUpdateTask),
                         ),
                       );
                     }
@@ -114,9 +114,9 @@ class _TaskWidgetState extends State<TaskWidget> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: const Text('Delete task ?'),
-                          content: const Text(
-                            'Do you want to delete this task ?',
+                          title: Text($(context).deleteTask),
+                          content: Text(
+                            $(context).deleteTaskQuestion,
                           ),
                           actions: [
                             TextButton(
@@ -131,25 +131,25 @@ class _TaskWidgetState extends State<TaskWidget> {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return const AlertDialog(
-                                        title: const Text(
-                                          'Task deletion',
+                                      return AlertDialog(
+                                        title: Text(
+                                          $(context).taskDeletion,
                                         ),
-                                        content: const Text(
-                                          'Could not delete task',
+                                        content: Text(
+                                          $(context).couldNotDeleteTask,
                                         ),
                                       );
                                     },
                                   );
                                 }
                               },
-                              child: const Text('Yes'),
+                              child: Text($(context).yes),
                             ),
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context, true);
                               },
-                              child: const Text('No'),
+                              child: Text($(context).no),
                             )
                           ],
                         );
