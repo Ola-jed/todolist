@@ -3,6 +3,7 @@ import 'package:todolist/api/auth_service.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/todolist_theme.dart';
+import 'package:todolist/views/ui/routes.dart';
 
 /// Our signin form
 class SigninForm extends StatefulWidget {
@@ -99,7 +100,7 @@ class _SigninFormState extends State<SigninForm> {
                               await storeToken(
                                 await AuthService().makeSignin(data),
                               );
-                              Navigator.pushNamed(context, '/');
+                              Navigator.pushNamed(context, Routes.home);
                             } on Exception {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -122,7 +123,7 @@ class _SigninFormState extends State<SigninForm> {
               child: Center(
                 child: TextButton(
                   style: TodolistTheme.secondaryBtn(context),
-                  onPressed: () => Navigator.pushNamed(context, '/signup'),
+                  onPressed: () => Navigator.pushNamed(context, Routes.signup),
                   child: Text($(context).notYetRegistered),
                 ),
               ),
@@ -133,7 +134,7 @@ class _SigninFormState extends State<SigninForm> {
                 child: TextButton(
                   style: TodolistTheme.secondaryBtn(context),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/forgotten-password');
+                    Navigator.pushNamed(context, Routes.forgottenPassword);
                   },
                   child: Text($(context).forgottenPassword),
                 ),

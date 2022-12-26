@@ -7,6 +7,7 @@ import 'package:todolist/views/screens/account_screen.dart';
 import 'package:todolist/views/screens/auth_screen.dart';
 import 'package:todolist/views/screens/home_screen.dart';
 import 'package:todolist/views/screens/password_reset_screen.dart';
+import 'package:todolist/views/ui/routes.dart';
 
 /// Build the application
 /// If we have a valid token in the storage, we redirect to the home screen
@@ -14,11 +15,11 @@ import 'package:todolist/views/screens/password_reset_screen.dart';
 Widget app(bool hasValidToken) {
   return ConnectionNotifier(
     child: MaterialApp(
-      title: 'TodoList',
+      title: 'Todolist',
       theme: TodolistTheme.lightTheme,
       darkTheme: TodolistTheme.darkTheme,
       themeMode: ThemeMode.system,
-      initialRoute: hasValidToken ? '/' : '/signin',
+      initialRoute: hasValidToken ? Routes.home : Routes.signin,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -30,11 +31,11 @@ Widget app(bool hasValidToken) {
         Locale('fr', ''),
       ],
       routes: {
-        '/signup': (context) => AuthScreen(authType: AuthType.Signup),
-        '/signin': (context) => AuthScreen(authType: AuthType.Signin),
-        '/account': (context) => AccountScreen(),
-        '/forgotten-password': (context) => PasswordResetScreen(),
-        '/': (context) => HomeScreen(),
+        Routes.signup: (context) => AuthScreen(authType: AuthType.Signup),
+        Routes.signin: (context) => AuthScreen(authType: AuthType.Signin),
+        Routes.account: (context) => AccountScreen(),
+        Routes.forgottenPassword: (context) => PasswordResetScreen(),
+        Routes.home: (context) => HomeScreen(),
       },
       debugShowCheckedModeBanner: false,
     ),

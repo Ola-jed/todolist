@@ -98,7 +98,7 @@ class BottomMenuBar extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context, true);
+                          Navigator.pop(context);
                         },
                         child: Text($(context).no),
                       ),

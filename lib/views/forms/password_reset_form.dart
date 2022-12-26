@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
+import 'package:todolist/views/ui/routes.dart';
 
 /// Our signin form
 class PasswordResetForm extends StatefulWidget {
@@ -100,13 +101,13 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                                             ),
                                           );
                                         }
-                                        Navigator.pop(context, true);
+                                        Navigator.pop(context);
                                       },
                                       child: Text($(context).yes),
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pop(context, true);
+                                        Navigator.pop(context);
                                       },
                                       child: Text($(context).no),
                                     ),
@@ -136,7 +137,7 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
                 child: TextButton(
                   style: TodolistTheme.secondaryBtn(context),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/signup');
+                    Navigator.pushNamed(context, Routes.signup);
                   },
                   child: Text($(context).notYetRegistered),
                 ),

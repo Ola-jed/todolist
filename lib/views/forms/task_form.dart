@@ -6,6 +6,7 @@ import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
+import 'package:todolist/views/ui/routes.dart';
 
 /// Our task creation and update form
 class TaskForm extends StatefulWidget {
@@ -58,7 +59,7 @@ class _TaskFormState extends State<TaskForm> {
                   prefixIcon: Icon(Icons.title),
                 ),
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
+                  if (value?.trim().isEmpty ?? false) {
                     return $(context).titleRequired;
                   }
                   return null;
@@ -81,7 +82,7 @@ class _TaskFormState extends State<TaskForm> {
                 maxLines: 6,
                 minLines: 1,
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
+                  if (value?.trim().isEmpty ?? false) {
                     return $(context).descriptionRequired;
                   }
                   return null;
@@ -186,7 +187,7 @@ class _TaskFormState extends State<TaskForm> {
                                 )
                               : await taskService.createTask(task);
                           if (hasCreated) {
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, Routes.home);
                           } else {
                             showDialog(
                               context: context,

@@ -87,7 +87,9 @@ class _StepWidgetState extends State<StepWidget> {
                     builder: (context) {
                       return Scaffold(
                         body: StepForm(
-                            taskSlug: widget.taskSlug, step: widget.step),
+                          taskSlug: widget.taskSlug,
+                          step: widget.step,
+                        ),
                       );
                     },
                   );
@@ -99,11 +101,11 @@ class _StepWidgetState extends State<StepWidget> {
               IconButton(
                 onPressed: () async {
                   final token = await getToken();
-                  final hasDeleted =
-                      await StepService(token).deleteStep(widget.step.id);
+                  final hasDeleted = await StepService(token)
+                      .deleteStep(widget.step.id);
                   if (hasDeleted) {
-                    final task =
-                        await TaskService(token).getTask(widget.taskSlug);
+                    final task = await TaskService(token)
+                        .getTask(widget.taskSlug);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

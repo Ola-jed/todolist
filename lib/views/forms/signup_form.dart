@@ -3,6 +3,7 @@ import 'package:todolist/api/auth_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
+import 'package:todolist/views/ui/routes.dart';
 
 /// Our signup form
 class SignupForm extends StatefulWidget {
@@ -29,7 +30,11 @@ class _SignupFormState extends State<SignupForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Center(child: const Image(image: AssetImage('assets/icon.png'))),
+            Center(
+              child: const Image(
+                image: AssetImage('assets/icon.png'),
+              ),
+            ),
             Container(
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(
@@ -113,7 +118,7 @@ class _SignupFormState extends State<SignupForm> {
                             await storeToken(
                               await AuthService().makeSignup(data),
                             );
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, Routes.home);
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -136,7 +141,7 @@ class _SignupFormState extends State<SignupForm> {
                 child: TextButton(
                   style: TodolistTheme.secondaryBtn(context),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/signin');
+                    Navigator.pushNamed(context, Routes.signin);
                   },
                   child: Text($(context).alreadyRegistered),
                 ),

@@ -5,6 +5,7 @@ import 'package:todolist/models/user.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
 import 'package:todolist/views/ui/bottom_menubar.dart';
+import 'package:todolist/views/ui/routes.dart';
 
 /// Account screen
 class AccountScreen extends StatefulWidget {
@@ -299,7 +300,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             await removeToken();
                                             Navigator.of(context)
                                                 .pushNamedAndRemoveUntil(
-                                              '/signup',
+                                              Routes.signup,
                                               (Route<dynamic> route) => false,
                                             );
                                           } else {

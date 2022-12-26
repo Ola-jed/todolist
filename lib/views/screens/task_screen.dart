@@ -7,6 +7,7 @@ import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/tasks_scheduler.dart';
 import 'package:todolist/utils/todolist_theme.dart';
 import 'package:todolist/views/forms/step_form.dart';
+import 'package:todolist/views/ui/routes.dart';
 import 'package:todolist/views/ui/step_widget.dart';
 
 /// Our task screen <br>
@@ -29,9 +30,7 @@ class TaskScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushNamed(context, '/');
-          },
+          onPressed: () => Navigator.pushNamed(context, Routes.home),
         ),
         title: Text(task.title),
       ),

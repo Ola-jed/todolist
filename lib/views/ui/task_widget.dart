@@ -5,6 +5,7 @@ import 'package:todolist/models/task.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/forms/task_form.dart';
 import 'package:todolist/views/screens/task_screen.dart';
+import 'package:todolist/views/ui/routes.dart';
 
 /// Widget to show tasks on home screen
 class TaskWidget extends StatefulWidget {
@@ -126,7 +127,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                                     .deleteTask(widget.task.slug);
                                 if (hasDeleted) {
                                   dispose();
-                                  Navigator.pushNamed(context, '/');
+                                  Navigator.pushNamed(context, Routes.home);
                                 } else {
                                   showDialog(
                                     context: context,
