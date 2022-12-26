@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/account_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/user.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
 import 'package:todolist/views/ui/bottom_menubar.dart';
 
@@ -75,7 +76,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'The name field is required';
+                              return $(context).nameRequired;
                             }
                             return null;
                           },
@@ -94,10 +95,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           onSaved: (value) => data['email'] = value,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'The email field is required';
+                              return $(context).emailRequired;
                             }
                             if (!emailRegex.hasMatch(value)) {
-                              return 'Invalid email format';
+                              return $(context).invalidEmailFormat;
                             }
                             return null;
                           },
@@ -114,7 +115,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             filled: true,
-                            hintText: 'Enter your password',
+                            hintText: $(context).enterPassword,
                             prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -128,7 +129,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'The password field is required';
+                              return $(context).passwordRequired;
                             }
                             return null;
                           },
@@ -145,7 +146,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             filled: true,
-                            hintText: 'New password (facultative)',
+                            hintText: $(context).newPassword,
                             prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -175,7 +176,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           onPressed: () => setState(
                               () => _dangerZoneVisible = !_dangerZoneVisible),
                           label: Text(
-                            'Danger zone',
+                            $(context).dangerZone,
                             style: TextStyle(fontSize: 18, color: Colors.red),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -199,31 +200,32 @@ class _AccountScreenState extends State<AccountScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text('Update account ?'),
+                                      title: Text($(context).updateAccount),
                                       content: Text(
-                                        'Do you really want to update your account ?',
+                                        $(context).updateAccountQuestion,
                                       ),
                                       actions: [
                                         TextButton(
                                           onPressed: () async {
                                             try {
-                                              var token = await getToken();
-                                              var hasUpdated =
+                                              final token = await getToken();
+                                              final hasUpdated =
                                                   await AccountService(token)
                                                       .updateAccount(data);
                                               if (hasUpdated) {
-                                                setState(() {
-                                                  user = User(
+                                                setState(
+                                                  () => user = User(
                                                     data['name'],
                                                     data['email'],
-                                                  );
-                                                });
+                                                  ),
+                                                );
                                               } else {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   SnackBar(
-                                                    content: const Text(
-                                                      'Account update failed',
+                                                    content: Text(
+                                                      $(context)
+                                                          .accountUpdateFailed,
                                                     ),
                                                   ),
                                                 );
@@ -232,8 +234,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                 SnackBar(
-                                                  content: const Text(
-                                                    'Account update failed',
+                                                  content: Text(
+                                                    $(context)
+                                                        .accountUpdateFailed,
                                                   ),
                                                 ),
                                               );
@@ -244,7 +247,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               );
                                             }
                                           },
-                                          child: const Text('Yes'),
+                                          child: Text($(context).yes),
                                         ),
                                         TextButton(
                                           onPressed: () {
@@ -253,15 +256,15 @@ class _AccountScreenState extends State<AccountScreen> {
                                               true,
                                             );
                                           },
-                                          child: const Text('No'),
-                                        )
+                                          child: Text($(context).no),
+                                        ),
                                       ],
                                     );
                                   },
                                 );
                               }
                             },
-                            label: const Text('Update account'),
+                            label: Text($(context).updateAccountDeclarative),
                           ),
                         ),
                       ),
@@ -280,9 +283,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text('Delete account ?'),
-                                    content: const Text(
-                                        'Do you really want to delete your account ?'),
+                                    title: Text($(context).deleteAccount),
+                                    content: Text(
+                                      $(context).deleteAccountQuestion,
+                                    ),
                                     actions: [
                                       TextButton(
                                         onPressed: () async {
@@ -303,13 +307,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 .showSnackBar(
                                               SnackBar(
                                                 content: Text(
-                                                  'Account delete failed',
+                                                  $(context)
+                                                      .accountDeletionFailed,
                                                 ),
                                               ),
                                             );
                                           }
                                         },
-                                        child: const Text('Yes'),
+                                        child: Text($(context).yes),
                                       ),
                                       TextButton(
                                         onPressed: () {
@@ -318,7 +323,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             true,
                                           );
                                         },
-                                        child: const Text('No'),
+                                        child: Text($(context).no),
                                       ),
                                     ],
                                   );
@@ -326,8 +331,8 @@ class _AccountScreenState extends State<AccountScreen> {
                               );
                             },
                             icon: const Icon(Icons.delete_forever),
-                            label: const Text(
-                              'Delete account',
+                            label: Text(
+                              $(context).deleteAccountDeclarative,
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor:

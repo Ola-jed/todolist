@@ -8,20 +8,27 @@ Future<void> scheduleTask(Task taskToSchedule) async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('app_icon');
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final androidNotificationDetails =
-      AndroidNotificationDetails('1', 'Todolist', channelDescription: 'Tasks from todolist app');
-  final initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
+  final androidNotificationDetails = AndroidNotificationDetails(
+    '1',
+    'Todolist',
+    channelDescription: 'Tasks from todolist app',
+  );
+  final initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   await flutterLocalNotificationsPlugin.zonedSchedule(
-      1,
-      'Todolist : ${taskToSchedule.title}',
-      taskToSchedule.description,
-      tz.TZDateTime.from(
-              taskToSchedule.dateLimit, tz.getLocation('Africa/Porto-Novo'))
-          .add(Duration(hours: 10)),
-      NotificationDetails(android: androidNotificationDetails),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime);
+    1,
+    'Todolist : ${taskToSchedule.title}',
+    taskToSchedule.description,
+    tz.TZDateTime.from(
+      taskToSchedule.dateLimit,
+      tz.getLocation('Africa/Porto-Novo'),
+    ).add(
+      Duration(hours: 10),
+    ),
+    NotificationDetails(android: androidNotificationDetails),
+    androidAllowWhileIdle: true,
+    uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+  );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/tasks_csv_export.dart';
 import 'package:todolist/views/forms/task_form.dart';
 import 'package:todolist/views/ui/bottom_menubar.dart';
@@ -80,15 +81,19 @@ class _HomeScreenState extends State<HomeScreen> {
           final tasks = await TaskService(token).getTasks();
           await saveTasksToCsv(tasks);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: const Text(
-                'Tasks exported in Android/data/com.ola.todolist/files/todolist.csv',
-              ),
+            SnackBar(
+              content: Text($(context).tasksExportedTo),
             ),
           );
           break;
         }
     }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -118,14 +123,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   autofocus: false,
                   controller: _controller,
                   readOnly: !_isSearching,
-                  decoration: const InputDecoration(
-                    hintText: 'Home',
+                  decoration: InputDecoration(
+                    hintText: $(context).home,
                     border: InputBorder.none,
                   ),
                   onTap: () {
-                    setState(() {
-                      _isSearching = true;
-                    });
+                    setState(() => _isSearching = true);
                   },
                   onChanged: (value) {
                     setState(
@@ -164,9 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) {
-              return Scaffold(body: TaskForm());
-            },
+            builder: (_) => Scaffold(body: TaskForm()),
           );
         },
         backgroundColor: Theme.of(context).colorScheme.primary,

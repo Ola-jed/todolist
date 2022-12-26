@@ -3,22 +3,26 @@ import 'package:todolist/api/step_service.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/models/step.dart' as StepData;
 import 'package:todolist/api/token_handler.dart';
+import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/forms/step_form.dart';
 import 'package:todolist/views/screens/task_screen.dart';
-
 
 /// A widget to show a step
 class StepWidget extends StatefulWidget {
   final StepData.Step step;
   final String taskSlug;
-  const StepWidget({Key? key, required this.step, required this.taskSlug}) : super(key: key);
+
+  const StepWidget({
+    Key? key,
+    required this.step,
+    required this.taskSlug,
+  }) : super(key: key);
 
   @override
   _StepWidgetState createState() => _StepWidgetState();
 }
 
 class _StepWidgetState extends State<StepWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +30,7 @@ class _StepWidgetState extends State<StepWidget> {
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: const Color(0xFF1C1C1C)
+        color: const Color(0xFF1C1C1C),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,55 +41,55 @@ class _StepWidgetState extends State<StepWidget> {
               widget.step.title,
               style: const TextStyle(
                 decoration: TextDecoration.underline,
-                fontSize: 15
-              )
-            )
+                fontSize: 15,
+              ),
+            ),
           ),
           Row(
             children: <Widget>[
               Text(
-                'Priority : ${widget.step.priority}',
-                style: const TextStyle(fontSize: 15)
+                '${$(context).priority} : ${widget.step.priority}',
+                style: const TextStyle(fontSize: 15),
               ),
               Spacer(),
               Expanded(
                 child: CheckboxListTile(
                   contentPadding: EdgeInsets.all(0),
-                  title: const Text('Finished ? '),
+                  title: Text('${$(context).finished} ? '),
                   value: widget.step.isFinished,
                   activeColor: Colors.black,
                   onChanged: (value) async {
-                    /// Mark as (un)finished
                     final token = await getToken();
-                    final hasMarked = await StepService(token).finishStep(widget.step.id, value!);
-                    if(hasMarked) {
+                    final hasMarked = await StepService(token)
+                        .finishStep(widget.step.id, value!);
+                    if (hasMarked) {
                       setState(() {
                         widget.step.isFinished = !widget.step.isFinished;
                       });
-                    }
-                    else {
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: const Text('Could not update this step')
-                        )
+                        SnackBar(
+                          content: Text($(context).couldNotUpdateStep),
+                        ),
                       );
                     }
-                  }
-                )
+                  },
+                ),
               )
-            ]
+            ],
           ),
           Row(
             children: <Widget>[
               IconButton(
-                onPressed: (){
+                onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return Scaffold(
-                        body: StepForm(taskSlug: widget.taskSlug,step: widget.step)
+                        body: StepForm(
+                            taskSlug: widget.taskSlug, step: widget.step),
                       );
-                    }
+                    },
                   );
                 },
                 icon: const Icon(Icons.update),
@@ -93,39 +97,38 @@ class _StepWidgetState extends State<StepWidget> {
               ),
               Spacer(),
               IconButton(
-                /// We delete and remove this step
-                onPressed: () async{
+                onPressed: () async {
                   final token = await getToken();
-                  final hasDeleted = await StepService(token).deleteStep(widget.step.id);
-                  if(hasDeleted) {
-                    // We redirect to the task screen but we get the task before
-                    final task = await TaskService(token).getTask(widget.taskSlug);
+                  final hasDeleted =
+                      await StepService(token).deleteStep(widget.step.id);
+                  if (hasDeleted) {
+                    final task =
+                        await TaskService(token).getTask(widget.taskSlug);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TaskScreen(task: task)
-                      )
+                        builder: (context) => TaskScreen(task: task),
+                      ),
                     );
-                  }
-                  else{
+                  } else {
                     showDialog(
                       context: context,
-                      builder:(context) {
-                        return const AlertDialog(
-                          title: Text('Step deletion'),
-                          content: Text('Could not delete task step')
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text($(context).stepDeletion),
+                          content: Text($(context).couldNotDeleteStep),
                         );
-                      }
+                      },
                     );
                   }
                 },
                 icon: const Icon(Icons.delete),
-                color: Colors.red
-              )
-            ]
-          )
-        ]
-      )
+                color: Colors.red,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

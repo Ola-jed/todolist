@@ -9,7 +9,8 @@ enum AuthType { Signup, Signin }
 /// We don't want to go back when we are on this screen
 class AuthScreen extends StatelessWidget {
   final authType;
-  const AuthScreen({@required this.authType, Key? key}) : super(key: key);
+
+  const AuthScreen({required this.authType, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

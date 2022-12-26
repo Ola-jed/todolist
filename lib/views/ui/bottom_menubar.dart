@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
 import 'package:todolist/api/token_handler.dart';
+import 'package:todolist/utils/l10n.dart';
 
 /// Our bottom menu bar
 class BottomMenuBar extends StatelessWidget {
@@ -19,21 +20,21 @@ class BottomMenuBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
       items: <BottomNavigationBarItem>[
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: const Icon(Icons.home),
-          label: 'Home',
+          label: $(context).home,
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: const Icon(Icons.account_circle),
-          label: 'Account',
+          label: $(context).account,
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: const Icon(Icons.help),
-          label: 'About',
+          label: $(context).about,
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: const Icon(Icons.logout),
-          label: 'Logout',
+          label: $(context).logout,
         ),
       ],
       onTap: (int index) async {
@@ -67,10 +68,10 @@ class BottomMenuBar extends StatelessWidget {
             {
               showDialog(
                 context: context,
-                builder: (context) {
+                builder: (_) {
                   return AlertDialog(
-                    title: const Text('Logout ?'),
-                    content: const Text('Do you really want to logout ?'),
+                    title: Text($(context).logout),
+                    content: Text($(context).logoutQuestion),
                     actions: [
                       TextButton(
                         onPressed: () async {
@@ -80,9 +81,9 @@ class BottomMenuBar extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                return const AlertDialog(
-                                  title: const Text('Logout'),
-                                  content: const Text('Could not logout'),
+                                return AlertDialog(
+                                  title: Text($(context).logout),
+                                  content: Text($(context).couldNotLogout),
                                 );
                               },
                             );
@@ -93,13 +94,13 @@ class BottomMenuBar extends StatelessWidget {
                             );
                           }
                         },
-                        child: const Text('Yes'),
+                        child: Text($(context).yes),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context, true);
                         },
-                        child: const Text('No'),
+                        child: Text($(context).no),
                       ),
                     ],
                   );
