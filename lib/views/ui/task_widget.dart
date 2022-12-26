@@ -27,8 +27,9 @@ class _TaskWidgetState extends State<TaskWidget> {
       margin: EdgeInsets.all(5),
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).colorScheme.surface),
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).colorScheme.surface,
+      ),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -47,21 +48,11 @@ class _TaskWidgetState extends State<TaskWidget> {
               padding: EdgeInsets.only(left: 10, top: 10),
               child: Text(
                 widget.task.title,
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.all(5),
-              padding: EdgeInsets.all(5),
-              child: Text(
-                widget.task.description,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 15),
               ),
             ),
             Row(children: <Widget>[
@@ -93,6 +84,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               )
             ]),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 IconButton(
                   onPressed: () {
@@ -105,15 +97,14 @@ class _TaskWidgetState extends State<TaskWidget> {
                       },
                     );
                   },
-                  icon: const Icon(Icons.update),
-                  color: Colors.teal,
+                  icon: const Icon(Icons.edit),
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                Spacer(),
                 IconButton(
                   onPressed: () async {
                     showDialog(
                       context: context,
-                      builder: (context) {
+                      builder: (ctx) {
                         return AlertDialog(
                           title: Text($(context).deleteTask),
                           content: Text(
@@ -147,9 +138,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                               child: Text($(context).yes),
                             ),
                             TextButton(
-                              onPressed: () {
-                                Navigator.pop(context, true);
-                              },
+                              onPressed: () => Navigator.pop(ctx),
                               child: Text($(context).no),
                             )
                           ],
@@ -158,8 +147,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                     );
                   },
                   icon: const Icon(Icons.delete),
-                  color: Colors.red,
-                )
+                  color: Theme.of(context).colorScheme.error,
+                ),
               ],
             ),
           ],

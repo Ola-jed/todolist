@@ -14,6 +14,7 @@ class Actions {
   static const String UnfinishedTasks = 'Unfinished tasks';
   static const String ExpiredTasks = 'Expired tasks';
   static const String SaveAll = 'Save all';
+
   static const List<String> choices = <String>[
     AllTasks,
     FinishedTasks,

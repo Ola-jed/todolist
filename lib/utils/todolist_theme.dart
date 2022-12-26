@@ -40,9 +40,9 @@ class TodolistTheme {
     colorScheme: const ColorScheme(
       primary: Color(0xFF4DB666),
       secondary: Color(0xFF515B68),
-      surface: Color(0xFF8BA3AA),
+      surface: Color(0xFF8B8E8F),
       background: Color(0xFF212121),
-      error: Color(0xFFE66773),
+      error: Color(0xFFCD091B),
       onPrimary: Color(0xFFF4FAFF),
       onSecondary: Color(0xFFF4FAFF),
       onSurface: Color(0xFFF4FAFF),
