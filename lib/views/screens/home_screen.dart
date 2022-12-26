@@ -3,8 +3,8 @@ import 'package:todolist/api/task_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/tasks_csv_export.dart';
-import 'package:todolist/views/forms/task_form.dart';
 import 'package:todolist/views/ui/bottom_menubar.dart';
+import 'package:todolist/views/ui/routes.dart';
 import 'package:todolist/views/ui/tasks_list.dart';
 
 /// All actions of our menu
@@ -165,10 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => Scaffold(body: TaskForm()),
-          );
+          Navigator.of(context).pushNamed(Routes.createTask);
         },
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(

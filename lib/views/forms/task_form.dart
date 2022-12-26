@@ -37,16 +37,6 @@ class _TaskFormState extends State<TaskForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Center(
-              child: Text(
-                $(context).task,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
             Container(
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: TextFormField(

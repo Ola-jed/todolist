@@ -7,6 +7,7 @@ import 'package:todolist/views/screens/account_screen.dart';
 import 'package:todolist/views/screens/auth_screen.dart';
 import 'package:todolist/views/screens/home_screen.dart';
 import 'package:todolist/views/screens/password_reset_screen.dart';
+import 'package:todolist/views/screens/task_form_screen.dart';
 import 'package:todolist/views/ui/routes.dart';
 
 /// Build the application
@@ -36,6 +37,7 @@ Widget app(bool hasValidToken) {
         Routes.account: (context) => AccountScreen(),
         Routes.forgottenPassword: (context) => PasswordResetScreen(),
         Routes.home: (context) => HomeScreen(),
+        Routes.createTask: (context) => TaskFormScreen(),
       },
       debugShowCheckedModeBanner: false,
     ),
