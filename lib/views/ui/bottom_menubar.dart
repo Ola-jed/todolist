@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/auth_service.dart';
 import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/l10n.dart';
+import 'package:todolist/views/ui/routes.dart';
 
 /// Our bottom menu bar
 class BottomMenuBar extends StatelessWidget {
@@ -68,7 +69,7 @@ class BottomMenuBar extends StatelessWidget {
             {
               showDialog(
                 context: context,
-                builder: (_) {
+                builder: (ctx) {
                   return AlertDialog(
                     title: Text($(context).logout),
                     content: Text($(context).logoutQuestion),
@@ -89,7 +90,7 @@ class BottomMenuBar extends StatelessWidget {
                             );
                           } else {
                             Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/signin',
+                              Routes.signin,
                               (Route<dynamic> route) => false,
                             );
                           }
@@ -97,9 +98,7 @@ class BottomMenuBar extends StatelessWidget {
                         child: Text($(context).yes),
                       ),
                       TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                        onPressed: () => Navigator.pop(ctx),
                         child: Text($(context).no),
                       ),
                     ],
