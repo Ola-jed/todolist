@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todolist/api/step_service.dart';
 import 'package:todolist/api/task_service.dart';
 import 'package:todolist/models/step.dart' as StepData;
-import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/forms/step_form.dart';
 import 'package:todolist/views/screens/task_screen.dart';
@@ -59,8 +58,7 @@ class _StepWidgetState extends State<StepWidget> {
                   value: widget.step.isFinished,
                   activeColor: Colors.black,
                   onChanged: (value) async {
-                    final token = await getToken();
-                    final hasMarked = await StepService(token)
+                    final hasMarked = await StepService()
                         .finishStep(widget.step.id, value!);
                     if (hasMarked) {
                       setState(() {
@@ -100,12 +98,10 @@ class _StepWidgetState extends State<StepWidget> {
               Spacer(),
               IconButton(
                 onPressed: () async {
-                  final token = await getToken();
-                  final hasDeleted = await StepService(token)
+                  final hasDeleted = await StepService()
                       .deleteStep(widget.step.id);
                   if (hasDeleted) {
-                    final task = await TaskService(token)
-                        .getTask(widget.taskSlug);
+                    final task = await TaskService().getTask(widget.taskSlug);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

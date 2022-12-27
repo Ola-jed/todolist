@@ -17,9 +17,9 @@ void main() {
         'device_name': 'Test user'
       };
       final value = await authService.makeSignup(signupData);
-        expect(value, () {
-          allOf([isNotEmpty]);
-        });
+      expect(value, () {
+        allOf([isNotEmpty]);
+      });
     });
     test('Signin and tasks testing', () {
       final signinData = <String, String>{
@@ -31,13 +31,19 @@ void main() {
         expect(value, () {
           allOf([isNotEmpty]);
         }); // Token should not be empty
-        var taskService = TaskService(value);
+        var taskService = TaskService();
         taskService.getTasks().then((value) {
           expect(value, () {
             allOf([isEmpty]);
           }); // No task yet created
-          var task =
-              Task('title', 'title', false, 'description', DateTime.now(), 2);
+          var task = Task(
+            'title',
+            'title',
+            false,
+            'description',
+            DateTime.now(),
+            2,
+          );
           taskService.createTask(task).then((val) {
             expect(true, val);
             taskService.getTasks().then((tasks) {

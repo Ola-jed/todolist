@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:convert' show utf8;
 import 'package:todolist/api/exceptions/api_connection_exception.dart';
+import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/string_helpers.dart';
 
 /// HTTP verbs
-enum HTTP_METHOD { GET, PUT, POST, DELETE }
+enum HttpMethod { GET, PUT, POST, DELETE }
 
 /// Abstract class that allows us to make our api calls
 abstract class ApiBase {
@@ -71,7 +72,7 @@ abstract class ApiBase {
   static String token = '';
 
   /// Our HttpClient
-  final httpClient = HttpClient();
+  static final httpClient = HttpClient();
 
   /// Our base function for api calls
   ///
@@ -83,16 +84,20 @@ abstract class ApiBase {
   ///
   /// - token : The token for api authentication
   /// - data :  The json data to pass to the api
-  Future<String> callUrl(Uri uri, HTTP_METHOD httpMethod,
-      [String data = '', String token = '']) async {
+  Future<String> callUrl(
+    Uri uri,
+    HttpMethod httpMethod, {
+    String data = '',
+    bool shouldFetchInternalToken = true,
+  }) async {
     try {
       print("${httpMethod.name} - ${uri.toString()}");
       print(data);
-      var request = (httpMethod == HTTP_METHOD.GET)
+      var request = (httpMethod == HttpMethod.GET)
           ? await httpClient.getUrl(uri)
-          : (httpMethod == HTTP_METHOD.POST)
+          : (httpMethod == HttpMethod.POST)
               ? await httpClient.postUrl(uri)
-              : (httpMethod == HTTP_METHOD.PUT)
+              : (httpMethod == HttpMethod.PUT)
                   ? await httpClient.putUrl(uri)
                   : await httpClient.deleteUrl(uri);
       request.headers.contentType = ContentType(
@@ -101,14 +106,17 @@ abstract class ApiBase {
         charset: "utf-8",
       );
       request.headers.add("Accept", "application/json");
-      request.headers.add("Authorization", 'Bearer $token');
+      if (shouldFetchInternalToken) {
+        final token = await getToken();
+        request.headers.add("Authorization", 'Bearer $token');
+      }
       if (data.trim().isNotEmpty) {
         request.contentLength = data.length;
       }
       if (!data.isBlank()) {
         request.write(data);
       }
-      var response = await request.close();
+      final response = await request.close();
       final responseContent = await response.transform(utf8.decoder).join("");
       if (response.statusCode >= 300) {
         print(responseContent);
@@ -126,8 +134,17 @@ abstract class ApiBase {
   /// ### Params
   /// - uri : The uri to call
   /// - (optional) data : The data to pass
-  Future<String> getUrl(Uri uri, [String data = '', String token = '']) async {
-    return callUrl(uri, HTTP_METHOD.GET, data, token);
+  Future<String> get(
+    Uri uri, {
+    String data = '',
+    bool shouldFetchInternalToken = true,
+  }) async {
+    return callUrl(
+      uri,
+      HttpMethod.GET,
+      data: data,
+      shouldFetchInternalToken: shouldFetchInternalToken,
+    );
   }
 
   /// Base function for http post requests
@@ -135,8 +152,17 @@ abstract class ApiBase {
   /// ### Params
   /// - uri : The uri to call
   /// - (optional) data : The data to pass
-  Future<String> postUrl(Uri uri, [String data = '', String token = '']) async {
-    return callUrl(uri, HTTP_METHOD.POST, data, token);
+  Future<String> post(
+    Uri uri, {
+    String data = '',
+    bool shouldFetchInternalToken = true,
+  }) async {
+    return callUrl(
+      uri,
+      HttpMethod.POST,
+      data: data,
+      shouldFetchInternalToken: shouldFetchInternalToken,
+    );
   }
 
   /// Base function for http put requests
@@ -144,8 +170,17 @@ abstract class ApiBase {
   /// ### Params
   /// - uri : The uri to call
   /// - (optional) data : The data to pass
-  Future<String> putUrl(Uri uri, [String data = '', String token = '']) async {
-    return callUrl(uri, HTTP_METHOD.PUT, data, token);
+  Future<String> put(
+    Uri uri, {
+    String data = '',
+    bool shouldFetchInternalToken = true,
+  }) async {
+    return callUrl(
+      uri,
+      HttpMethod.PUT,
+      data: data,
+      shouldFetchInternalToken: shouldFetchInternalToken,
+    );
   }
 
   /// Base function for http delete requests
@@ -153,8 +188,16 @@ abstract class ApiBase {
   /// ### Params
   /// - uri : The uri to call
   /// - (optional) data : The data to pass
-  Future<String> deleteUrl(Uri uri,
-      [String data = '', String token = '']) async {
-    return callUrl(uri, HTTP_METHOD.DELETE, data, token);
+  Future<String> delete(
+    Uri uri, {
+    String data = '',
+    bool shouldFetchInternalToken = true,
+  }) async {
+    return callUrl(
+      uri,
+      HttpMethod.DELETE,
+      data: data,
+      shouldFetchInternalToken: shouldFetchInternalToken,
+    );
   }
 }

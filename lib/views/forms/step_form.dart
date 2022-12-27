@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:todolist/api/step_service.dart';
 import 'package:todolist/api/task_service.dart';
-import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/step.dart' as StepData;
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/screens/task_screen.dart';
@@ -101,19 +100,19 @@ class _StepFormState extends State<StepForm> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    final token = await getToken();
                     final step = StepData.Step(title, priority);
                     var hasCreated = false;
+                    final stepService = StepService();
+                    final taskService = TaskService();
                     if (widget.step == null) {
-                      hasCreated = await StepService(token)
+                      hasCreated = await stepService
                           .createStep(widget.taskSlug, step);
                     } else {
-                      hasCreated = await StepService(token)
+                      hasCreated = await stepService
                           .updateStep(widget.step!.id, step);
                     }
                     if (hasCreated) {
-                      final task = await TaskService(token)
-                              .getTask(widget.taskSlug);
+                      final task = await taskService.getTask(widget.taskSlug);
                       Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -23,6 +23,7 @@ class _AccountScreenState extends State<AccountScreen> {
   final _formKey = GlobalKey<FormState>();
   final emailRegex = RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+");
   var data = Map();
+  final _accountService = AccountService();
 
   @override
   void initState() {
@@ -34,8 +35,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   /// Get the authenticated user
   Future<void> _getConnectedUser() async {
-    final token = await getToken();
-    final apiUser = await AccountService(token).getAccountInfo();
+    final apiUser = await _accountService.getAccountInfo();
     setState(() => user = apiUser);
   }
 
@@ -209,9 +209,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                         TextButton(
                                           onPressed: () async {
                                             try {
-                                              final token = await getToken();
                                               final hasUpdated =
-                                                  await AccountService(token)
+                                                  await _accountService
                                                       .updateAccount(data);
                                               if (hasUpdated) {
                                                 setState(
@@ -292,9 +291,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       TextButton(
                                         onPressed: () async {
                                           _formKey.currentState!.save();
-                                          var token = await getToken();
-                                          var hasDeleted = await AccountService(
-                                                  token)
+                                          var hasDeleted = await _accountService
                                               .deleteAccount(data['password']);
                                           if (hasDeleted) {
                                             await removeToken();

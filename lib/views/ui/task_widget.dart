@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/task_service.dart';
-import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/forms/task_form.dart';
@@ -65,8 +64,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                   value: widget.task.isFinished,
                   activeColor: Colors.black,
                   onChanged: (value) async {
-                    final token = await getToken();
-                    final hasMarked = await TaskService(token)
+                    final hasMarked = await TaskService()
                         .finishTask(widget.task.slug, value!);
                     if (hasMarked) {
                       setState(() {
@@ -113,8 +111,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                           actions: [
                             TextButton(
                               onPressed: () async {
-                                final token = await getToken();
-                                final hasDeleted = await TaskService(token)
+                                final hasDeleted = await TaskService()
                                     .deleteTask(widget.task.slug);
                                 if (hasDeleted) {
                                   dispose();

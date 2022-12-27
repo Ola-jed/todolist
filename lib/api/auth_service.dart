@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/api/api_base.dart';
 import 'package:todolist/api/exceptions/response_retrieving_exception.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:todolist/api/token_handler.dart';
 
 /// Service that calls backend for auth management
 class AuthService extends ApiBase {
@@ -21,9 +22,10 @@ class AuthService extends ApiBase {
     try {
       signupData['device_name'] = await _getDeviceIdentity();
       print(signupData);
-      final result = await postUrl(
+      final result = await post(
         Uri.parse(signupUrl),
-        json.encode(signupData),
+        data: json.encode(signupData),
+        shouldFetchInternalToken: false,
       );
       final jsonResult = json.decode(result) as Map<String, dynamic>;
       if (jsonResult['token'] == null) throw Exception('Signup failed');
@@ -41,9 +43,10 @@ class AuthService extends ApiBase {
   Future<String> makeSignin(Map signinData) async {
     try {
       signinData['device_name'] = await _getDeviceIdentity();
-      final result = await postUrl(
+      final result = await post(
         Uri.parse(signinUrl),
-        json.encode(signinData),
+        data: json.encode(signinData),
+        shouldFetchInternalToken: false,
       );
       final jsonResult = json.decode(result) as Map<String, dynamic>;
       if (jsonResult['token'] == null) throw Exception('Signin failed');
@@ -55,14 +58,12 @@ class AuthService extends ApiBase {
 
   /// Logout the user
   /// We remove the token from local preferences
-  ///
-  /// ### Param
-  /// - token : The token granted to the user who wants to logout himself
   Future<bool> makeLogout(String token) async {
     try {
-      final result = await postUrl(Uri.parse(logoutUrl), '', token);
+      final result = await post(Uri.parse(logoutUrl));
       final preferences = await SharedPreferences.getInstance();
       await preferences.remove('token');
+      StaticTokenStore.removeToken();
       return (jsonDecode(result)['message'] as String) == 'Logout successful';
     } on Exception {
       return false;
@@ -75,9 +76,10 @@ class AuthService extends ApiBase {
   /// - email : The email to where we should send the email
   Future<bool> resetPassword(Map passwordResetData) async {
     try {
-      final result = await postUrl(
+      final result = await post(
         Uri.parse(passwordResetUrl),
-        json.encode(passwordResetData),
+        data: json.encode(passwordResetData),
+        shouldFetchInternalToken: false,
       );
       return (jsonDecode(result)['message'] as String) == 'Password reset';
     } on Exception {
@@ -86,12 +88,9 @@ class AuthService extends ApiBase {
   }
 
   /// Method to check if the given token is correct
-  ///
-  /// ### Param
-  /// - token : The token we want to check
-  Future<bool> checkToken(String token) async {
+  Future<bool> checkToken() async {
     try {
-      final result = await getUrl(Uri.parse(tokenCheckUrl), '', token);
+      final result = await get(Uri.parse(tokenCheckUrl));
       return (jsonDecode(result)['authenticated'] as bool);
     } on Exception {
       return false;

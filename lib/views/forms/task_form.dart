@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:slugify/slugify.dart';
 import 'package:todolist/api/task_service.dart';
-import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/todolist_theme.dart';
@@ -99,11 +98,12 @@ class _TaskFormState extends State<TaskForm> {
                   return null;
                 },
                 onTap: () async {
+                  final now = DateTime.now();
                   final date = await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2021),
-                    lastDate: DateTime(2030),
+                    initialDate: now,
+                    firstDate: now,
+                    lastDate: now.add(const Duration(days: 366)),
                   );
                   if (date.toString().length >= 10) {
                     final stringDateValue = date.toString().substring(0, 10);
@@ -167,8 +167,7 @@ class _TaskFormState extends State<TaskForm> {
                           data['has_steps'] = hasSteps;
                           data['is_finished'] = false;
                           final task = Task.fromJson(data);
-                          final token = await getToken();
-                          final taskService = TaskService(token);
+                          final taskService = TaskService();
                           var hasCreated = false;
                           hasCreated = hasTask
                               ? await taskService.updateTask(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/task_service.dart';
-import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/utils/tasks_csv_export.dart';
 import 'package:todolist/views/ui/bottom_menubar.dart';
@@ -78,8 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       case Actions.SaveAll:
         {
-          final token = await getToken();
-          final tasks = await TaskService(token).getTasks();
+          final tasks = await TaskService().getTasks();
           await saveTasksToCsv(tasks);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

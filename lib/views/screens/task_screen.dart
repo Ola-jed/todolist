@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/api/step_service.dart';
-import 'package:todolist/api/token_handler.dart';
 import 'package:todolist/models/task.dart';
 import 'package:todolist/models/step.dart' as StepData;
 import 'package:todolist/utils/l10n.dart';
@@ -20,8 +19,7 @@ class TaskScreen extends StatelessWidget {
 
   /// We retrieve all the steps of a task
   Future<List> _getSteps() async {
-    final token = await getToken();
-    return await StepService(token).getStepsFromTask(task.slug);
+    return await StepService().getStepsFromTask(task.slug);
   }
 
   @override

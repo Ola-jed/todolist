@@ -35,14 +35,14 @@ class _TasksListState extends State<TasksList> {
   Future<List> _getCorrespondingTasks() async {
     final token = await getToken();
     if (token.isEmpty) return [];
-    var taskService = TaskService(token);
+    var taskService = TaskService();
     switch (widget.tasksFillType) {
       case TasksFillType.All:
         return taskService.getTasks();
       case TasksFillType.Finished:
-        return taskService.getFinishedTasks(true);
+        return taskService.getFinishedTasks(finished: true);
       case TasksFillType.Unfinished:
-        return taskService.getFinishedTasks(false);
+        return taskService.getFinishedTasks(finished: false);
       case TasksFillType.Expired:
         return taskService.getExpiredTasks();
       case TasksFillType.Search:
