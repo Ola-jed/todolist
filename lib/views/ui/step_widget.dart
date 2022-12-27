@@ -29,7 +29,7 @@ class _StepWidgetState extends State<StepWidget> {
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: const Color(0xFF1C1C1C),
+        color: Theme.of(context).colorScheme.surface,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,8 +58,8 @@ class _StepWidgetState extends State<StepWidget> {
                   value: widget.step.isFinished,
                   activeColor: Colors.black,
                   onChanged: (value) async {
-                    final hasMarked = await StepService()
-                        .finishStep(widget.step.id, value!);
+                    final hasMarked =
+                        await StepService().finishStep(widget.step.id, value!);
                     if (hasMarked) {
                       setState(() {
                         widget.step.isFinished = !widget.step.isFinished;
@@ -77,29 +77,31 @@ class _StepWidgetState extends State<StepWidget> {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               IconButton(
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Scaffold(
-                        body: StepForm(
-                          taskSlug: widget.taskSlug,
-                          step: widget.step,
-                        ),
-                      );
-                    },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return Scaffold(
+                          body: StepForm(
+                            taskSlug: widget.taskSlug,
+                            step: widget.step,
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
-                icon: const Icon(Icons.update),
-                color: Colors.teal,
+                icon: const Icon(Icons.edit),
+                color: Theme.of(context).colorScheme.primary,
               ),
-              Spacer(),
               IconButton(
                 onPressed: () async {
-                  final hasDeleted = await StepService()
-                      .deleteStep(widget.step.id);
+                  final hasDeleted =
+                      await StepService().deleteStep(widget.step.id);
                   if (hasDeleted) {
                     final task = await TaskService().getTask(widget.taskSlug);
                     Navigator.push(
@@ -121,7 +123,7 @@ class _StepWidgetState extends State<StepWidget> {
                   }
                 },
                 icon: const Icon(Icons.delete),
-                color: Colors.red,
+                color: Theme.of(context).colorScheme.error,
               ),
             ],
           ),

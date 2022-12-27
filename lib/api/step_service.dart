@@ -1,7 +1,8 @@
 import 'dart:convert' show jsonEncode, jsonDecode;
+
 import 'package:todolist/api/api_base.dart';
-import 'package:todolist/models/step.dart';
 import 'package:todolist/api/task_service.dart';
+import 'package:todolist/models/step.dart';
 
 /// Service that calls backend for steps management
 class StepService extends ApiBase {
@@ -28,12 +29,11 @@ class StepService extends ApiBase {
   /// - stepToCreate : The new task to create
   Future<bool> createStep(String taskSlug, Step stepToCreate) async {
     try {
-      final result = await post(
+      await post(
         Uri.parse(TaskService.tasksUrl + '/' + taskSlug + '/steps'),
         data: jsonEncode(stepToCreate.toJson()),
       );
-      final resultAsMap = jsonDecode(result);
-      return resultAsMap['message'] as String == 'Step created';
+      return true;
     } on Exception {
       return false;
     }
@@ -57,11 +57,11 @@ class StepService extends ApiBase {
   /// - stepNewValue : The new value of the step
   Future<bool> updateStep(int stepId, Step stepNewValue) async {
     try {
-      final resultOfUpdate = await put(
+      await put(
         Uri.parse(stepsUrl + stepId.toString()),
         data: jsonEncode(stepNewValue.toJson()),
       );
-      return jsonDecode(resultOfUpdate)['message'] as String == 'Step updated';
+      return true;
     } on Exception {
       return false;
     }
@@ -75,11 +75,11 @@ class StepService extends ApiBase {
   Future<bool> finishStep(int stepId, bool finishOrNot) async {
     try {
       final data = <String, int>{'status': (finishOrNot ? 1 : 0)};
-      final resultOfMarkingFinished = await put(
+      await put(
         Uri.parse(stepsUrl + stepId.toString() + '/finish'),
         data: jsonEncode(data),
       );
-      return jsonDecode(resultOfMarkingFinished)['message'] == ('Step ' + (finishOrNot ? 'finished' : 'unfinished'));
+      return true;
     } on Exception {
       return false;
     }
@@ -91,10 +91,10 @@ class StepService extends ApiBase {
   /// - stepId : The id of the step to delete
   Future<bool> deleteStep(int stepId) async {
     try {
-      final resultOfDelete = await delete(
+      await delete(
         Uri.parse(stepsUrl + stepId.toString()),
       );
-      return jsonDecode(resultOfDelete)['message'] as String == 'Step deleted';
+      return true;
     } on Exception {
       return false;
     }
