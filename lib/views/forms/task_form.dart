@@ -26,6 +26,15 @@ class _TaskFormState extends State<TaskForm> {
   var data = Map<String, dynamic>();
 
   @override
+  void initState() {
+    if(widget.task != null) {
+      final stringDateValue = widget.task!.dateLimit.toString().substring(0, 10);
+      dateController.text = stringDateValue;
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final hasTask = widget.task != null;
     return Form(
@@ -99,9 +108,10 @@ class _TaskFormState extends State<TaskForm> {
                 },
                 onTap: () async {
                   final now = DateTime.now();
+                  final initialDate = widget.task?.dateLimit ?? now;
                   final date = await showDatePicker(
                     context: context,
-                    initialDate: now,
+                    initialDate: initialDate,
                     firstDate: now,
                     lastDate: now.add(const Duration(days: 366)),
                   );

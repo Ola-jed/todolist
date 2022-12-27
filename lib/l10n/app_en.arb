@@ -73,5 +73,6 @@
   "defineReminder": "Define reminder",
   "reminderDefined": "Reminder defined",
   "couldNotDefineReminder": "Could not define reminder",
-  "tasksExportedTo": "Tasks exported to Android/data/com.ola.todolist/files/todolist.csv"
+  "tasksExportedTo": "Tasks exported to Android/data/com.ola.todolist/files/todolist.csv",
+  "taskDeletedSuccessfully": "Task deleted successfully"
 }

@@ -26,13 +26,21 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
+  late Future<List<Task>> _tasksFuture;
+
+  @override
+  void initState() {
+    _tasksFuture = _getCorrespondingTasks();
+    super.initState();
+  }
+
   /// Load correctly the tasks depending on the fill type
   /// All : all tasks of the user
   /// Finished : All the finished tasks of the user
   /// Unfinished : All the tasks not yet finished by the user
   /// Expired : Get the expired tasks (limit date passed)
   /// Search : Search the tasks corresponding to searchContent
-  Future<List> _getCorrespondingTasks() async {
+  Future<List<Task>> _getCorrespondingTasks() async {
     final token = await getToken();
     if (token.isEmpty) return [];
     var taskService = TaskService();
@@ -57,7 +65,7 @@ class _TasksListState extends State<TasksList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getCorrespondingTasks(),
+      future: _tasksFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final tasks = snapshot.data as List<Task>;
@@ -73,10 +81,23 @@ class _TasksListState extends State<TasksList> {
               ),
             );
           }
-
           return ListView.builder(
             itemCount: tasks.length,
-            itemBuilder: (context, index) => TaskWidget(task: tasks[index]),
+            itemBuilder: (context, index) => TaskWidget(
+              task: tasks[index],
+              onDelete: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      $(context).taskDeletedSuccessfully,
+                    ),
+                  ),
+                );
+                setState(() {
+                  _tasksFuture = _getCorrespondingTasks();
+                });
+              },
+            ),
           );
         } else if (snapshot.hasError) {
           return Center(

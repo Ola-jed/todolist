@@ -91,8 +91,6 @@ abstract class ApiBase {
     bool shouldFetchInternalToken = true,
   }) async {
     try {
-      print("${httpMethod.name} - ${uri.toString()}");
-      print(data);
       var request = (httpMethod == HttpMethod.GET)
           ? await httpClient.getUrl(uri)
           : (httpMethod == HttpMethod.POST)

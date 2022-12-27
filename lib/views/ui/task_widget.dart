@@ -4,15 +4,16 @@ import 'package:todolist/models/task.dart';
 import 'package:todolist/utils/l10n.dart';
 import 'package:todolist/views/forms/task_form.dart';
 import 'package:todolist/views/screens/task_screen.dart';
-import 'package:todolist/views/ui/routes.dart';
 
 /// Widget to show tasks on home screen
 class TaskWidget extends StatefulWidget {
   final Task task;
+  final Function onDelete;
 
   const TaskWidget({
     Key? key,
     required this.task,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -86,13 +87,15 @@ class _TaskWidgetState extends State<TaskWidget> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Scaffold(
-                          body: TaskForm(task: widget.task),
-                        );
-                      },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Scaffold(
+                          body: TaskForm(
+                            task: widget.task,
+                          ),
+                        ),
+                      ),
                     );
                   },
                   icon: const Icon(Icons.edit),
@@ -114,8 +117,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                                 final hasDeleted = await TaskService()
                                     .deleteTask(widget.task.slug);
                                 if (hasDeleted) {
-                                  dispose();
-                                  Navigator.pushNamed(context, Routes.home);
+                                  Navigator.pop(ctx);
+                                  widget.onDelete();
                                 } else {
                                   showDialog(
                                     context: context,

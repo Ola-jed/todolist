@@ -39,12 +39,11 @@ class TaskService extends ApiBase {
       });
       taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
-      final result = await post(
+      await post(
         Uri.parse(tasksUrl),
         data: jsonEncode(taskAsJson),
       );
-      final resultAsMap = jsonDecode(result);
-      return resultAsMap['message'] as String == 'Task created';
+      return true;
     } on Exception {
       return false;
     }
@@ -116,11 +115,11 @@ class TaskService extends ApiBase {
       });
       taskAsJson['date_limit'] = newDate.substring(0, newDate.length - 1);
       taskAsJson['has_steps'] = (taskAsJson['has_steps'] as bool) ? 1 : 0;
-      final resultOfUpdate = await put(
+      await put(
         Uri.parse(tasksUrl + '/' + slug),
         data: jsonEncode(taskAsJson),
       );
-      return jsonDecode(resultOfUpdate)['message'] as String == 'Task updated';
+      return true;
     } on Exception {
       return false;
     }
@@ -134,12 +133,11 @@ class TaskService extends ApiBase {
   Future<bool> finishTask(String slug, bool finishOrNot) async {
     try {
       final data = <String, int>{'status': (finishOrNot ? 1 : 0)};
-      final resultOfMarkingFinished = await put(
+      await put(
         Uri.parse(tasksUrl + '/' + slug + "/finish"),
         data: jsonEncode(data),
       );
-      return jsonDecode(resultOfMarkingFinished)['message'] ==
-          'Task status updated';
+      return true;
     } on Exception {
       return false;
     }
@@ -151,8 +149,8 @@ class TaskService extends ApiBase {
   /// - slug : The slug of the task to delete
   Future<bool> deleteTask(String slug) async {
     try {
-      final resultOfDelete = await delete(Uri.parse(tasksUrl + '/' + slug));
-      return jsonDecode(resultOfDelete)['message'] as String == 'Task deleted';
+      await delete(Uri.parse(tasksUrl + '/' + slug));
+      return true;
     } on Exception {
       return false;
     }
