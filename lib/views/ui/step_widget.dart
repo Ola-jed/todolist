@@ -46,9 +46,12 @@ class _StepWidgetState extends State<StepWidget> {
           ),
           Row(
             children: <Widget>[
-              Text(
-                '${$(context).priority} : ${widget.step.priority}',
-                style: const TextStyle(fontSize: 15),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Text(
+                  '${$(context).priority} : ${widget.step.priority}',
+                  style: const TextStyle(fontSize: 15),
+                ),
               ),
               Spacer(),
               Expanded(
@@ -73,7 +76,7 @@ class _StepWidgetState extends State<StepWidget> {
                     }
                   },
                 ),
-              )
+              ),
             ],
           ),
           Row(

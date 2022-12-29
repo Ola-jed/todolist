@@ -68,7 +68,7 @@ abstract class ApiBase {
 
   // Local (may change) : http://192.168.43.193:8000/api/
   // Distant : https://todolist-rest-api.herokuapp.com/api/
-  static final String apiUrl = 'http://192.168.100.104:8000/api/';
+  static final String apiUrl = 'http://192.168.43.193:8000/api/';
   static String token = '';
 
   /// Our HttpClient

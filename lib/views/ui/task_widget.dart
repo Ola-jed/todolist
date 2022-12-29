@@ -45,7 +45,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(left: 10, top: 10),
+              padding: const EdgeInsets.only(left: 10, top: 10),
               child: Text(
                 widget.task.title,
                 style: TextStyle(
@@ -55,33 +55,39 @@ class _TaskWidgetState extends State<TaskWidget> {
                 ),
               ),
             ),
-            Row(children: <Widget>[
-              Text(widget.task.dateLimit.toString().substring(0, 10)),
-              Spacer(),
-              Expanded(
-                child: CheckboxListTile(
-                  contentPadding: EdgeInsets.all(0),
-                  title: Text($(context).finished),
-                  value: widget.task.isFinished,
-                  activeColor: Colors.black,
-                  onChanged: (value) async {
-                    final hasMarked = await TaskService()
-                        .finishTask(widget.task.slug, value!);
-                    if (hasMarked) {
-                      setState(() {
-                        widget.task.isFinished = !widget.task.isFinished;
-                      });
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text($(context).couldNotUpdateTask),
-                        ),
-                      );
-                    }
-                  },
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child:
+                      Text(widget.task.dateLimit.toString().substring(0, 10)),
                 ),
-              )
-            ]),
+                Spacer(),
+                Expanded(
+                  child: CheckboxListTile(
+                    contentPadding: EdgeInsets.all(0),
+                    title: Text($(context).finished),
+                    value: widget.task.isFinished,
+                    activeColor: Colors.black,
+                    onChanged: (value) async {
+                      final hasMarked = await TaskService()
+                          .finishTask(widget.task.slug, value!);
+                      if (hasMarked) {
+                        setState(() {
+                          widget.task.isFinished = !widget.task.isFinished;
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text($(context).couldNotUpdateTask),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                )
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
