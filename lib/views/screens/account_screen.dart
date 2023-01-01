@@ -199,7 +199,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 _formKey.currentState!.save();
                                 showDialog(
                                   context: context,
-                                  builder: (context) {
+                                  builder: (ctx) {
                                     return AlertDialog(
                                       title: Text($(context).updateAccount),
                                       content: Text(
@@ -224,8 +224,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                     .showSnackBar(
                                                   SnackBar(
                                                     content: Text(
-                                                      $(context)
-                                                          .accountUpdateFailed,
+                                                      $(context).accountUpdateFailed,
                                                     ),
                                                   ),
                                                 );
@@ -235,14 +234,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                                   .showSnackBar(
                                                 SnackBar(
                                                   content: Text(
-                                                    $(context)
-                                                        .accountUpdateFailed,
+                                                    $(context).accountUpdateFailed,
                                                   ),
                                                 ),
                                               );
                                             } finally {
                                               Navigator.pop(
-                                                context,
+                                                ctx,
                                                 true,
                                               );
                                             }
@@ -252,7 +250,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                         TextButton(
                                           onPressed: () {
                                             Navigator.pop(
-                                              context,
+                                              ctx,
                                               true,
                                             );
                                           },
