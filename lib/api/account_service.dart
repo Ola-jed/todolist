@@ -14,7 +14,7 @@ class AccountService extends ApiBase {
     try {
       final result = await get(Uri.parse(accountUrl));
       final jsonResult = json.decode(result) as Map<String, dynamic>;
-      return User.fromJson(jsonResult['data'] as Map<String, dynamic>);
+      return User.fromJson(jsonResult);
     } on Exception catch (e) {
       throw ResponseRetrievingException('$e');
     }
@@ -26,14 +26,13 @@ class AccountService extends ApiBase {
   /// - userData : The serialized data with name email and password
   Future<bool> updateAccount(Map userData) async {
     try {
-      final result = await put(
+      await put(
         Uri.parse(accountUrl),
         data: json.encode(userData),
       );
-      final jsonResult = json.decode(result) as Map<String, dynamic>;
-      return jsonResult['message'] == 'Account updated';
-    } on Exception catch (e) {
-      throw ResponseRetrievingException('$e');
+      return true;
+    } on Exception {
+      return false;
     }
   }
 
@@ -44,13 +43,13 @@ class AccountService extends ApiBase {
   /// - password : The password of the user
   Future<bool> deleteAccount(String password) async {
     try {
-      final result = await delete(
+      await delete(
         Uri.parse(accountUrl),
         data: jsonEncode({'password': password}),
       );
       final preferences = await SharedPreferences.getInstance();
       await preferences.remove('token');
-      return (jsonDecode(result)['message'] as String) == 'User deleted';
+      return true;
     } on Exception {
       return false;
     }
